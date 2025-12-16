@@ -9,69 +9,57 @@ def _stars(p):
         return "*"
     return ""
 
-def modelsummary(
-    model,
-    *,
-    coef_omit=None,
-    stars=True,
-    statistic="std.error",
-    output="dataframe",   # "dataframe" | "gt" | "styler"
-    digits=3,
-):
-    # Prefer full vectors if present (from ols_dropcollinear)
-    params = getattr(model, "params_full", model.params)
-    bse = getattr(model, "bse_full", model.bse)
-    tvals = getattr(model, "tvalues_full", model.tvalues)
-    pvals = getattr(model, "pvalues_full", model.pvalues)
+import re
+import pandas as pd
 
-    df = (
-        pd.DataFrame(
-            {
-                "term": params.index,
-                "estimate": params.values,
-                "std.error": bse.values,
-                "t": tvals.values,
-                "p.value": pvals.values,
-            }
-        )
-        .dropna(subset=["estimate"])
-    )
+def modelsummary(models, *, coef_omit=None, stars=True, gof_map=("nobs",), output="dataframe"):
+    # allow single model
+    if not isinstance(models, (list, tuple)):
+        models = [models]
+
+    def star(p):
+        if p < 0.01: return "***"
+        if p < 0.05: return "**"
+        if p < 0.10: return "*"
+        return ""
+
+    cols = []
+    for j, m in enumerate(models, start=1):
+        params = m.params
+        pvals = m.pvalues
+        s = params.copy()
+        if stars:
+            s = s.map(lambda v: f"{v:.3f}") + pvals.map(star)
+        else:
+            s = s.map(lambda v: f"{v:.3f}")
+        s.name = f"Model {j}"
+        cols.append(s)
+
+    tbl = pd.concat(cols, axis=1).reset_index(names="term")
 
     if coef_omit is not None:
-        df = df.loc[~df["term"].str.contains(coef_omit, regex=True)]
+        tbl = tbl.loc[~tbl["term"].str.contains(coef_omit, regex=True)]
 
-    # stars + formatting
-    if stars:
-        df["stars"] = df["p.value"].apply(_stars)
-    else:
-        df["stars"] = ""
+    # Add GOF rows (just nobs for now)
+    gof_rows = []
+    if gof_map:
+        if "nobs" in gof_map or ("nobs" in set(gof_map)):
+            row = {"term": "nobs"}
+            for j, m in enumerate(models, start=1):
+                row[f"Model {j}"] = f"{int(m.nobs)}"
+            gof_rows.append(row)
 
-    est_fmt = f"{{:.{digits}f}}"
-    stat_fmt = f"{{:.{digits}f}}"
-
-    df["estimate"] = df["estimate"].map(est_fmt.format) + df["stars"]
-
-    stat_col = {"std.error": "std.error", "t": "t"}[statistic]
-    df[stat_col] = df[stat_col].map(stat_fmt.format)
-
-    out_df = df[["term", "estimate", stat_col]]
+    if gof_rows:
+        tbl = pd.concat([tbl, pd.DataFrame(gof_rows)], ignore_index=True)
 
     if output == "dataframe":
-        return out_df
-
-    if output == "styler":
-        return out_df.style.hide(axis="index")
+        return tbl
 
     if output == "gt":
-        try:
-            # most common "GT" in Python Quarto land
-            from great_tables import GT
-        except ImportError as e:
-            raise ImportError(
-                "output='gt' requires the 'great-tables' package. "
-                "Install with: pip install great-tables"
-            ) from e
+        from great_tables import GT
+        return GT(tbl)
 
-        return GT(out_df)
+    if output == "styler":
+        return tbl.style.hide(axis="index")
 
     raise ValueError(f"Unknown output={output!r}")
