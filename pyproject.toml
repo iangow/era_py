@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "era_py"
-version = "0.0.1"
+version = "0.0.2"
 description = "Helper functions for the Python version of Empirical Research in Accounting: Tools and Methods"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -15,7 +15,12 @@ dependencies = [
   "pandas",
   "statsmodels",
   "scipy",
+  "requests",
+  "pyreadr",
 ]
+
+[project.optional-dependencies]
+tables = ["great-tables"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
