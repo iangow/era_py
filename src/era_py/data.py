@@ -5,7 +5,8 @@ from typing import Any
 
 import requests
 import pyreadr
-
+import pyarrow as pa
+import pandas as pd
 
 def load_farr_rda(name: str, *, timeout: float = 30.0) -> Any:
     """
@@ -40,4 +41,14 @@ def load_farr_rda(name: str, *, timeout: float = 30.0) -> Any:
             f"Available objects: {available}"
         )
 
-    return data[name]
+    df = data[name]
+    
+    df = df.convert_dtypes(dtype_backend='pyarrow')
+
+    if "datadate" in df.columns:
+        df["datadate"] = (pd.to_datetime(df["datadate"])
+                          .dt.date
+                          .astype("date32[pyarrow]")
+                          )
+
+    return df
