@@ -1,4 +1,4 @@
-__version__ = "0.0.4"
+__version__ = "0.0.6"
 
 from .models import ols_dropcollinear
 from .data import load_farr_rda

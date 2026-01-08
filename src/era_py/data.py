@@ -43,12 +43,9 @@ def load_farr_rda(name: str, *, timeout: float = 30.0) -> Any:
 
     df = data[name]
     
-    df = df.convert_dtypes(dtype_backend='pyarrow')
+    # df = df.convert_dtypes(dtype_backend='numpy_nullable')
 
     if "datadate" in df.columns:
-        df["datadate"] = (pd.to_datetime(df["datadate"])
-                          .dt.date
-                          .astype("date32[pyarrow]")
-                          )
+        df["datadate"] = pd.to_datetime(df["datadate"])
 
     return df
