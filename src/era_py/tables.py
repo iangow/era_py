@@ -57,7 +57,7 @@ def modelsummary(models, *, coef_omit=None, stars=True, gof_map=("nobs",), outpu
 
     if output == "gt":
         from great_tables import GT
-        return GT(tbl)
+        return GT(tbl).sub_missing(missing_text="")
 
     if output == "styler":
         return tbl.style.hide(axis="index")
