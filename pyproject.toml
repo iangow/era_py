@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "era_py"
-version = "0.0.7"
+version = "0.0.8"
 description = "Helper functions for the Python version of Empirical Research in Accounting: Tools and Methods"
 readme = "README.md"
 requires-python = ">=3.10"

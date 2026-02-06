@@ -4,6 +4,7 @@ from .models import ols_dropcollinear
 from .data import load_farr_rda
 from .tables import modelsummary
 from .plots import spline_smooth
+from .text import NumberedLines
 
 __all__ = [
     "ols_dropcollinear",
@@ -11,4 +12,5 @@ __all__ = [
     "modelsummary",
     "spline_smooth",
     "__version__",
+    "NumberedLines"
 ]
