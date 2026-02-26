@@ -23,15 +23,35 @@ def load_farr_rda(name: str, *, timeout: float = 30.0) -> Any:
     -------
     The R object stored in the .rda under key `name`.
     """
-    url = f"https://github.com/iangow/farr/raw/refs/heads/main/data/{name}.rda"
+    urls = [
+        f"https://raw.githubusercontent.com/iangow/farr/main/data/{name}.rda",
+        f"https://raw.githubusercontent.com/iangow/farr/main/data/{name}.RData",
+        f"https://github.com/iangow/farr/raw/refs/heads/main/data/{name}.rda",
+        f"https://github.com/iangow/farr/raw/refs/heads/main/data/{name}.RData",
+    ]
 
-    resp = requests.get(url, timeout=timeout)
-    resp.raise_for_status()
+    resp = None
+    last_error = None
+    for url in urls:
+        try:
+            candidate = requests.get(url, timeout=timeout)
+            if candidate.status_code == 200:
+                resp = candidate
+                break
+        except requests.RequestException as err:
+            last_error = err
 
-    with tempfile.NamedTemporaryFile(suffix=".rda") as f:
+    if resp is None:
+        if last_error is not None:
+            raise last_error
+        raise requests.HTTPError(
+            f"Could not load '{name}' from farr data. Tried: {', '.join(urls)}"
+        )
+
+    suffix = ".RData" if resp.url.endswith(".RData") else ".rda"
+    with tempfile.NamedTemporaryFile(suffix=suffix) as f:
         f.write(resp.content)
         f.flush()
-
         data = pyreadr.read_r(f.name)
 
     if name not in data:
