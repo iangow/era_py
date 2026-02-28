@@ -1,0 +1,14 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "gvkey": "character",
+    "fyear": "integer",
+    "fdate": "Date",
+    "pfdate": "Date",
+    "pfyear": "numeric",
+    "publicfloat": "numeric",
+    "mr": "logical",
+    "af": "logical",
+    "cik": "numeric"
+  }
+}

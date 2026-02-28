@@ -1,0 +1,39 @@
+{
+  "factor_levels": {
+    "wbtype": ["none", "tipster", "nontipster"],
+    "wbsource": ["none", "qui tam", "non-FOIA", "FOIA"]
+  },
+  "original_classes": {
+    "recid": "numeric",
+    "firmpenalty": "numeric",
+    "otherpenalty": "numeric",
+    "emppenalty": "numeric",
+    "empprisonmos": "numeric",
+    "selfdealflag": "logical",
+    "blckownpct": "numeric",
+    "initabret": "numeric",
+    "wbflag": "logical",
+    "tousesox": "logical",
+    "lnvioperiod": "numeric",
+    "bribeflag": "logical",
+    "mobflag": "logical",
+    "deter": "logical",
+    "lnempcleveln": "numeric",
+    "lnuscodecnt": "numeric",
+    "viofraudflag": "logical",
+    "misledflag": "logical",
+    "audit8flag": "logical",
+    "exectermflag": "logical",
+    "coopflag": "logical",
+    "impedeflag": "logical",
+    "pctinddir": "numeric",
+    "recidivist": "logical",
+    "lnmktcap": "numeric",
+    "mkt2bk": "numeric",
+    "lev": "numeric",
+    "lndistance": "numeric",
+    "ff12": "integer",
+    "wbtype": "factor",
+    "wbsource": "factor"
+  }
+}

@@ -13,6 +13,7 @@ authors = [{name = "Ian D. Gow"}]
 dependencies = [
   "numpy",
   "pandas",
+  "pyarrow",
   "statsmodels",
   "scipy",
   "requests",
@@ -28,3 +29,6 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+era_py = ["_data/*.parquet", "_data/*.meta.json"]

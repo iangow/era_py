@@ -1,0 +1,8 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "event": "character",
+    "event_date": "Date",
+    "end_event_date": "Date"
+  }
+}

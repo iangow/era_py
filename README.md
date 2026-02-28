@@ -11,5 +11,7 @@ pip install "era-py[tables]"
 
 ## Usage
 ```python
-from era_py import ols_dropcollinear
+from era_py import load_data, ols_dropcollinear
+
+camp = load_data("camp_attendance")
 ```

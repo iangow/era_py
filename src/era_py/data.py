@@ -1,12 +1,67 @@
 from __future__ import annotations
 
+import json
 import tempfile
 from typing import Any
+from importlib.resources import files
 
 import requests
 import pyreadr
-import pyarrow as pa
 import pandas as pd
+
+
+def available_data() -> list[str]:
+    """Return packaged dataset names available via load_data()."""
+    data_dir = files("era_py").joinpath("_data")
+    return sorted(
+        item.name.removesuffix(".parquet")
+        for item in data_dir.iterdir()
+        if item.name.endswith(".parquet")
+    )
+
+
+def load_data(name: str, *, restore_categories: bool = True) -> pd.DataFrame:
+    """
+    Load a packaged dataset by name from era_py/_data.
+
+    Parameters
+    ----------
+    name:
+        Dataset name, e.g. "zhang_2007_windows".
+    restore_categories:
+        Restore factor columns as pandas Categorical using sidecar metadata.
+    """
+    data_file = files("era_py").joinpath("_data", f"{name}.parquet")
+    if not data_file.is_file():
+        available = ", ".join(available_data())
+        raise KeyError(f"Unknown dataset '{name}'. Available datasets: {available}")
+
+    with data_file.open("rb") as f:
+        df = pd.read_parquet(f)
+
+    if restore_categories:
+        meta_file = files("era_py").joinpath("_data", f"{name}.meta.json")
+        if meta_file.is_file():
+            with meta_file.open("r", encoding="utf-8") as f:
+                metadata = json.load(f)
+            factor_levels = metadata.get("factor_levels", {})
+            if isinstance(factor_levels, dict):
+                for col, levels in factor_levels.items():
+                    if col in df.columns:
+                        df[col] = pd.Categorical(df[col], categories=levels)
+            original_classes = metadata.get("original_classes", {})
+            if isinstance(original_classes, dict):
+                for col, r_class in original_classes.items():
+                    if col not in df.columns:
+                        continue
+                    class_names = r_class if isinstance(r_class, list) else [r_class]
+                    if "Date" in class_names:
+                        df[col] = pd.to_datetime(df[col], errors="coerce")
+                    if "POSIXct" in class_names:
+                        df[col] = pd.to_datetime(df[col], utc=True, errors="coerce")
+
+    return df
+
 
 def load_farr_rda(name: str, *, timeout: float = 30.0) -> Any:
     """
@@ -62,8 +117,6 @@ def load_farr_rda(name: str, *, timeout: float = 30.0) -> Any:
         )
 
     df = data[name]
-    
-    # df = df.convert_dtypes(dtype_backend='numpy_nullable')
 
     if "datadate" in df.columns:
         df["datadate"] = pd.to_datetime(df["datadate"])

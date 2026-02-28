@@ -1,0 +1,12 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "gvkey": "character",
+    "datadate": "Date",
+    "at": "numeric",
+    "ceq": "numeric",
+    "ib": "numeric",
+    "xi": "numeric",
+    "do": "numeric"
+  }
+}

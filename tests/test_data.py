@@ -1,6 +1,14 @@
-from era_py import load_farr_rda
+import pandas as pd
 
-def test_load_farr_rda_smoke():
-    # Pick a tiny dataset you know exists in farr/data
-    obj = load_farr_rda("camp_attendance")
-    assert obj is not None
+from era_py import available_data, load_data
+
+
+def test_available_data_smoke():
+    names = available_data()
+    assert "camp_attendance" in names
+
+
+def test_load_data_smoke():
+    df = load_data("camp_attendance")
+    assert isinstance(df, pd.DataFrame)
+    assert len(df) > 0

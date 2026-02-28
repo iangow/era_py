@@ -1,0 +1,9 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "ticker": "character",
+    "permno": "integer",
+    "gvkey": "character",
+    "pilot": "logical"
+  }
+}

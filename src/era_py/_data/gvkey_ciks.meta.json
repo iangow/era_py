@@ -1,0 +1,10 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "gvkey": "character",
+    "iid": "character",
+    "cik": "integer",
+    "first_date": "Date",
+    "last_date": "Date"
+  }
+}
