@@ -1,6 +1,6 @@
 __version__ = "0.0.12"
 
-from .models import ols_dropcollinear
+from .models import ols_dropcollinear, get_got_data
 from .data import available_data, load_data, load_farr_rda
 from .tables import modelsummary
 from .plots import spline_smooth
@@ -14,10 +14,10 @@ from .events import (
     load_parquet,
     cast_decimals,
 )
-from .wrds import wrds_connect, wrds_table
 
 __all__ = [
     "ols_dropcollinear",
+    "get_got_data",
     "available_data",
     "load_data",
     "load_farr_rda",
@@ -31,6 +31,5 @@ __all__ = [
     "get_event_dates",
     "get_event_rets",
     "load_parquet",
-    "wrds_connect", 
-    "wrds_table",
+    "cast_decimals",
 ]

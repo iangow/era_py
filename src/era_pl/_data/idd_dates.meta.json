@@ -1,0 +1,8 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "state": "character",
+    "idd_date": "Date",
+    "idd_type": "character"
+  }
+}

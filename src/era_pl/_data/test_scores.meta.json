@@ -1,0 +1,8 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "id": "integer",
+    "grade": "numeric",
+    "score": "numeric"
+  }
+}

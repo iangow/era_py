@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "era_py"
-version = "0.0.11"
+version = "0.0.12"
 description = "Helper functions for the Python version of Empirical Research in Accounting: Tools and Methods"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -22,6 +22,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+polars = ["polars"]
 tables = ["great-tables"]
 
 [tool.setuptools]
@@ -32,3 +33,4 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 era_py = ["_data/*.parquet", "_data/*.meta.json"]
+era_pl = ["_data/*.parquet", "_data/*.meta.json"]

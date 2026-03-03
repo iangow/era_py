@@ -1,0 +1,19 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "gvkey": "character",
+    "datadate": "Date",
+    "fyear": "integer",
+    "big_n": "logical",
+    "ta": "numeric",
+    "roa": "numeric",
+    "cfo": "numeric",
+    "size": "numeric",
+    "lev": "numeric",
+    "mtb": "numeric",
+    "inv_at": "numeric",
+    "d_sale": "numeric",
+    "d_ar": "numeric",
+    "ppe": "numeric"
+  }
+}
