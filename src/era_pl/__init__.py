@@ -1,7 +1,7 @@
 __version__ = "0.0.12"
 
 from .models import ols_dropcollinear, get_got_data
-from .data import available_data, load_data, load_farr_rda
+from .data import available_data, load_data, load_farr_rda, get_ff_ind
 from .tables import modelsummary
 from .plots import spline_smooth
 from .text import NumberedLines
@@ -21,6 +21,7 @@ __all__ = [
     "available_data",
     "load_data",
     "load_farr_rda",
+    "get_ff_ind",
     "modelsummary",
     "spline_smooth",
     "__version__",

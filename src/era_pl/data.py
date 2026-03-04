@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import io
 import json
 import tempfile
+import zipfile
+from contextlib import contextmanager
 from importlib.resources import files
-from typing import Any
+from typing import Any, Iterator
 
 import pandas as pd
 import polars as pl
@@ -113,3 +116,69 @@ def load_farr_rda(name: str, *, timeout: float = 30.0) -> Any:
         return pl.from_pandas(obj)
 
     return obj
+
+
+@contextmanager
+def _zip_url_to_file(url: str, *, timeout: float = 30.0) -> Iterator[io.StringIO]:
+    response = requests.get(url, timeout=timeout)
+    response.raise_for_status()
+
+    with zipfile.ZipFile(io.BytesIO(response.content)) as zf:
+        names = [name for name in zf.namelist() if not name.endswith("/")]
+        if not names:
+            raise ValueError(f"ZIP archive at '{url}' does not contain files")
+
+        with zf.open(names[0]) as raw:
+            text = raw.read().decode("latin-1")
+
+    yield io.StringIO(text)
+
+
+def get_ff_ind(ind: str | int, *, timeout: float = 30.0) -> pl.DataFrame:
+    ind_str = str(ind)
+    url = (
+        "http://mba.tuck.dartmouth.edu"
+        f"/pages/faculty/ken.french/ftp/Siccodes{ind_str}.zip"
+    )
+
+    with _zip_url_to_file(url, timeout=timeout) as f:
+        df = (
+            pl.from_pandas(
+                pd.read_fwf(
+                    f,
+                    widths=[3, 7, 1000],
+                    names=["ff_ind", "ff_ind_short_desc", "temp"],
+                )
+            )
+            .with_columns(
+                ff_ind_desc=pl.when(pl.col("ff_ind").is_not_null())
+                .then(pl.col("temp"))
+                .otherwise(None),
+                sic_range=pl.when(pl.col("ff_ind").is_null())
+                .then(pl.col("temp"))
+                .otherwise(None),
+            )
+            .with_columns(
+                pl.col("ff_ind").forward_fill(),
+                pl.col("ff_ind_short_desc").forward_fill(),
+                pl.col("ff_ind_desc").forward_fill(),
+            )
+            .filter(pl.col("sic_range").is_not_null())
+            .with_columns(
+                pl.col("sic_range")
+                .str.extract_groups(
+                    r"^(?P<sic_min>[0-9]+)-"
+                    r"(?P<sic_max>[0-9]+)\s*"
+                    r"(?P<sic_desc>.*)$"
+                )
+                .alias("sic_parts")
+            )
+            .unnest("sic_parts")
+            .with_columns(
+                pl.col("ff_ind").cast(pl.Int32),
+                pl.col("sic_min").cast(pl.Int32),
+                pl.col("sic_max").cast(pl.Int32),
+            )
+            .drop("sic_range", "temp")
+        )
+    return df
