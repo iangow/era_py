@@ -1,52 +1,18 @@
 import pandas as pd
+import polars as pl
+
+from era_py.tables import modelsummary as _modelsummary_py
 
 
-def modelsummary(models, *, coef_omit=None, stars=True, gof_map=("nobs",), output="dataframe"):
-    if not isinstance(models, (list, tuple)):
-        models = [models]
+def modelsummary(models, *, output="dataframe", **kwargs):
+    """Polars wrapper around era_py.modelsummary.
 
-    def star(p):
-        if p < 0.01:
-            return "***"
-        if p < 0.05:
-            return "**"
-        if p < 0.10:
-            return "*"
-        return ""
+    Behavior is delegated to era_py.modelsummary; only difference is that
+    dataframe output is converted from pandas.DataFrame to polars.DataFrame.
+    """
+    out = _modelsummary_py(models, output=output, **kwargs)
 
-    cols = []
-    for j, model in enumerate(models, start=1):
-        params = model.params
-        pvals = model.pvalues
-        if stars:
-            s = params.map(lambda v: f"{v:.3f}") + pvals.map(star)
-        else:
-            s = params.map(lambda v: f"{v:.3f}")
-        s.name = f"Model {j}"
-        cols.append(s)
+    if output == "dataframe" and isinstance(out, pd.DataFrame):
+        return pl.from_pandas(out)
 
-    tbl = pd.concat(cols, axis=1).reset_index(names="term")
-
-    if coef_omit is not None:
-        tbl = tbl.loc[~tbl["term"].str.contains(coef_omit, regex=True)]
-
-    gof_rows = []
-    if gof_map and ("nobs" in gof_map or "nobs" in set(gof_map)):
-        row = {"term": "nobs"}
-        for j, model in enumerate(models, start=1):
-            row[f"Model {j}"] = f"{int(model.nobs)}"
-        gof_rows.append(row)
-
-    if gof_rows:
-        tbl = pd.concat([tbl, pd.DataFrame(gof_rows)], ignore_index=True)
-
-    if output == "dataframe":
-        return tbl
-    if output == "styler":
-        return tbl.style.hide(axis="index")
-    if output == "gt":
-        from great_tables import GT
-
-        return GT(tbl).sub_missing(missing_text="")
-
-    raise ValueError(f"Unknown output={output!r}")
+    return out
