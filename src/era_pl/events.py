@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import os
 
+from dotenv import load_dotenv
+
 import polars as pl
 import polars.selectors as cs
 
@@ -12,6 +14,7 @@ def cast_decimals(frame: pl.DataFrame | pl.LazyFrame) -> pl.DataFrame | pl.LazyF
 
 def load_parquet(table, schema, data_dir=None):
     if not data_dir:
+        load_dotenv()
         data_dir = os.path.expanduser(os.environ["DATA_DIR"])
     path = os.path.join(data_dir, schema, f"{table}.parquet")
     return pl.scan_parquet(path).with_columns(cs.decimal().cast(pl.Float64))

@@ -9,6 +9,7 @@ import ibis
 import ibis.backends.postgres
 import ibis.selectors as s
 from ibis import _
+from dotenv import load_dotenv
 import os
 
 @ibis.udf.scalar.builtin
@@ -23,6 +24,7 @@ def unnest(a) -> ibis.dtype("date"):
 
 def load_parquet(con, table, schema, data_dir=None):
     if not data_dir:
+        load_dotenv()
         data_dir = os.path.expanduser(os.environ["DATA_DIR"])
     df = con.read_parquet(os.path.join(data_dir, schema, f"{table}.parquet"))
     return cast_decimals(df)

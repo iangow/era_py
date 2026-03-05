@@ -16,9 +16,11 @@ dependencies = [
   "pyarrow",
   "statsmodels",
   "scipy",
+  "ibis-framework[postgres]",
   "requests",
   "pyreadr",
-  "patsy"
+  "patsy",
+  "python-dotenv"
 ]
 
 [project.optional-dependencies]
