@@ -1,8 +1,32 @@
 from __future__ import annotations
 
+from contextlib import contextmanager
 from dataclasses import dataclass
 from typing import Iterable, Iterator, List, Optional, Sequence, Union
+import time
 import re
+
+try:
+    from IPython.display import Markdown, display
+except Exception:  # pragma: no cover - fallback when IPython isn't installed
+    class Markdown(str):  # type: ignore[no-redef]
+        pass
+
+    def display(obj: object) -> None:  # type: ignore[no-redef]
+        print(obj)
+
+
+@contextmanager
+def ptime() -> Iterator[None]:
+    """Display wall-clock time for a code block in notebook-friendly markdown."""
+    t0 = time.perf_counter()
+    yield
+    dt = time.perf_counter() - t0
+    if dt < 1:
+        display(Markdown(f"**Wall time:** {dt * 1e3:.2f} ms"))
+    else:
+        display(Markdown(f"**Wall time:** {dt:.3f} s"))
+
 
 @dataclass(frozen=True)
 class NumberedLines(Sequence[str]):

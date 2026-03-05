@@ -4,7 +4,7 @@ from .models import ols_dropcollinear
 from .data import available_data, load_data, load_farr_rda
 from .tables import modelsummary
 from .plots import spline_smooth
-from .text import NumberedLines
+from .text import NumberedLines, ptime
 from .events import (
     get_trading_dates,
     get_annc_dates,
@@ -25,6 +25,7 @@ __all__ = [
     "spline_smooth",
     "__version__",
     "NumberedLines",
+    "ptime",
     "get_trading_dates",
     "get_annc_dates",
     "copy_inline",
