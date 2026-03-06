@@ -11,6 +11,7 @@ def modelsummary(
     statistic=True,
     statistic_fmt="({std_error:.3f})",
     gof_map=("nobs",),
+    add_rows=None,
     output="dataframe",
 ):
     # allow single model
@@ -45,6 +46,33 @@ def modelsummary(
         if hasattr(model, "_N"):
             return model._N
         return None
+
+    def _coerce_add_rows(rows_obj, model_cols):
+        if rows_obj is None:
+            return None
+
+        if isinstance(rows_obj, pd.DataFrame):
+            rows_df = rows_obj.copy()
+        elif hasattr(rows_obj, "to_pandas"):
+            rows_df = rows_obj.to_pandas()
+        else:
+            rows_df = pd.DataFrame(rows_obj)
+
+        if "term" not in rows_df.columns:
+            raise ValueError("add_rows must include a 'term' column")
+
+        # Allow R-style model columns named "1", "2", ...
+        rename_map = {}
+        for j, model_col in enumerate(model_cols, start=1):
+            if str(j) in rows_df.columns and model_col not in rows_df.columns:
+                rename_map[str(j)] = model_col
+            elif j in rows_df.columns and model_col not in rows_df.columns:
+                rename_map[j] = model_col
+        if rename_map:
+            rows_df = rows_df.rename(columns=rename_map)
+
+        # Keep the table schema stable and fill missing values with blank strings.
+        return rows_df
 
     # star rules
     if stars is True:
@@ -117,6 +145,7 @@ def modelsummary(
             rows.append(stat_row)
 
     tbl = pd.DataFrame(rows)
+    model_cols = [f"Model {j}" for j in range(1, len(models) + 1)]
 
     # Add GOF rows (just nobs for now)
     gof_rows = []
@@ -130,6 +159,11 @@ def modelsummary(
 
     if gof_rows:
         tbl = pd.concat([tbl, pd.DataFrame(gof_rows)], ignore_index=True)
+
+    extra_rows = _coerce_add_rows(add_rows, model_cols)
+    if extra_rows is not None:
+        extra_rows = extra_rows.reindex(columns=tbl.columns, fill_value="")
+        tbl = pd.concat([tbl, extra_rows], ignore_index=True)
 
     if output == "dataframe":
         return tbl
