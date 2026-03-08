@@ -49,16 +49,40 @@ def get_annc_dates(trading_dates):
     )
 
 
-def get_event_dates(events, trading_dates, win_start=-1, win_end=1):
+def get_event_dates(
+    data,
+    permno="permno",
+    event_date="event_date",
+    win_start=0,
+    win_end=0,
+    end_event_date=None,
+    data_dir=None,
+):
+    trading_dates = get_trading_dates(load_parquet("dsi", schema="crsp", data_dir=data_dir))
     annc_dates = get_annc_dates(trading_dates)
 
-    if isinstance(events, pl.DataFrame):
-        events = events.lazy()
+    if isinstance(data, pl.DataFrame):
+        data = data.lazy()
+
+    select_cols = [permno, event_date] + ([end_event_date] if end_event_date else [])
+    events = data.select(*select_cols)
+    rename_map = {}
+    if permno != "permno":
+        rename_map[permno] = "permno"
+    if event_date != "event_date":
+        rename_map[event_date] = "event_date"
+    if end_event_date and end_event_date != "end_event_date":
+        rename_map[end_event_date] = "end_event_date"
+    if rename_map:
+        events = events.rename(rename_map)
 
     events = events.with_columns(
-        end_event_date=pl.coalesce([pl.col("end_event_date"), pl.col("event_date")])
-        if "end_event_date" in events.collect_schema().names()
-        else pl.col("event_date")
+        pl.col("event_date").cast(pl.Date),
+        (
+            pl.coalesce([pl.col("end_event_date"), pl.col("event_date")]).cast(pl.Date)
+            if "end_event_date" in events.collect_schema().names()
+            else pl.col("event_date").cast(pl.Date)
+        ).alias("end_event_date"),
     )
 
     return (
