@@ -62,7 +62,13 @@ def load_data(name: str, *, restore_categories: bool = True) -> pl.DataFrame:
         raise KeyError(f"Unknown dataset '{name}'. Available datasets: {available}")
 
     with data_file.open("rb") as f:
-        df = pl.read_parquet(f)
+        try:
+            df = pl.read_parquet(f)
+        except pl.exceptions.ComputeError as err:
+            if "invalid UTF-8" not in str(err):
+                raise
+            f.seek(0)
+            df = pl.read_parquet(f, use_pyarrow=True)
 
     if restore_categories:
         df = _restore_types(df, name)
@@ -132,6 +138,110 @@ def _zip_url_to_file(url: str, *, timeout: float = 30.0) -> Iterator[io.StringIO
             text = raw.read().decode("latin-1")
 
     yield io.StringIO(text)
+
+
+def _zip_url_to_lines(url: str, *, timeout: float = 30.0) -> list[str]:
+    with _zip_url_to_file(url, timeout=timeout) as f:
+        return f.read().splitlines()
+
+
+def _lines_to_df(lines: list[str], *, has_header: bool = True) -> pl.DataFrame:
+    block = "\n".join(lines)
+    df = pl.read_csv(io.StringIO(block), null_values="-99.99", has_header=has_header)
+    return df.rename({df.columns[0]: "date"})
+
+
+def _read_size_data(lines: list[str]) -> pl.LazyFrame:
+    return (
+        _lines_to_df(lines)
+        .lazy()
+        .with_columns(
+            month=(pl.col("date").cast(pl.String) + "01")
+            .str.strptime(pl.Date, format="%Y%m%d", strict=False)
+        )
+        .drop("date")
+        .unpivot(index="month", variable_name="quantile", value_name="ret")
+        .with_columns(
+            ret=pl.col("ret").cast(pl.Float64, strict=False) / 100.0,
+            decile=(
+                pl.when(pl.col("quantile") == "Hi 10").then(pl.lit(10))
+                .when(pl.col("quantile") == "Lo 10").then(pl.lit(1))
+                .when(pl.col("quantile").str.contains("-Dec"))
+                .then(
+                    pl.col("quantile")
+                    .str.replace("-Dec", "")
+                    .cast(pl.Int32, strict=False)
+                )
+                .otherwise(None)
+            ),
+        )
+        .filter(pl.col("decile").is_not_null())
+        .select("month", "ret", "decile")
+        .sort(["month", "decile"])
+    )
+
+
+def get_size_rets_monthly(*, timeout: float = 30.0) -> pl.LazyFrame:
+    url = (
+        "https://mba.tuck.dartmouth.edu/pages/"
+        "faculty/ken.french/ftp/Portfolios_Formed_on_ME_CSV.zip"
+    )
+    text = _zip_url_to_lines(url, timeout=timeout)
+
+    vw_start = next(i for i, line in enumerate(text) if "Value Weight" in line and "Monthly" in line) + 1
+    vw_end = next(i for i, line in enumerate(text) if "Equal Weight" in line and "Monthly" in line)
+    ew_start = vw_end + 1
+    ew_end = next(i for i, line in enumerate(text) if line.startswith("  Value Weight") and "Annual" in line)
+
+    vw_rets = _read_size_data(text[vw_start:vw_end])
+    ew_rets = _read_size_data(text[ew_start:ew_end])
+
+    return (
+        ew_rets
+        .select("month", "decile", pl.col("ret").alias("ew_ret"))
+        .join(
+            vw_rets.select("month", "decile", pl.col("ret").alias("vw_ret")),
+            on=["month", "decile"],
+            how="inner",
+        )
+        .sort(["month", "decile"])
+    )
+
+
+def get_me_breakpoints(*, timeout: float = 30.0) -> pl.LazyFrame:
+    url = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/ME_Breakpoints_CSV.zip"
+    text = _zip_url_to_lines(url, timeout=timeout)
+    last_line = next(i for i, line in enumerate(text) if line.startswith("Copyright"))
+
+    df_raw = _lines_to_df(text[1:last_line], has_header=False)
+    df_raw.columns = ["month", "n"] + [f"p{i}" for i in range(5, 101, 5)]
+
+    breakpoints_raw = (
+        df_raw
+        .lazy()
+        .with_columns(
+            month=(pl.col("month").cast(pl.String) + "01")
+            .str.strptime(pl.Date, format="%Y%m%d", strict=False)
+        )
+        .select(["month"] + [f"p{i}" for i in range(10, 101, 10)])
+        .unpivot(index="month", variable_name="decile", value_name="cutoff")
+        .with_columns(
+            decile=(pl.col("decile").str.slice(1).cast(pl.Int32, strict=False) / 10).cast(pl.Int32),
+            cutoff=pl.col("cutoff").cast(pl.Float64, strict=False),
+        )
+        .select("month", "decile", "cutoff")
+        .sort(["month", "decile"])
+    )
+
+    return (
+        breakpoints_raw
+        .with_columns(
+            me_min=pl.col("cutoff").shift(1).over("month").fill_null(0),
+            me_max=pl.when(pl.col("decile") == 10).then(float("inf")).otherwise(pl.col("cutoff")),
+        )
+        .drop("cutoff")
+        .sort(["month", "decile"])
+    )
 
 
 def get_ff_ind(ind: str | int, *, timeout: float = 30.0) -> pl.DataFrame:
