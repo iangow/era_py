@@ -5,9 +5,11 @@ import json
 import tempfile
 import zipfile
 from contextlib import contextmanager
+from datetime import date
 from importlib.resources import files
 from typing import Any, Iterator
 
+import numpy as np
 import pandas as pd
 import polars as pl
 import pyreadr
@@ -74,6 +76,163 @@ def load_data(name: str, *, restore_categories: bool = True) -> pl.DataFrame:
         df = _restore_types(df, name)
 
     return df
+
+
+def get_test_scores(
+    effect_size: float = 15,
+    n_students: int = 1000,
+    n_grades: int = 4,
+    include_unobservables: bool = False,
+    random_assignment: bool = False,
+    seed: int | None = None,
+) -> pl.DataFrame:
+    rng = np.random.default_rng(seed)
+
+    treatment_grade = 7
+    sd_e = 5
+    sd_talent = 5
+    mean_talent = 15
+    mean_score = 400
+
+    grades = np.arange(
+        treatment_grade - n_grades // 2,
+        treatment_grade - n_grades // 2 + n_grades,
+    )
+    grade_effect_map = {
+        1: 50,
+        2: 52,
+        3: 58,
+        4: 76,
+        5: 80,
+        6: 98,
+        7: 103,
+        8: 119,
+        9: 123,
+        10: 131,
+        11: 138,
+        12: 150,
+    }
+
+    ids = np.arange(1, n_students + 1, dtype=np.int32)
+    talents = pl.DataFrame(
+        {
+            "id": ids,
+            "talent": rng.normal(loc=mean_talent, scale=sd_talent, size=n_students),
+        }
+    )
+
+    base = (
+        pl.DataFrame(
+            {
+                "grade": np.repeat(grades, n_students),
+                "id": np.tile(ids, len(grades)),
+            }
+        )
+        .join(talents, on="id", how="inner")
+        .with_columns(
+            grade_effect=pl.col("grade")
+            .replace_strict(grade_effect_map, default=None)
+            .cast(pl.Float64)
+        )
+    )
+
+    scores = rng.normal(loc=mean_score, scale=sd_e, size=base.height)
+    test_scores_pre = base.with_columns(
+        score=pl.Series(scores) + pl.col("talent") + pl.col("grade_effect")
+    )
+
+    treatment = (
+        test_scores_pre.filter(pl.col("grade") == treatment_grade - 1)
+        .select("id", "score")
+    )
+
+    x = treatment["score"].to_numpy()
+    if random_assignment:
+        temp = np.ones_like(x)
+    else:
+        temp = 1 - (x - x.min()) / (x.max() - x.min())
+    treat_score = rng.uniform(size=len(x)) * temp
+    treat = treat_score > np.median(treat_score)
+
+    treatment = treatment.with_columns(
+        treat=pl.Series(treat.astype(np.int8))
+    ).select("id", "treat")
+
+    test_scores = (
+        test_scores_pre.join(treatment, on="id", how="inner")
+        .with_columns(
+            post=(pl.col("grade") >= treatment_grade).cast(pl.Int8),
+        )
+        .with_columns(
+            score=pl.when((pl.col("treat") == 1) & (pl.col("post") == 1))
+            .then(pl.col("score") + effect_size)
+            .otherwise(pl.col("score"))
+        )
+        .select("id", "grade", "post", "treat", "score", "talent", "grade_effect")
+    )
+
+    if include_unobservables:
+        return test_scores
+    return test_scores.select("id", "grade", "post", "treat", "score")
+
+
+def get_idd_periods(
+    min_date: date,
+    max_date: date,
+    all_states: pl.DataFrame,
+) -> pl.DataFrame:
+    idd_dates = load_data("idd_dates")
+
+    df_pre = (
+        idd_dates
+        .filter((pl.col("idd_type") == "Adopt") & (pl.col("idd_date") > min_date))
+        .with_columns(
+            period_type=pl.lit("Pre-adoption"),
+            start_date=pl.lit(min_date),
+            end_date=pl.col("idd_date"),
+        )
+        .select("state", "period_type", "start_date", "end_date")
+    )
+
+    df_never = (
+        all_states
+        .select("state")
+        .unique()
+        .join(idd_dates.select("state").unique(), on="state", how="anti")
+        .with_columns(
+            period_type=pl.lit("Pre-adoption"),
+            start_date=pl.lit(min_date),
+            end_date=pl.lit(max_date),
+        )
+    )
+
+    df_post_adopt = (
+        idd_dates
+        .sort(["state", "idd_date"])
+        .with_columns(
+            start_date=pl.max_horizontal("idd_date", pl.lit(min_date)),
+            end_date=pl.col("idd_date").shift(-1).over("state").fill_null(max_date),
+        )
+        .filter(pl.col("idd_type") == "Adopt")
+        .with_columns(period_type=pl.lit("Post-adoption"))
+        .select("state", "period_type", "start_date", "end_date")
+    )
+
+    df_post_reject = (
+        idd_dates
+        .filter(pl.col("idd_type") == "Reject")
+        .with_columns(
+            period_type=pl.lit("Post-rejection"),
+            start_date=pl.max_horizontal("idd_date", pl.lit(min_date)),
+            end_date=pl.lit(max_date),
+        )
+        .select("state", "period_type", "start_date", "end_date")
+    )
+
+    return pl.concat(
+        [df_never, df_pre, df_post_adopt, df_post_reject],
+        how="vertical",
+    ).sort(["state", "start_date"])
 
 
 def load_farr_rda(name: str, *, timeout: float = 30.0) -> Any:

@@ -1,7 +1,7 @@
-__version__ = "0.0.14"
+__version__ = "0.0.15"
 
 from .models import ols_dropcollinear, get_got_data
-from .data import available_data, load_data, load_farr_rda, get_ff_ind, get_size_rets_monthly, get_me_breakpoints
+from .data import available_data, load_data, load_farr_rda, get_ff_ind, get_size_rets_monthly, get_me_breakpoints, get_test_scores, get_idd_periods
 from .tables import modelsummary
 from .plots import spline_smooth
 from .text import NumberedLines, ptime
@@ -24,6 +24,8 @@ __all__ = [
     "get_ff_ind",
     "get_size_rets_monthly",
     "get_me_breakpoints",
+    "get_test_scores",
+    "get_idd_periods",
     "modelsummary",
     "spline_smooth",
     "__version__",
