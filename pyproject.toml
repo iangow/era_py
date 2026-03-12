@@ -27,6 +27,11 @@ dependencies = [
 polars = ["polars"]
 tables = ["great-tables"]
 
+[dependency-groups]
+dev = [
+  "twine",
+]
+
 [tool.setuptools]
 package-dir = {"" = "src"}
 
