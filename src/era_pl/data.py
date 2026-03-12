@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import io
 import json
+import re
 import tempfile
 import zipfile
 from contextlib import contextmanager
@@ -411,43 +412,48 @@ def get_ff_ind(ind: str | int, *, timeout: float = 30.0) -> pl.DataFrame:
     )
 
     with _zip_url_to_file(url, timeout=timeout) as f:
-        df = (
-            pl.from_pandas(
-                pd.read_fwf(
-                    f,
-                    widths=[3, 7, 1000],
-                    names=["ff_ind", "ff_ind_short_desc", "temp"],
+        header_re = re.compile(r"^\s*(\d+)\s+(\S+)\s+(.*\S)\s*$")
+        sic_re = re.compile(r"^\s*(\d+)\s*-\s*(\d+)\s+(.*\S)\s*$")
+
+        rows: list[dict[str, object]] = []
+        current_header: tuple[int, str, str] | None = None
+
+        for raw_line in f:
+            line = raw_line.rstrip()
+            if not line.strip():
+                continue
+
+            header_match = header_re.match(line)
+            if header_match:
+                current_header = (
+                    int(header_match.group(1)),
+                    header_match.group(2),
+                    header_match.group(3),
                 )
-            )
-            .with_columns(
-                ff_ind_desc=pl.when(pl.col("ff_ind").is_not_null())
-                .then(pl.col("temp"))
-                .otherwise(None),
-                sic_range=pl.when(pl.col("ff_ind").is_null())
-                .then(pl.col("temp"))
-                .otherwise(None),
-            )
-            .with_columns(
-                pl.col("ff_ind").forward_fill(),
-                pl.col("ff_ind_short_desc").forward_fill(),
-                pl.col("ff_ind_desc").forward_fill(),
-            )
-            .filter(pl.col("sic_range").is_not_null())
-            .with_columns(
-                pl.col("sic_range")
-                .str.extract_groups(
-                    r"^(?P<sic_min>[0-9]+)-"
-                    r"(?P<sic_max>[0-9]+)\s*"
-                    r"(?P<sic_desc>.*)$"
+                continue
+
+            sic_match = sic_re.match(line)
+            if sic_match and current_header is not None:
+                ff_ind, short_desc, desc = current_header
+                rows.append(
+                    {
+                        "ff_ind": ff_ind,
+                        "ff_ind_short_desc": short_desc,
+                        "ff_ind_desc": desc,
+                        "sic_min": int(sic_match.group(1)),
+                        "sic_max": int(sic_match.group(2)),
+                        "sic_desc": sic_match.group(3),
+                    }
                 )
-                .alias("sic_parts")
-            )
-            .unnest("sic_parts")
-            .with_columns(
-                pl.col("ff_ind").cast(pl.Int32),
-                pl.col("sic_min").cast(pl.Int32),
-                pl.col("sic_max").cast(pl.Int32),
-            )
-            .drop("sic_range", "temp")
-        )
-    return df
+
+    return pl.DataFrame(
+        rows,
+        schema={
+            "ff_ind": pl.Int32,
+            "ff_ind_short_desc": pl.String,
+            "ff_ind_desc": pl.String,
+            "sic_min": pl.Int32,
+            "sic_max": pl.Int32,
+            "sic_desc": pl.String,
+        },
+    )

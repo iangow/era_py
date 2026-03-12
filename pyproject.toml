@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "era_py"
-version = "0.0.15"
+version = "0.0.16"
 description = "Helper functions and data for Python versions of Empirical Research in Accounting: Tools and Methods"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -29,6 +29,7 @@ tables = ["great-tables"]
 
 [dependency-groups]
 dev = [
+  "pytest",
   "twine",
 ]
 

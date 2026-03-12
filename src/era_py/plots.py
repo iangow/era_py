@@ -18,9 +18,7 @@ class plotnine_star:
 
     def __init__(self, module=None):
         self.module = module
-        self._namespace = None
-        self._saved = {}
-        self._added = set()
+        self._namespaces = []
 
     def __enter__(self):
         module = self.module
@@ -28,37 +26,42 @@ class plotnine_star:
             module = importlib.import_module("plotnine")
 
         frame = inspect.currentframe().f_back
-        namespace = frame.f_globals
-
         exports = {
             name: getattr(module, name)
             for name in dir(module)
             if not name.startswith("_")
         }
 
-        self._namespace = namespace
-        self._saved = {}
-        self._added = set()
+        namespaces = [frame.f_globals]
+        if frame.f_locals is not frame.f_globals:
+            namespaces.append(frame.f_locals)
 
-        for name, value in exports.items():
-            if name in namespace:
-                self._saved[name] = namespace[name]
-            else:
-                self._added.add(name)
-            namespace[name] = value
+        self._namespaces = []
+
+        for namespace in namespaces:
+            saved = {}
+            added = set()
+
+            for name, value in exports.items():
+                if name in namespace:
+                    saved[name] = namespace[name]
+                else:
+                    added.add(name)
+                namespace[name] = value
+
+            self._namespaces.append((namespace, saved, added))
 
         return self
 
     def __exit__(self, exc_type, exc, tb):
-        for name in self._added:
-            self._namespace.pop(name, None)
+        for namespace, saved, added in reversed(self._namespaces):
+            for name in added:
+                namespace.pop(name, None)
 
-        for name, value in self._saved.items():
-            self._namespace[name] = value
+            for name, value in saved.items():
+                namespace[name] = value
 
-        self._namespace = None
-        self._saved = {}
-        self._added = set()
+        self._namespaces = []
         return False
 
 
