@@ -6,6 +6,8 @@ import polars as pl
 import statsmodels.api as sm
 from patsy import dmatrix
 
+from era_py.plots import plotnine_star
+
 
 def _to_pandas_frame(data):
     if isinstance(data, pl.DataFrame):

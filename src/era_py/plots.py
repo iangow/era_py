@@ -1,9 +1,65 @@
 from __future__ import annotations
 
+import importlib
+import inspect
+
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 from patsy import dmatrix
+
+
+class plotnine_star:
+    """
+    Temporarily expose public plotnine names in the caller's global namespace.
+
+    Intended for module scope or notebook-cell use, not for use inside functions.
+    """
+
+    def __init__(self, module=None):
+        self.module = module
+        self._namespace = None
+        self._saved = {}
+        self._added = set()
+
+    def __enter__(self):
+        module = self.module
+        if module is None:
+            module = importlib.import_module("plotnine")
+
+        frame = inspect.currentframe().f_back
+        namespace = frame.f_globals
+
+        exports = {
+            name: getattr(module, name)
+            for name in dir(module)
+            if not name.startswith("_")
+        }
+
+        self._namespace = namespace
+        self._saved = {}
+        self._added = set()
+
+        for name, value in exports.items():
+            if name in namespace:
+                self._saved[name] = namespace[name]
+            else:
+                self._added.add(name)
+            namespace[name] = value
+
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        for name in self._added:
+            self._namespace.pop(name, None)
+
+        for name, value in self._saved.items():
+            self._namespace[name] = value
+
+        self._namespace = None
+        self._saved = {}
+        self._added = set()
+        return False
 
 
 def spline_smooth(

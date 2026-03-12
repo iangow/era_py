@@ -3,7 +3,7 @@ __version__ = "0.0.15"
 from .models import ols_dropcollinear
 from .data import available_data, load_data, load_farr_rda
 from .tables import modelsummary
-from .plots import spline_smooth
+from .plots import spline_smooth, plotnine_star
 from .text import NumberedLines, ptime
 from .events import (
     get_trading_dates,
@@ -23,6 +23,7 @@ __all__ = [
     "load_farr_rda",
     "modelsummary",
     "spline_smooth",
+    "plotnine_star",
     "__version__",
     "NumberedLines",
     "ptime",
