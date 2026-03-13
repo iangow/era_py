@@ -249,7 +249,7 @@ wheels = [
 
 [[package]]
 name = "era-py"
-version = "0.0.16"
+version = "0.0.17"
 source = { editable = "." }
 dependencies = [
     { name = "ibis-framework", extra = ["postgres"] },
