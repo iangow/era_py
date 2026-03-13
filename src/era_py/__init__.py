@@ -5,6 +5,7 @@ from .data import available_data, load_data, load_farr_rda
 from .tables import modelsummary
 from .plots import spline_smooth, plotnine_star
 from .text import NumberedLines, ptime
+from .downloads import drive_download
 from .events import (
     get_trading_dates,
     get_annc_dates,
@@ -27,6 +28,7 @@ __all__ = [
     "__version__",
     "NumberedLines",
     "ptime",
+    "drive_download",
     "get_trading_dates",
     "get_annc_dates",
     "copy_inline",

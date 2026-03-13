@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
-from dotenv import load_dotenv
+from dotenv import find_dotenv, load_dotenv
 
 import polars as pl
 import polars.selectors as cs
@@ -12,11 +13,25 @@ def cast_decimals(frame: pl.DataFrame | pl.LazyFrame) -> pl.DataFrame | pl.LazyF
     return frame.with_columns(cs.decimal().cast(pl.Float64))
 
 
-def load_parquet(table, schema, data_dir=None):
+def _load_project_dotenv() -> None:
+    dotenv_path = find_dotenv(usecwd=True)
+    if dotenv_path:
+        load_dotenv(dotenv_path=dotenv_path)
+
+
+def _resolve_data_dir(data_dir: str | None = None) -> Path:
     if not data_dir:
-        load_dotenv()
+        _load_project_dotenv()
         data_dir = os.path.expanduser(os.environ["DATA_DIR"])
-    path = os.path.join(data_dir, schema, f"{table}.parquet")
+    return Path(data_dir).expanduser()
+
+
+def load_parquet(table, schema, data_dir=None, missing_ok=False):
+    data_path = _resolve_data_dir(data_dir)
+    path = data_path / schema / f"{table}.parquet"
+    if missing_ok and not path.exists():
+        print(f"No file found at {path}.")
+        return None
     return pl.scan_parquet(path).with_columns(cs.decimal().cast(pl.Float64))
 
 

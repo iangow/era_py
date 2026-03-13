@@ -18,6 +18,7 @@ dependencies = [
   "scipy",
   "ibis-framework[postgres]",
   "requests",
+  "gdown",
   "pyreadr",
   "patsy",
   "python-dotenv"
