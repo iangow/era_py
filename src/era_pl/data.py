@@ -307,8 +307,18 @@ def _zip_url_to_lines(url: str, *, timeout: float = 30.0) -> list[str]:
 
 def _lines_to_df(lines: list[str], *, has_header: bool = True) -> pl.DataFrame:
     block = "\n".join(lines)
-    df = pl.read_csv(io.StringIO(block), null_values="-99.99", has_header=has_header)
-    return df.rename({df.columns[0]: "date"})
+    df_raw = pl.read_csv(io.StringIO(block), has_header=has_header)
+
+    value_cols = df_raw.columns[1:]
+    df_raw = df_raw.with_columns(
+        pl.col(value_cols)
+        .cast(pl.String)
+        .str.strip_chars()
+        .replace("-99.99", None)
+        .cast(pl.Float64, strict=False)
+    )
+
+    return df_raw.rename({df_raw.columns[0]: "date"})
 
 
 def _read_size_data(lines: list[str]) -> pl.LazyFrame:
@@ -322,20 +332,20 @@ def _read_size_data(lines: list[str]) -> pl.LazyFrame:
         .drop("date")
         .unpivot(index="month", variable_name="quantile", value_name="ret")
         .with_columns(
-            ret=pl.col("ret").cast(pl.Float64, strict=False) / 100.0,
+            ret=pl.col("ret") / 100.0,
             decile=(
                 pl.when(pl.col("quantile") == "Hi 10").then(pl.lit(10))
                 .when(pl.col("quantile") == "Lo 10").then(pl.lit(1))
-                .when(pl.col("quantile").str.contains("-Dec"))
+                .when(pl.col("quantile").str.contains(r"(^Dec\s+\d+$)|(\d+-Dec$)"))
                 .then(
                     pl.col("quantile")
-                    .str.replace("-Dec", "")
+                    .str.extract(r"(\d+)")
                     .cast(pl.Int32, strict=False)
                 )
                 .otherwise(None)
             ),
         )
-        .filter(pl.col("decile").is_not_null())
+        .filter(pl.col("month").is_not_null(), pl.col("decile").is_not_null())
         .select("month", "ret", "decile")
         .sort(["month", "decile"])
     )
