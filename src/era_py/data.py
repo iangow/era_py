@@ -55,6 +55,8 @@ def load_data(name: str, *, restore_categories: bool = True) -> pd.DataFrame:
                     if col not in df.columns:
                         continue
                     class_names = r_class if isinstance(r_class, list) else [r_class]
+                    if "integer" in class_names:
+                        df[col] = df[col].astype("Int32")
                     if "Date" in class_names:
                         df[col] = pd.to_datetime(df[col], errors="coerce")
                     if "POSIXct" in class_names:

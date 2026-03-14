@@ -2,7 +2,7 @@
   "factor_levels": {},
   "original_classes": {
     "id": "integer",
-    "grade": "numeric",
+    "grade": "integer",
     "score": "numeric"
   }
 }
