@@ -393,6 +393,7 @@ def get_me_breakpoints(*, timeout: float = 30.0) -> pl.LazyFrame:
             month=(pl.col("month").cast(pl.String) + "01")
             .str.strptime(pl.Date, format="%Y%m%d", strict=False)
         )
+        .filter(pl.col("month").is_not_null())
         .select(["month"] + [f"p{i}" for i in range(10, 101, 10)])
         .unpivot(index="month", variable_name="decile", value_name="cutoff")
         .with_columns(
