@@ -16,7 +16,30 @@ class EraExpr:
             .floor()
             .cast(pl.Int32)
             + 1
-        )
+        ).name.keep()
+
+    def winsorize(self, prob: float = 0.01) -> pl.Expr:
+        return self._expr.clip(
+            self._expr.quantile(prob),
+            self._expr.quantile(1 - prob),
+        ).name.keep()
+
+    def truncate(self, prob: float = 0.01) -> pl.Expr:
+        lower = self._expr.quantile(prob)
+        upper = self._expr.quantile(1 - prob)
+        return (
+            pl.when(self._expr.is_between(lower, upper, closed="both"))
+            .then(self._expr)
+            .otherwise(None)
+        ).name.keep()
+
+    def div_if_pos(self, other: str | pl.Expr) -> pl.Expr:
+        denom = pl.col(other) if isinstance(other, str) else other
+        return (
+            pl.when(denom > 0)
+            .then(self._expr / denom)
+            .otherwise(None)
+        ).name.keep()
 
 
 def _with_group_keys(
