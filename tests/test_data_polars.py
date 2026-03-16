@@ -12,3 +12,9 @@ def test_load_data_smoke_polars():
     df = load_data("camp_attendance")
     assert isinstance(df, pl.DataFrame)
     assert df.height > 0
+
+
+def test_iliev_2010_integer_columns_polars():
+    df = load_data("iliev_2010")
+    assert df.schema["pfyear"] == pl.Int32
+    assert df.schema["cik"] == pl.Int32

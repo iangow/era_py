@@ -5,10 +5,10 @@
     "fyear": "integer",
     "fdate": "Date",
     "pfdate": "Date",
-    "pfyear": "numeric",
+    "pfyear": "integer",
     "publicfloat": "numeric",
     "mr": "logical",
     "af": "logical",
-    "cik": "numeric"
+    "cik": "integer"
   }
 }
