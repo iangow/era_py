@@ -27,9 +27,11 @@ dependencies = [
 [project.optional-dependencies]
 polars = ["polars"]
 tables = ["great-tables"]
+plots = ["plotnine"]
 
 [dependency-groups]
 dev = [
+  "plotnine",
   "pytest",
   "twine",
 ]
