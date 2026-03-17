@@ -4,12 +4,13 @@ from __future__ import annotations
 
 from importlib import import_module
 
-__version__ = "0.0.19"
+__version__ = "0.0.20"
 
 from . import namespaces as _namespaces
 
 __all__ = [
     "ols_dropcollinear",
+    "fit_test_score_panel",
     "get_got_data",
     "available_data",
     "load_data",
@@ -46,6 +47,7 @@ __all__ = [
 
 _LAZY_IMPORTS = {
     "ols_dropcollinear": (".models", "ols_dropcollinear"),
+    "fit_test_score_panel": (".models", "fit_test_score_panel"),
     "get_got_data": (".models", "get_got_data"),
     "available_data": (".data", "available_data"),
     "load_data": (".data", "load_data"),
