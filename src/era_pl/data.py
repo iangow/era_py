@@ -422,7 +422,7 @@ def get_me_breakpoints(*, timeout: float = 30.0) -> pl.LazyFrame:
 def get_ff_ind(ind: str | int, *, timeout: float = 30.0) -> pl.DataFrame:
     ind_str = str(ind)
     url = (
-        "http://mba.tuck.dartmouth.edu"
+        "https://mba.tuck.dartmouth.edu"
         f"/pages/faculty/ken.french/ftp/Siccodes{ind_str}.zip"
     )
 
