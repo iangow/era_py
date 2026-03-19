@@ -74,10 +74,19 @@ def _resolve_tail_probs(
 
 @pl.api.register_expr_namespace("era")
 class EraExpr:
+    """Custom expression helpers used throughout the Polars-facing API."""
+
     def __init__(self, expr: pl.Expr):
         self._expr = expr
 
     def ntile(self, n: int) -> pl.Expr:
+        """Assign observations to ``n`` approximately equal-sized buckets.
+
+        This mirrors the common SQL/R ``ntile`` idea and is typically used with
+        ``.over(...)`` to create within-group deciles, quintiles, and similar
+        ranked portfolios.
+        """
+
         return (
             ((self._expr.rank("ordinal") - 1) * n / pl.len())
             .floor()
@@ -131,6 +140,13 @@ class EraExpr:
         return pl.when(keep).then(self._expr).otherwise(None).name.keep()
 
     def div_if_pos(self, other: str | pl.Expr) -> pl.Expr:
+        """Divide by ``other`` only when the denominator is strictly positive.
+
+        The result is null when the denominator is zero, negative, or null.
+        This is convenient for ratio construction in accounting-style pipelines
+        where non-positive denominators are usually treated as invalid.
+        """
+
         denom = pl.col(other) if isinstance(other, str) else other
         return (
             pl.when(denom > 0)
@@ -159,8 +175,17 @@ def _with_group_keys(
 
 @pl.api.register_dataframe_namespace("era")
 class EraDataFrame:
+    """Custom DataFrame helpers used throughout the Polars-facing API."""
+
     def __init__(self, df: pl.DataFrame):
         self._df = df
 
     def map_by(self, by: list[str], fun):
+        """Apply ``fun`` to each group and preserve the grouping keys.
+
+        ``fun`` must accept a Polars DataFrame for one group and return a
+        one-row Polars DataFrame. The grouping columns listed in ``by`` are
+        reattached automatically to the returned result.
+        """
+
         return self._df.group_by(*by).map_groups(_with_group_keys(fun, by))
