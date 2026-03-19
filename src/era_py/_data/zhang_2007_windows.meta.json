@@ -1,8 +1,0 @@
-{
-  "factor_levels": {},
-  "original_classes": {
-    "event": "integer",
-    "beg_date": "Date",
-    "end_date": "Date"
-  }
-}

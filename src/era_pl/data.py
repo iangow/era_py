@@ -16,11 +16,13 @@ import polars as pl
 import pyreadr
 import requests
 
+_DATA_PACKAGE = "era_data"
+
 
 def available_data() -> list[str]:
     """Return the names of packaged example datasets shipped with ``era_pl``."""
 
-    data_dir = files("era_pl").joinpath("_data")
+    data_dir = files(_DATA_PACKAGE).joinpath("_data")
     return sorted(
         item.name.removesuffix(".parquet")
         for item in data_dir.iterdir()
@@ -29,7 +31,7 @@ def available_data() -> list[str]:
 
 
 def _restore_types(df: pl.DataFrame, name: str) -> pl.DataFrame:
-    meta_file = files("era_pl").joinpath("_data", f"{name}.meta.json")
+    meta_file = files(_DATA_PACKAGE).joinpath("_data", f"{name}.meta.json")
     if not meta_file.is_file():
         return df
 
@@ -71,7 +73,7 @@ def load_data(name: str, *, restore_categories: bool = True) -> pl.DataFrame:
     such as categoricals, integers, dates, and datetimes.
     """
 
-    data_file = files("era_pl").joinpath("_data", f"{name}.parquet")
+    data_file = files(_DATA_PACKAGE).joinpath("_data", f"{name}.parquet")
     if not data_file.is_file():
         available = ", ".join(available_data())
         raise KeyError(f"Unknown dataset '{name}'. Available datasets: {available}")

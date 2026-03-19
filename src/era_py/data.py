@@ -9,10 +9,12 @@ import requests
 import pyreadr
 import pandas as pd
 
+_DATA_PACKAGE = "era_data"
+
 
 def available_data() -> list[str]:
     """Return packaged dataset names available via load_data()."""
-    data_dir = files("era_py").joinpath("_data")
+    data_dir = files(_DATA_PACKAGE).joinpath("_data")
     return sorted(
         item.name.removesuffix(".parquet")
         for item in data_dir.iterdir()
@@ -22,7 +24,7 @@ def available_data() -> list[str]:
 
 def load_data(name: str, *, restore_categories: bool = True) -> pd.DataFrame:
     """
-    Load a packaged dataset by name from era_py/_data.
+    Load a packaged dataset by name from the shared packaged data directory.
 
     Parameters
     ----------
@@ -31,7 +33,7 @@ def load_data(name: str, *, restore_categories: bool = True) -> pd.DataFrame:
     restore_categories:
         Restore factor columns as pandas Categorical using sidecar metadata.
     """
-    data_file = files("era_py").joinpath("_data", f"{name}.parquet")
+    data_file = files(_DATA_PACKAGE).joinpath("_data", f"{name}.parquet")
     if not data_file.is_file():
         available = ", ".join(available_data())
         raise KeyError(f"Unknown dataset '{name}'. Available datasets: {available}")
@@ -40,7 +42,7 @@ def load_data(name: str, *, restore_categories: bool = True) -> pd.DataFrame:
         df = pd.read_parquet(f)
 
     if restore_categories:
-        meta_file = files("era_py").joinpath("_data", f"{name}.meta.json")
+        meta_file = files(_DATA_PACKAGE).joinpath("_data", f"{name}.meta.json")
         if meta_file.is_file():
             with meta_file.open("r", encoding="utf-8") as f:
                 metadata = json.load(f)

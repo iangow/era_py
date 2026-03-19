@@ -1,9 +1,0 @@
-{
-  "factor_levels": {},
-  "original_classes": {
-    "aaer_num": "character",
-    "aaer_date": "Date",
-    "aaer_desc": "character",
-    "year": "integer"
-  }
-}

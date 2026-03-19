@@ -1,9 +1,0 @@
-{
-  "factor_levels": {},
-  "original_classes": {
-    "year": "integer",
-    "tag": "character",
-    "number": "integer",
-    "year_total": "integer"
-  }
-}

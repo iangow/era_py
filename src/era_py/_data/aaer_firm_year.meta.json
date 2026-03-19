@@ -1,9 +1,0 @@
-{
-  "factor_levels": {},
-  "original_classes": {
-    "p_aaer": "character",
-    "gvkey": "character",
-    "min_year": "integer",
-    "max_year": "integer"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "factor_levels": {},
-  "original_classes": {
-    "gvkey": "character",
-    "ticker": "character",
-    "co_name": "character"
-  }
-}

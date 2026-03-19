@@ -1,9 +1,0 @@
-{
-  "factor_levels": {},
-  "original_classes": {
-    "cik": "character",
-    "ba_state": "character",
-    "min_date": "Date",
-    "max_date": "Date"
-  }
-}

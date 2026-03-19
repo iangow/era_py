@@ -1,9 +1,0 @@
-{
-  "factor_levels": {},
-  "original_classes": {
-    "gvkey": "character",
-    "datadate": "Date",
-    "ret": "numeric",
-    "mkt_cap": "numeric"
-  }
-}

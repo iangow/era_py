@@ -43,5 +43,4 @@ package-dir = {"" = "src"}
 where = ["src"]
 
 [tool.setuptools.package-data]
-era_py = ["_data/*.parquet", "_data/*.meta.json"]
-era_pl = ["_data/*.parquet", "_data/*.meta.json"]
+era_data = ["_data/*.parquet", "_data/*.meta.json"]
