@@ -18,6 +18,8 @@ import requests
 
 
 def available_data() -> list[str]:
+    """Return the names of packaged example datasets shipped with ``era_pl``."""
+
     data_dir = files("era_pl").joinpath("_data")
     return sorted(
         item.name.removesuffix(".parquet")
@@ -63,6 +65,12 @@ def _restore_types(df: pl.DataFrame, name: str) -> pl.DataFrame:
 
 
 def load_data(name: str, *, restore_categories: bool = True) -> pl.DataFrame:
+    """Load a packaged example dataset as a Polars DataFrame.
+
+    When metadata are available, the loader restores common R-originated types
+    such as categoricals, integers, dates, and datetimes.
+    """
+
     data_file = files("era_pl").joinpath("_data", f"{name}.parquet")
     if not data_file.is_file():
         available = ", ".join(available_data())
@@ -91,6 +99,13 @@ def get_test_scores(
     random_assignment: bool = False,
     seed: int | None = None,
 ) -> pl.DataFrame:
+    """Simulate a panel of student test scores for DiD-style examples.
+
+    The returned data include grade, treatment, post indicators, and scores.
+    Setting ``include_unobservables=True`` also returns the latent talent and
+    grade-effect components used to generate the observed outcomes.
+    """
+
     rng = np.random.default_rng(seed)
 
     treatment_grade = 7
@@ -186,6 +201,8 @@ def get_idd_periods(
     max_date: date,
     all_states: pl.DataFrame,
 ) -> pl.DataFrame:
+    """Construct adoption/rejection periods for the IDD dates example data."""
+
     idd_dates = load_data("idd_dates")
 
     df_pre = (
@@ -241,6 +258,12 @@ def get_idd_periods(
 
 
 def load_farr_rda(name: str, *, timeout: float = 30.0) -> Any:
+    """Load an object from the upstream `farr` R package data repository.
+
+    Data frames are converted to Polars. Non-data-frame objects are returned in
+    the form produced by ``pyreadr``.
+    """
+
     urls = [
         f"https://raw.githubusercontent.com/iangow/farr/main/data/{name}.rda",
         f"https://raw.githubusercontent.com/iangow/farr/main/data/{name}.RData",
@@ -356,6 +379,12 @@ def _read_size_data(lines: list[str]) -> pl.LazyFrame:
 
 
 def get_size_rets_monthly(*, timeout: float = 30.0) -> pl.LazyFrame:
+    """Download Ken French monthly size-portfolio returns as a LazyFrame.
+
+    The result contains equal-weighted and value-weighted returns by month and
+    decile.
+    """
+
     url = (
         "https://mba.tuck.dartmouth.edu/pages/"
         "faculty/ken.french/ftp/Portfolios_Formed_on_ME_CSV.zip"
@@ -383,6 +412,12 @@ def get_size_rets_monthly(*, timeout: float = 30.0) -> pl.LazyFrame:
 
 
 def get_me_breakpoints(*, timeout: float = 30.0) -> pl.LazyFrame:
+    """Download Ken French market-equity breakpoints as a LazyFrame.
+
+    The result gives monthly decile cutoffs together with ``me_min`` and
+    ``me_max`` bounds suitable for portfolio assignment.
+    """
+
     url = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/ME_Breakpoints_CSV.zip"
     text = _zip_url_to_lines(url, timeout=timeout)
     last_line = next(i for i, line in enumerate(text) if line.startswith("Copyright"))
@@ -420,6 +455,13 @@ def get_me_breakpoints(*, timeout: float = 30.0) -> pl.LazyFrame:
 
 
 def get_ff_ind(ind: str | int, *, timeout: float = 30.0) -> pl.DataFrame:
+    """Download Fama-French SIC industry definitions for a given scheme.
+
+    ``ind`` is typically ``12``, ``17``, ``30``, ``38``, ``48``, or ``49``.
+    The returned table contains the industry identifier, descriptions, and SIC
+    ranges.
+    """
+
     ind_str = str(ind)
     url = (
         "https://mba.tuck.dartmouth.edu"

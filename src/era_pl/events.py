@@ -10,6 +10,8 @@ import polars.selectors as cs
 
 
 def cast_decimals(frame: pl.DataFrame | pl.LazyFrame) -> pl.DataFrame | pl.LazyFrame:
+    """Cast all decimal columns in ``frame`` to ``Float64``."""
+
     return frame.with_columns(cs.decimal().cast(pl.Float64))
 
 
@@ -27,6 +29,12 @@ def _resolve_data_dir(data_dir: str | None = None) -> Path:
 
 
 def load_parquet(table, schema, data_dir=None, missing_ok=False):
+    """Scan a parquet table from a WRDS-style local data directory.
+
+    ``schema`` supplies the subdirectory name and ``table`` supplies the file
+    stem. Decimal columns are cast to ``Float64`` for easier downstream use.
+    """
+
     data_path = _resolve_data_dir(data_dir)
     path = data_path / schema / f"{table}.parquet"
     if missing_ok and not path.exists():
@@ -36,6 +44,12 @@ def load_parquet(table, schema, data_dir=None, missing_ok=False):
 
 
 def get_trading_dates(dsi):
+    """Create a trading-date index from a CRSP daily index table.
+
+    The result assigns a 1-based trading-day number ``td`` to each distinct
+    date and is typically used when constructing event windows.
+    """
+
     if isinstance(dsi, pl.DataFrame):
         dsi = dsi.lazy()
     return (
@@ -48,6 +62,8 @@ def get_trading_dates(dsi):
 
 
 def get_annc_dates(trading_dates):
+    """Map all calendar dates onto the next available trading day."""
+
     trading_dates_df = trading_dates.collect()
     min_date = trading_dates_df["date"].min()
     max_date = trading_dates_df["date"].max()
@@ -74,6 +90,14 @@ def get_event_dates(
     end_event_date=None,
     data_dir=None,
 ):
+    """Expand event dates into trading-day windows.
+
+    Events are matched to trading days using ``get_annc_dates()`` and then
+    shifted by ``win_start`` and ``win_end`` to produce event-window bounds.
+    If ``trading_dates`` is omitted, CRSP ``dsi`` data are loaded from the
+    local parquet store.
+    """
+
     if isinstance(trading_dates, str):
         permno = trading_dates
         trading_dates = None
