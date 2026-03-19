@@ -10,6 +10,12 @@ pip install "era-py[polars]"
 pip install "era-py[tables]"
 ```
 
+For repository development, prefer the checked-in virtual environment:
+
+```bash
+.venv/bin/python -m pytest
+```
+
 `era-py` provides two import paths:
 
 - `import era_py` is the base API built around pandas/Ibis-style workflows.
