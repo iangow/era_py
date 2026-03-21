@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "era_py"
-version = "0.0.23"
+version = "0.0.24"
 description = "Helper functions and data for Python versions of Empirical Research in Accounting: Tools and Methods"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -21,7 +21,8 @@ dependencies = [
   "gdown",
   "pyreadr",
   "patsy",
-  "python-dotenv"
+  "python-dotenv",
+  "scikit-learn"
 ]
 
 [project.optional-dependencies]

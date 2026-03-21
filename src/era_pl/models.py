@@ -218,3 +218,148 @@ def fit_test_score_panel(data: pl.DataFrame, vcov="iid") -> pl.DataFrame:
         "t": [float(t)],
         "p_value": [p_value],
     })
+
+
+def _to_numpy_matrix(data) -> np.ndarray:
+    if isinstance(data, pl.DataFrame):
+        return data.to_numpy()
+    if isinstance(data, pl.Series):
+        return data.to_numpy()
+    if isinstance(data, pd.DataFrame):
+        return data.to_numpy()
+    if isinstance(data, pd.Series):
+        return data.to_numpy()
+    return np.asarray(data)
+
+
+def predict_proba_series(
+    model,
+    X,
+    class_index: int = 1,
+    name: str = "score",
+) -> pl.Series:
+    probs = np.asarray(model.predict_proba(X))[:, class_index]
+    return pl.Series(name, probs)
+
+
+def rus_sample(y_train: np.ndarray, ir: float = 1.0, rng=None) -> np.ndarray:
+    rng = np.random.default_rng(2021) if rng is None else rng
+    y_train = np.asarray(y_train, dtype=np.int8)
+    classes, counts = np.unique(y_train, return_counts=True)
+    maj_class = classes[np.argmax(counts)]
+    rows_minor = np.flatnonzero(y_train != maj_class)
+    rows_major = np.flatnonzero(y_train == maj_class)
+    sampled_minor = rng.choice(rows_minor, size=len(rows_minor), replace=True)
+    n_major = min(int(np.ceil(len(sampled_minor) * ir)), len(rows_major))
+    sampled_major = rng.choice(rows_major, size=n_major, replace=False)
+    return np.concatenate([sampled_minor, sampled_major])
+
+
+def w_update(
+    prediction: np.ndarray,
+    response: np.ndarray,
+    w: np.ndarray,
+    learn_rate: float,
+) -> tuple[np.ndarray, float, float]:
+    misclass = (prediction != response).astype(np.float64)
+    err = float(np.sum(w * misclass) / np.sum(w))
+    if 0 < err < 0.5:
+        alpha = float(learn_rate * np.log((1 - err) / err))
+    else:
+        alpha = 0.0
+    w = w * np.exp(alpha * misclass)
+    w = w / w.sum()
+    return w, alpha, err
+
+
+class BoostModel:
+    def __init__(self, weak_learners, alpha):
+        self.weak_learners = weak_learners
+        self.alpha = np.asarray(alpha, dtype=np.float64)
+
+    def _signed_votes(self, X) -> np.ndarray:
+        X = np.asarray(_to_numpy_matrix(X), dtype=np.float32)
+        if not self.weak_learners:
+            return np.zeros((X.shape[0], 0), dtype=np.float64)
+        preds = np.column_stack([
+            np.where(model.predict(X) == 1, 1.0, -1.0)
+            for model in self.weak_learners
+        ])
+        return preds * self.alpha
+
+    def predict(self, X) -> np.ndarray:
+        signed_sum = self._signed_votes(X).sum(axis=1)
+        return (signed_sum > 0).astype(np.int8)
+
+    def predict_proba(self, X) -> np.ndarray:
+        votes = self._signed_votes(X)
+        if votes.shape[1] == 0 or self.alpha.sum() == 0:
+            probs = np.repeat(0.5, len(_to_numpy_matrix(X)))
+        else:
+            probs = ((votes > 0) * self.alpha).sum(axis=1) / self.alpha.sum()
+        return np.column_stack([1 - probs, probs])
+
+
+class ConstantProbModel:
+    def __init__(self, prob: float):
+        self.prob = float(prob)
+
+    def predict(self, X) -> np.ndarray:
+        return np.repeat(int(self.prob >= 0.5), len(_to_numpy_matrix(X))).astype(np.int8)
+
+    def predict_proba(self, X) -> np.ndarray:
+        probs = np.repeat(self.prob, len(_to_numpy_matrix(X))).astype(np.float64)
+        return np.column_stack([1 - probs, probs])
+
+
+def rusboost(
+    data,
+    features: list[str],
+    target: str,
+    *,
+    size: int = 30,
+    rus: bool = True,
+    learn_rate: float = 1.0,
+    maxdepth: int | None = None,
+    minbucket: int | None = None,
+    ir: float = 1.0,
+    random_state: int = 2021,
+):
+    from sklearn.tree import DecisionTreeClassifier
+
+    X = _to_numpy_matrix(data[features]).astype(np.float32)
+    y = _to_numpy_matrix(data[target]).astype(np.int8)
+    if len(np.unique(y)) < 2:
+        return ConstantProbModel(prob=float(y.mean()) if len(y) else 0.5)
+
+    y_signed = np.where(y == 1, 1, -1).astype(np.int8)
+    w = np.repeat(1 / len(y), len(y)).astype(np.float64)
+    weak_learners = []
+    alpha = []
+    rng = np.random.default_rng(random_state)
+
+    for _ in range(size):
+        if rus:
+            rows = rus_sample(y_signed, ir=ir, rng=rng)
+            X_train = X[rows]
+            y_train = y[rows]
+            w_train = w[rows]
+        else:
+            X_train = X
+            y_train = y
+            w_train = w
+
+        model = DecisionTreeClassifier(
+            max_depth=maxdepth,
+            min_samples_leaf=(minbucket if minbucket is not None else 1),
+            random_state=int(rng.integers(0, 2**31 - 1)),
+        )
+        model.fit(X_train, y_train, sample_weight=w_train)
+        pred = np.where(model.predict(X) == 1, 1, -1).astype(np.int8)
+        w, alpha_m, _ = w_update(pred, y_signed, w, learn_rate)
+        if alpha_m == 0 and not rus:
+            break
+        weak_learners.append(model)
+        alpha.append(alpha_m)
+
+    return BoostModel(weak_learners=weak_learners, alpha=alpha)
