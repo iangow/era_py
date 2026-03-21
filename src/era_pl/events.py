@@ -28,11 +28,13 @@ def _resolve_data_dir(data_dir: str | None = None) -> Path:
     return Path(data_dir).expanduser()
 
 
-def load_parquet(table, schema, data_dir=None, missing_ok=False):
+def load_parquet(table, schema, data_dir=None, missing_ok=False,
+                 convert_decimals=True):
     """Scan a parquet table from a WRDS-style local data directory.
 
     ``schema`` supplies the subdirectory name and ``table`` supplies the file
-    stem. Decimal columns are cast to ``Float64`` for easier downstream use.
+    stem. If `convert_decimals` is `True`, Decimal columns are cast to 
+    ``Float64`` for easier downstream use.
     """
 
     data_path = _resolve_data_dir(data_dir)
@@ -40,8 +42,12 @@ def load_parquet(table, schema, data_dir=None, missing_ok=False):
     if missing_ok and not path.exists():
         print(f"No file found at {path}.")
         return None
-    return pl.scan_parquet(path).with_columns(cs.decimal().cast(pl.Float64))
 
+    if convert_decimals:
+        return (pl.scan_parquet(path)
+                .with_columns(cs.decimal().cast(pl.Float64)))
+    else:
+        return pl.scan_parquet(path)
 
 def get_trading_dates(dsi):
     """Create a trading-date index from a CRSP daily index table.
