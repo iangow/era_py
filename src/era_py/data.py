@@ -6,7 +6,6 @@ from typing import Any
 from importlib.resources import files
 
 import requests
-import pyreadr
 import pandas as pd
 
 _DATA_PACKAGE = "era_data"
@@ -82,6 +81,8 @@ def load_farr_rda(name: str, *, timeout: float = 30.0) -> Any:
     -------
     The R object stored in the .rda under key `name`.
     """
+    import pyreadr
+
     urls = [
         f"https://raw.githubusercontent.com/iangow/farr/main/data/{name}.rda",
         f"https://raw.githubusercontent.com/iangow/farr/main/data/{name}.RData",
@@ -126,3 +127,42 @@ def load_farr_rda(name: str, *, timeout: float = 30.0) -> Any:
         df["datadate"] = pd.to_datetime(df["datadate"])
 
     return df
+
+
+def get_ff_ind(ind: str | int, *, timeout: float = 30.0) -> pd.DataFrame:
+    """Download Fama-French SIC industry definitions as a pandas DataFrame."""
+    from era_pl import get_ff_ind as _get_ff_ind
+
+    return _get_ff_ind(ind, timeout=timeout).to_pandas()
+
+
+def get_ff_daily_factors(
+    dataset: str = "F-F_Research_Data_Factors_daily",
+    *,
+    start: str | None = None,
+    end: str | None = None,
+    timeout: float = 30.0,
+) -> pd.DataFrame:
+    """Download Ken French daily factor data as a pandas DataFrame."""
+    from era_pl import get_ff_daily_factors as _get_ff_daily_factors
+
+    return _get_ff_daily_factors(
+        dataset=dataset,
+        start=start,
+        end=end,
+        timeout=timeout,
+    ).to_pandas()
+
+
+def get_size_rets_monthly(*, timeout: float = 30.0) -> pd.DataFrame:
+    """Download Ken French monthly size-portfolio returns as a pandas DataFrame."""
+    from era_pl import get_size_rets_monthly as _get_size_rets_monthly
+
+    return _get_size_rets_monthly(timeout=timeout).collect().to_pandas()
+
+
+def get_me_breakpoints(*, timeout: float = 30.0) -> pd.DataFrame:
+    """Download Ken French market-equity breakpoints as a pandas DataFrame."""
+    from era_pl import get_me_breakpoints as _get_me_breakpoints
+
+    return _get_me_breakpoints(timeout=timeout).collect().to_pandas()

@@ -13,7 +13,6 @@ from typing import Any, Iterator
 import numpy as np
 import pandas as pd
 import polars as pl
-import pyreadr
 import requests
 
 _DATA_PACKAGE = "era_data"
@@ -266,6 +265,8 @@ def load_farr_rda(name: str, *, timeout: float = 30.0) -> Any:
     the form produced by ``pyreadr``.
     """
 
+    import pyreadr
+
     urls = [
         f"https://raw.githubusercontent.com/iangow/farr/main/data/{name}.rda",
         f"https://raw.githubusercontent.com/iangow/farr/main/data/{name}.RData",
@@ -348,6 +349,55 @@ def _lines_to_df(lines: list[str], *, has_header: bool = True) -> pl.DataFrame:
     )
 
     return df_raw.rename({df_raw.columns[0]: "date"})
+
+
+def get_ff_daily_factors(
+    dataset: str = "F-F_Research_Data_Factors_daily",
+    *,
+    start: str | date | None = None,
+    end: str | date | None = None,
+    timeout: float = 30.0,
+) -> pl.DataFrame:
+    """Download Ken French daily factor data as a Polars DataFrame."""
+
+    url = (
+        "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/"
+        f"{dataset}_CSV.zip"
+    )
+    lines = _zip_url_to_lines(url, timeout=timeout)
+
+    header_idx = next(
+        i for i, line in enumerate(lines)
+        if line.startswith(",") and "Mkt-RF" in line and "RF" in line
+    )
+
+    data_lines: list[str] = []
+    for line in lines[header_idx + 1:]:
+        first_field = line.split(",", 1)[0].strip()
+        if re.fullmatch(r"\d{8}", first_field):
+            data_lines.append(line)
+        elif data_lines:
+            break
+
+    if not data_lines:
+        raise ValueError(f"No daily rows found in Ken French data set {dataset}")
+
+    df = (
+        _lines_to_df([lines[header_idx], *data_lines])
+        .with_columns(
+            pl.col("date")
+            .cast(pl.String)
+            .str.strptime(pl.Date, format="%Y%m%d", strict=False)
+        )
+        .filter(pl.col("date").is_not_null())
+    )
+
+    if start is not None:
+        df = df.filter(pl.col("date") >= pl.lit(start).cast(pl.Date))
+    if end is not None:
+        df = df.filter(pl.col("date") <= pl.lit(end).cast(pl.Date))
+
+    return df.sort("date")
 
 
 def _read_size_data(lines: list[str]) -> pl.LazyFrame:
