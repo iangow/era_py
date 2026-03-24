@@ -49,6 +49,10 @@ def _restore_types(df: pl.DataFrame, name: str) -> pl.DataFrame:
             if col not in df.columns:
                 continue
             class_names = r_class if isinstance(r_class, list) else [r_class]
+            if "logical" in class_names:
+                df = df.with_columns(
+                    pl.col(col).cast(pl.Boolean, strict=False)
+                )
             if "integer" in class_names:
                 df = df.with_columns(
                     pl.col(col).cast(pl.Int32, strict=False)
