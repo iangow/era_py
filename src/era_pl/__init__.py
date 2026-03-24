@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from importlib import import_module
 
-__version__ = "0.0.24"
+__version__ = "0.0.25"
 
 from . import namespaces as _namespaces
 
