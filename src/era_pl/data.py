@@ -201,13 +201,24 @@ def get_test_scores(
     return test_scores.select("id", "grade", "post", "treat", "score")
 
 
+def _as_date_expr(value: date | str | pl.Expr) -> pl.Expr:
+    """Normalize supported date-like inputs to a Polars date expression."""
+    if isinstance(value, pl.Expr):
+        return value.cast(pl.Date)
+    if isinstance(value, str):
+        value = date.fromisoformat(value)
+    return pl.lit(value).cast(pl.Date)
+
+
 def get_idd_periods(
-    min_date: date,
-    max_date: date,
+    min_date: date | str | pl.Expr,
+    max_date: date | str | pl.Expr,
     all_states: pl.DataFrame,
 ) -> pl.DataFrame:
     """Construct adoption/rejection periods for the IDD dates example data."""
 
+    min_date = _as_date_expr(min_date)
+    max_date = _as_date_expr(max_date)
     idd_dates = load_data("idd_dates")
 
     df_pre = (
@@ -215,7 +226,7 @@ def get_idd_periods(
         .filter((pl.col("idd_type") == "Adopt") & (pl.col("idd_date") > min_date))
         .with_columns(
             period_type=pl.lit("Pre-adoption"),
-            start_date=pl.lit(min_date),
+            start_date=min_date,
             end_date=pl.col("idd_date"),
         )
         .select("state", "period_type", "start_date", "end_date")
@@ -228,8 +239,8 @@ def get_idd_periods(
         .join(idd_dates.select("state").unique(), on="state", how="anti")
         .with_columns(
             period_type=pl.lit("Pre-adoption"),
-            start_date=pl.lit(min_date),
-            end_date=pl.lit(max_date),
+            start_date=min_date,
+            end_date=max_date,
         )
     )
 
@@ -237,7 +248,7 @@ def get_idd_periods(
         idd_dates
         .sort(["state", "idd_date"])
         .with_columns(
-            start_date=pl.max_horizontal("idd_date", pl.lit(min_date)),
+            start_date=pl.max_horizontal("idd_date", min_date),
             end_date=pl.col("idd_date").shift(-1).over("state").fill_null(max_date),
         )
         .filter(pl.col("idd_type") == "Adopt")
@@ -250,8 +261,8 @@ def get_idd_periods(
         .filter(pl.col("idd_type") == "Reject")
         .with_columns(
             period_type=pl.lit("Post-rejection"),
-            start_date=pl.max_horizontal("idd_date", pl.lit(min_date)),
-            end_date=pl.lit(max_date),
+            start_date=pl.max_horizontal("idd_date", min_date),
+            end_date=max_date,
         )
         .select("state", "period_type", "start_date", "end_date")
     )
