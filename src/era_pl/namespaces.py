@@ -43,8 +43,16 @@ def _quantile_type2(expr: pl.Expr, prob: float) -> pl.Expr:
     )
 
     # At discontinuities (integer n * p), type = 2 averages adjacent values.
-    midpoint = (sorted_expr.get(lower_mid_idx) + sorted_expr.get(upper_mid_idx)) / 2
-    return pl.when(use_midpoint).then(midpoint).otherwise(sorted_expr.get(upper_idx))
+    # Use .slice(idx, 1).first() instead of .get(idx) so that groups where
+    # all values are null (making sorted_expr empty) return null rather than
+    # raising a ComputeError.
+    midpoint = (
+        sorted_expr.slice(lower_mid_idx, 1).first()
+        + sorted_expr.slice(upper_mid_idx, 1).first()
+    ) / 2
+    return pl.when(use_midpoint).then(midpoint).otherwise(
+        sorted_expr.slice(upper_idx, 1).first()
+    )
 
 
 def _resolve_tail_probs(

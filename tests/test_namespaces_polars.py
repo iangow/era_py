@@ -110,3 +110,32 @@ def test_winsorize_requires_at_least_one_cutoff():
 
     with pytest.raises(ValueError, match="At least one"):
         df.select(pl.col("x").era.winsorize(prob=None).alias("x"))
+
+
+def test_winsorize_returns_null_for_all_null_group_in_over():
+    # A group where every value is null should yield nulls, not ComputeError.
+    df = pl.DataFrame(
+        {
+            "g": ["a", "a", "b"],
+            "x": [None, None, 1.0],
+        },
+        schema={"g": pl.String, "x": pl.Float64},
+    )
+
+    out = df.with_columns(pl.col("x").era.winsorize().over("g").alias("w"))
+
+    assert out["w"].to_list() == [None, None, 1.0]
+
+
+def test_truncate_returns_null_for_all_null_group_in_over():
+    df = pl.DataFrame(
+        {
+            "g": ["a", "a", "b"],
+            "x": [None, None, 1.0],
+        },
+        schema={"g": pl.String, "x": pl.Float64},
+    )
+
+    out = df.with_columns(pl.col("x").era.truncate().over("g").alias("w"))
+
+    assert out["w"].to_list() == [None, None, 1.0]
