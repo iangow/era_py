@@ -49,13 +49,15 @@ def load_parquet(table, schema, data_dir=None, missing_ok=False,
     else:
         return pl.scan_parquet(path)
 
-def get_trading_dates(dsi):
+def get_trading_dates(dsi=None):
     """Create a trading-date index from a CRSP daily index table.
 
     The result assigns a 1-based trading-day number ``td`` to each distinct
     date and is typically used when constructing event windows.
     """
 
+    if dsi is None:
+        dsi = load_parquet("dsi", "crsp")
     if isinstance(dsi, pl.DataFrame):
         dsi = dsi.lazy()
     return (
@@ -63,13 +65,15 @@ def get_trading_dates(dsi):
         .select("date")
         .sort("date")
         .with_row_index("td", offset=1)
-        .with_columns(td=pl.col("td").cast(pl.Int64))
+        .with_columns(td=pl.col("td").cast(pl.Int32))
     )
 
 
-def get_annc_dates(trading_dates):
+def get_annc_dates(trading_dates=None):
     """Map all calendar dates onto the next available trading day."""
 
+    if trading_dates is None:
+        trading_dates = get_trading_dates()
     trading_dates_df = trading_dates.collect()
     min_date = trading_dates_df["date"].min()
     max_date = trading_dates_df["date"].max()
