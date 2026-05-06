@@ -2,6 +2,12 @@ import math
 import pandas as pd
 
 
+def show_typst(x):
+    from IPython.display import Markdown, display
+    typst = x.make(type="typst")
+    display(Markdown(f"```{{=typst}}\n{typst}\n```"))
+
+
 def modelsummary(
     models,
     *,
