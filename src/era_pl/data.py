@@ -210,16 +210,28 @@ def _as_date_expr(value: date | str | pl.Expr) -> pl.Expr:
     return pl.lit(value).cast(pl.Date)
 
 
+_IDD_STATES = [
+    "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL",
+    "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA",
+    "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE",
+    "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI",
+    "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV",
+    "WY",
+]
+
+
 def get_idd_periods(
     min_date: date | str | pl.Expr,
     max_date: date | str | pl.Expr,
-    all_states: pl.DataFrame,
+    all_states: pl.DataFrame | None = None,
 ) -> pl.DataFrame:
     """Construct adoption/rejection periods for the IDD dates example data."""
 
     min_date = _as_date_expr(min_date)
     max_date = _as_date_expr(max_date)
     idd_dates = load_data("idd_dates")
+    if all_states is None:
+        all_states = pl.DataFrame({"state": _IDD_STATES})
 
     df_pre = (
         idd_dates

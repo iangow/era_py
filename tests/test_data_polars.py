@@ -1,6 +1,6 @@
 import polars as pl
 
-from era_pl import available_data, load_data
+from era_pl import available_data, get_idd_periods, load_data
 from era_pl.data import _restore_types
 
 
@@ -34,3 +34,15 @@ def test_restore_types_casts_logical_columns_polars():
     restored = _restore_types(df, "cmsw_2018")
 
     assert restored.schema["selfdealflag"] == pl.Boolean
+
+
+def test_get_idd_periods_default_state_universe_matches_farr():
+    periods = get_idd_periods("1994-01-01", "2010-12-31")
+
+    assert periods.height == 65
+    assert periods.select("state").unique().height == 51
+    assert periods.group_by("period_type").len().sort("period_type").to_dicts() == [
+        {"period_type": "Post-adoption", "len": 21},
+        {"period_type": "Post-rejection", "len": 3},
+        {"period_type": "Pre-adoption", "len": 41},
+    ]
