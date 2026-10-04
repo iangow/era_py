@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from importlib import import_module
 
-__version__ = "0.0.31"
+__version__ = "0.0.32"
 
 __all__ = [
     "ols_dropcollinear",

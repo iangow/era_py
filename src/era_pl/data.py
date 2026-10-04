@@ -59,7 +59,9 @@ def _restore_types(df: pl.DataFrame, name: str) -> pl.DataFrame:
                 )
             if "Date" in class_names:
                 df = df.with_columns(
-                    pl.col(col).cast(pl.Date, strict=False)
+                    (pl.col(col).str.to_date(strict=False)
+                     if df.schema[col] == pl.String
+                     else pl.col(col).cast(pl.Date, strict=False))
                 )
             if "POSIXct" in class_names:
                 df = df.with_columns(
@@ -420,9 +422,9 @@ def get_ff_daily_factors(
     )
 
     if start is not None:
-        df = df.filter(pl.col("date") >= pl.lit(start).cast(pl.Date))
+        df = df.filter(pl.col("date") >= _as_date_expr(start))
     if end is not None:
-        df = df.filter(pl.col("date") <= pl.lit(end).cast(pl.Date))
+        df = df.filter(pl.col("date") <= _as_date_expr(end))
 
     return df.sort("date")
 

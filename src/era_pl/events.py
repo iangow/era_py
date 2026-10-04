@@ -122,6 +122,16 @@ def get_event_dates(
     if isinstance(data, pl.DataFrame):
         data = data.lazy()
 
+    date_columns = [event_date]
+    if end_event_date is not None:
+        date_columns.append(end_event_date)
+    schema = data.collect_schema()
+    data = data.with_columns([
+        pl.col(column).str.to_date()
+        if schema[column] == pl.String else pl.col(column).cast(pl.Date)
+        for column in dict.fromkeys(date_columns)
+    ])
+
     if end_event_date is None:
         events = data.select(
             pl.col(permno).alias("permno"),

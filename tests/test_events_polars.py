@@ -70,3 +70,19 @@ def test_get_event_dates_polars_defaults_end_date():
     out = get_event_dates(events, trading).collect()
     assert out.height == 1
     assert out["end_event_date"][0] == dt.date(2020, 1, 4)
+
+
+def test_event_date_strings_with_nullable_end_date():
+    trading = get_trading_dates(pl.DataFrame({
+        "date": [dt.date(2020, 1, 2), dt.date(2020, 1, 3), dt.date(2020, 1, 6)],
+    }))
+    source = pl.DataFrame({
+        "permno": [10001, 10002],
+        "event_date": ["2020-01-02", "2020-01-03"],
+        "end_date": ["2020-01-06", None],
+    })
+    out = get_event_dates(source, trading, end_event_date="end_date").collect().sort("permno")
+    assert out["event_date"].to_list() == [dt.date(2020, 1, 2), dt.date(2020, 1, 3)]
+    assert out["end_event_date"].to_list() == [dt.date(2020, 1, 6), dt.date(2020, 1, 3)]
+    default = get_event_dates(source, trading).collect().sort("permno")
+    assert default["end_event_date"].to_list() == default["event_date"].to_list()

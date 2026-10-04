@@ -46,3 +46,33 @@ def test_get_idd_periods_default_state_universe_matches_farr():
         {"period_type": "Post-rejection", "len": 3},
         {"period_type": "Pre-adoption", "len": 41},
     ]
+
+
+def test_restore_date_strings_and_typed_dates(monkeypatch, tmp_path):
+    import datetime as dt
+    import json
+    import era_pl.data as data_mod
+
+    folder = tmp_path / "_data"
+    folder.mkdir()
+    (folder / "dates.meta.json").write_text(json.dumps({
+        "original_classes": {"day": ["Date"]},
+    }))
+    monkeypatch.setattr(data_mod, "files", lambda package: tmp_path)
+    strings = pl.DataFrame({"day": ["2020-01-02", None, "invalid"]})
+    restored = _restore_types(strings, "dates")
+    assert restored["day"].to_list() == [dt.date(2020, 1, 2), None, None]
+    assert _restore_types(restored, "dates").equals(restored)
+
+
+def test_ff_daily_date_bounds_accept_strings_and_dates(monkeypatch):
+    import datetime as dt
+    import era_pl.data as data_mod
+
+    monkeypatch.setattr(data_mod, "_zip_url_to_lines", lambda *a, **k: [
+        ",Mkt-RF,SMB,HML,RF", "20200102,1,2,3,0", "20200103,4,5,6,0",
+    ])
+    strings = data_mod.get_ff_daily_factors(start="2020-01-03", end="2020-01-03")
+    dates = data_mod.get_ff_daily_factors(start=dt.date(2020, 1, 3), end=dt.date(2020, 1, 3))
+    assert strings.equals(dates)
+    assert strings["date"].to_list() == [dt.date(2020, 1, 3)]
