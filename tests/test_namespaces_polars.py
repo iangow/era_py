@@ -139,3 +139,24 @@ def test_truncate_returns_null_for_all_null_group_in_over():
     out = df.with_columns(pl.col("x").era.truncate().over("g").alias("w"))
 
     assert out["w"].to_list() == [None, None, 1.0]
+
+
+@pytest.mark.parametrize("engine", ["auto", "streaming", "in-memory"])
+def test_lazy_grouped_tail_helpers_match_reference_values(engine):
+    # Lazy queries use the streaming engine by default in Polars 2.
+    # Unequal group sizes and all-null groups exercise the type-2 cutoffs.
+    df = pl.DataFrame({
+        "g": ["a", "b", "a", "b", "a", "b", "b", "c", "c"],
+        "x": [1.0, 1.0, 2.0, 2.0, 100.0, 3.0, 4.0, None, None],
+    })
+    out = (
+        df.lazy()
+        .with_columns(
+            w=pl.col("x").era.winsorize(1 / 3).over("g"),
+            t=pl.col("x").era.truncate(1 / 3).over("g"),
+        )
+        .collect(engine=engine)
+    )
+
+    assert out["w"].to_list() == [1.5, 2.0, 2.0, 2.0, 51.0, 3.0, 3.0, None, None]
+    assert out["t"].to_list() == [None, None, 2.0, 2.0, None, 3.0, None, None, None]

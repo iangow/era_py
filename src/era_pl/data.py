@@ -203,10 +203,11 @@ def get_test_scores(
     return test_scores.select("id", "grade", "post", "treat", "score")
 
 
-def _as_date_expr(value: date | str | pl.Expr) -> pl.Expr:
+def _as_date_expr(value: date | str | pl.Expr, frame: pl.DataFrame) -> pl.Expr:
     """Normalize supported date-like inputs to a Polars date expression."""
     if isinstance(value, pl.Expr):
-        return value.cast(pl.Date)
+        dtype = frame.lazy().select(value).collect_schema().dtypes()[0]
+        return value.str.to_date() if dtype == pl.String else value.cast(pl.Date)
     if isinstance(value, str):
         value = date.fromisoformat(value)
     return pl.lit(value).cast(pl.Date)
@@ -229,9 +230,9 @@ def get_idd_periods(
 ) -> pl.DataFrame:
     """Construct adoption/rejection periods for the IDD dates example data."""
 
-    min_date = _as_date_expr(min_date)
-    max_date = _as_date_expr(max_date)
     idd_dates = load_data("idd_dates")
+    min_date = _as_date_expr(min_date, idd_dates)
+    max_date = _as_date_expr(max_date, idd_dates)
     if all_states is None:
         all_states = pl.DataFrame({"state": _IDD_STATES})
 
@@ -422,9 +423,9 @@ def get_ff_daily_factors(
     )
 
     if start is not None:
-        df = df.filter(pl.col("date") >= _as_date_expr(start))
+        df = df.filter(pl.col("date") >= _as_date_expr(start, df))
     if end is not None:
-        df = df.filter(pl.col("date") <= _as_date_expr(end))
+        df = df.filter(pl.col("date") <= _as_date_expr(end, df))
 
     return df.sort("date")
 

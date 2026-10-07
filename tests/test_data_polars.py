@@ -1,4 +1,8 @@
+import datetime as dt
+
 import polars as pl
+import pytest
+from polars.testing import assert_frame_equal
 
 from era_pl import available_data, get_idd_periods, load_data
 from era_pl.data import _restore_types
@@ -76,3 +80,26 @@ def test_ff_daily_date_bounds_accept_strings_and_dates(monkeypatch):
     dates = data_mod.get_ff_daily_factors(start=dt.date(2020, 1, 3), end=dt.date(2020, 1, 3))
     assert strings.equals(dates)
     assert strings["date"].to_list() == [dt.date(2020, 1, 3)]
+    for bound in ["2020-01-03", dt.date(2020, 1, 3), dt.datetime(2020, 1, 3, 15)]:
+        expressions = data_mod.get_ff_daily_factors(start=pl.lit(bound), end=pl.lit(bound))
+        assert_frame_equal(expressions, strings)
+
+
+@pytest.mark.parametrize(
+    ("start", "end"),
+    [
+        ("1994-01-01", "2010-12-31"),
+        (dt.date(1994, 1, 1), dt.date(2010, 12, 31)),
+        (dt.datetime(1994, 1, 1, 15), dt.datetime(2010, 12, 31, 15)),
+        (
+            dt.datetime(1994, 1, 1, 15, tzinfo=dt.timezone.utc),
+            dt.datetime(2010, 12, 31, 15, tzinfo=dt.timezone.utc),
+        ),
+    ],
+    ids=["string", "date", "datetime", "timezone-aware-datetime"],
+)
+def test_idd_date_expression_bounds_match_literal_bounds(start, end):
+    expected = get_idd_periods("1994-01-01", "2010-12-31")
+    actual = get_idd_periods(pl.lit(start), pl.lit(end))
+
+    assert_frame_equal(actual, expected)

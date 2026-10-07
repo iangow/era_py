@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "era_py"
-version = "0.0.32"
+version = "0.0.33"
 description = "Helper functions and data for Python versions of Empirical Research in Accounting: Tools and Methods"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -26,7 +26,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-polars = ["polars"]
+polars = ["polars>=2.0.0"]
 tables = ["great-tables"]
 plots = ["plotnine"]
 
