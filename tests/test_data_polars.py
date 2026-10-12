@@ -19,10 +19,16 @@ def test_load_data_smoke_polars():
     assert df.height > 0
 
 
-def test_iliev_2010_integer_columns_polars():
+def test_iliev_2010_preserves_fractional_prior_years_polars():
     df = load_data("iliev_2010")
-    assert df.schema["pfyear"] == pl.Int32
-    assert df.schema["cik"] == pl.Int32
+    assert df.schema["pfyear"] == pl.Float64
+    fractional = df.filter(pl.col("pfyear") != pl.col("pfyear").floor())
+    assert sorted(fractional["pfyear"].to_list()) == pytest.approx(
+        [2001.6, 2002.8, 2004.5, 2005.2]
+    )
+    assert df.filter(pl.col("gvkey") == "009937", pl.col("fyear") == 2004)[
+        "pfyear"
+    ].to_list() == [2004.5]
 
 
 def test_cmsw_2018_logical_columns_polars():

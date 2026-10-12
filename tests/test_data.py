@@ -22,10 +22,12 @@ def test_load_data_smoke():
     assert len(df) > 0
 
 
-def test_iliev_2010_integer_columns():
+def test_iliev_2010_preserves_fractional_prior_years():
     df = load_data("iliev_2010")
-    assert str(df["pfyear"].dtype) == "Int32"
-    assert str(df["cik"].dtype) == "Int32"
+    assert str(df["pfyear"].dtype) == "float64"
+    assert df.loc[
+        (df["gvkey"] == "009937") & (df["fyear"] == 2004), "pfyear"
+    ].tolist() == [2004.5]
 
 
 def test_ff_ind_wrapper_returns_pandas(monkeypatch):
