@@ -5,5 +5,17 @@
     "tag": "character",
     "number": "integer",
     "year_total": "integer"
+  },
+  "documentation": {
+    "title": "Tags on StackOverflow",
+    "description": "Counts of Stack Overflow questions by tag and year, covering 2008--2018. A question can have multiple tags, so summing tag counts does not give the number of distinct questions. The annual total is repeated for each tag's row in a year.",
+    "source": null,
+    "documentation_url": "https://iangow.github.io/farr/reference/by_tag_year.html",
+    "columns": {
+      "year": "Year",
+      "tag": "Tag",
+      "number": "Number of questions with tag during year",
+      "year_total": "Total number of questions across all tags during year"
+    }
   }
 }

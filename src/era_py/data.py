@@ -8,17 +8,9 @@ from importlib.resources import files
 import requests
 import pandas as pd
 
+from era_data import available_data, data_catalog, data_info
+
 _DATA_PACKAGE = "era_data"
-
-
-def available_data() -> list[str]:
-    """Return packaged dataset names available via load_data()."""
-    data_dir = files(_DATA_PACKAGE).joinpath("_data")
-    return sorted(
-        item.name.removesuffix(".parquet")
-        for item in data_dir.iterdir()
-        if item.name.endswith(".parquet")
-    )
 
 
 def load_data(name: str, *, restore_categories: bool = True) -> pd.DataFrame:

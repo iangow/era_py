@@ -4,5 +4,16 @@
     "state": "character",
     "idd_date": "Date",
     "idd_type": "character"
+  },
+  "documentation": {
+    "title": "Dates for Inevitable Disclosure Doctrine (IDD)",
+    "description": "Dates of precedent-setting legal cases adopting or reject the Inevitable Disclosure Doctrine (IDD) by state.",
+    "source": "https://doi.org/10.1016/j.jfineco.2018.02.008",
+    "documentation_url": "https://iangow.github.io/farr/reference/idd_dates.html",
+    "columns": {
+      "state": "Two-letter state abbreviation",
+      "idd_date": "Date of precedent-setting legal case",
+      "idd_type": "Either \"Adopt\" or \"Reject\""
+    }
   }
 }

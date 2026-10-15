@@ -4,5 +4,16 @@
     "gvkey": "character",
     "ticker": "character",
     "co_name": "character"
+  },
+  "documentation": {
+    "title": "Australian banks",
+    "description": "A data set containing identifying information for 10 Australian banks.",
+    "source": null,
+    "documentation_url": "https://iangow.github.io/farr/reference/aus_banks.html",
+    "columns": {
+      "gvkey": "GVKEY (firm identifier)",
+      "ticker": "Stock exchange ticker",
+      "co_name": "Bank name"
+    }
   }
 }

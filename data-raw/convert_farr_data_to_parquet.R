@@ -3,11 +3,11 @@
 # Batch-convert .rda/.RData files to Parquet for packaging in era_py.
 #
 # Usage:
-#   Rscript data-raw/convert_farr_data_to_parquet.R [source_data_dir] [dest_dir]
+#   Rscript data-raw/convert_farr_data_to_parquet.R [source_data_dir] [dest_dir] [dataset ...]
 #
 # Defaults (from repo root):
 #   source_data_dir = ../farr/data
-#   dest_dir        = src/era_py/_data
+#   dest_dir        = src/era_data/_data
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -18,7 +18,8 @@ has_haven <- requireNamespace("haven", quietly = TRUE)
 
 args <- commandArgs(trailingOnly = TRUE)
 source_dir <- if (length(args) >= 1) args[[1]] else "../farr/data"
-dest_dir <- if (length(args) >= 2) args[[2]] else "src/era_py/_data"
+dest_dir <- if (length(args) >= 2) args[[2]] else "src/era_data/_data"
+datasets <- if (length(args) >= 3) args[3:length(args)] else character()
 
 if (!dir.exists(source_dir)) {
   stop(sprintf("Source directory does not exist: %s", source_dir))
@@ -62,6 +63,13 @@ rdata_files <- list.files(
   full.names = TRUE
 )
 
+if (length(datasets)) {
+  available <- tools::file_path_sans_ext(basename(rdata_files))
+  missing <- setdiff(datasets, available)
+  if (length(missing)) stop("Unknown datasets: ", paste(missing, collapse = ", "))
+  rdata_files <- rdata_files[available %in% datasets]
+}
+
 if (length(rdata_files) == 0) {
   stop(sprintf("No .rda/.RData files found in %s", source_dir))
 }
@@ -89,6 +97,15 @@ for (file in rdata_files) {
     parquet_path <- paste0(out_base, ".parquet")
     meta_path <- paste0(out_base, ".meta.json")
 
+    # Retain documentation and other provenance when refreshing data values.
+    metadata <- if (file.exists(meta_path)) {
+      read_json(meta_path, simplifyVector = FALSE)
+    } else {
+      list()
+    }
+    metadata$factor_levels <- normalized$metadata$factor_levels
+    metadata$original_classes <- normalized$metadata$original_classes
+
     write_parquet(
       normalized$data,
       parquet_path,
@@ -96,7 +113,7 @@ for (file in rdata_files) {
     )
 
     write_json(
-      normalized$metadata,
+      metadata,
       meta_path,
       auto_unbox = TRUE,
       pretty = TRUE

@@ -92,15 +92,31 @@ class EraExpr:
 
         This mirrors the common SQL/R ``ntile`` idea and is typically used with
         ``.over(...)`` to create within-group deciles, quintiles, and similar
-        ranked portfolios.
+        ranked portfolios. Null values remain null and are excluded when bucket
+        sizes are calculated.
         """
 
+        if n < 1:
+            raise ValueError("n must be a positive integer")
+
+        rank = self._expr.rank("ordinal").cast(pl.Int64) - 1
+        count = self._expr.count().cast(pl.Int64)
+        small_bucket_size = count // n
+        large_bucket_size = small_bucket_size + 1
+        num_large_buckets = count % n
+        large_bucket_observations = large_bucket_size * num_large_buckets
         return (
-            ((self._expr.rank("ordinal") - 1) * n / pl.len())
-            .floor()
+            pl.when(rank < large_bucket_observations)
+            .then(rank // large_bucket_size + 1)
+            .otherwise(
+                (rank - large_bucket_observations)
+                // small_bucket_size.clip(lower_bound=1)
+                + num_large_buckets
+                + 1
+            )
             .cast(pl.Int32)
-            + 1
-        ).name.keep()
+            .name.keep()
+        )
 
     def winsorize(
         self,

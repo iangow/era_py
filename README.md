@@ -6,6 +6,7 @@ Helpers for the Python port of *Empirical Research in Accounting: Tools and Meth
 
 ```
 pip install era-py
+pip install "era-py[ibis]"
 pip install "era-py[polars]"
 pip install "era-py[tables]"
 ```
@@ -18,15 +19,21 @@ For repository development, prefer the checked-in virtual environment:
 
 `era-py` provides two import paths:
 
-- `import era_py` is the base API built around pandas/Ibis-style workflows.
+- `import era_py` is the base API built around pandas workflows. Install the
+  `ibis` extra for the Ibis/Postgres event-study and WRDS helpers.
 - `import era_pl` is the Polars API and requires `pip install "era-py[polars]"`.
 
 ## Usage
 ```python
-from era_py import load_data, ols_dropcollinear
+from era_py import data_info, load_data, ols_dropcollinear
 
 camp = load_data("camp_attendance")
+camp_info = data_info("camp_attendance")
 ```
+
+Use `data_info(name)` to inspect a dataset's description, provenance, shape,
+schema, and variable definitions without loading its observations. Use
+`data_catalog()` to return the same information for every packaged dataset.
 
 ## Testing Optional Dependencies
 

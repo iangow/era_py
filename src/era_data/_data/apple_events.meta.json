@@ -4,5 +4,16 @@
     "event": "character",
     "event_date": "Date",
     "end_event_date": "Date"
+  },
+  "documentation": {
+    "title": "Dates for Apple Events",
+    "description": "A data set containing the dates of Apple media events since 2005.",
+    "source": "https://en.wikipedia.org/wiki/List_of_Apple_Inc._media_events",
+    "documentation_url": "https://iangow.github.io/farr/reference/apple_events.html",
+    "columns": {
+      "event": "Description of event",
+      "event_date": "First date of event",
+      "end_event_date": "Last date of event"
+    }
   }
 }

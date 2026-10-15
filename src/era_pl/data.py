@@ -15,18 +15,9 @@ import pandas as pd
 import polars as pl
 import requests
 
+from era_data import available_data, data_catalog, data_info
+
 _DATA_PACKAGE = "era_data"
-
-
-def available_data() -> list[str]:
-    """Return the names of packaged example datasets shipped with ``era_pl``."""
-
-    data_dir = files(_DATA_PACKAGE).joinpath("_data")
-    return sorted(
-        item.name.removesuffix(".parquet")
-        for item in data_dir.iterdir()
-        if item.name.endswith(".parquet")
-    )
 
 
 def _restore_types(df: pl.DataFrame, name: str) -> pl.DataFrame:

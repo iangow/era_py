@@ -3,6 +3,8 @@ import polars as pl
 
 from era_py import (
     available_data,
+    data_catalog,
+    data_info,
     get_ff_daily_factors,
     get_ff_ind,
     get_me_breakpoints,
@@ -22,12 +24,55 @@ def test_load_data_smoke():
     assert len(df) > 0
 
 
-def test_iliev_2010_preserves_fractional_prior_years():
+def test_data_info_exposes_documentation_schema_and_metadata():
+    info = data_info("camp_attendance")
+
+    assert info["title"] == "Camp attendance"
+    assert info["description"]
+    assert info["num_rows"] == 1000
+    assert info["num_columns"] == 2
+    assert info["columns"] == [
+        {"name": "id", "dtype": "int32", "description": "Student identifier"},
+        {
+            "name": "camp",
+            "dtype": "bool",
+            "description": "Indicator for student attendance at camp",
+        },
+    ]
+    assert "original_classes" in info["metadata"]
+
+
+def test_data_catalog_documents_every_packaged_dataset():
+    catalog = data_catalog()
+
+    assert [item["name"] for item in catalog] == available_data()
+    assert all(item["title"] for item in catalog)
+    assert all(item["description"] for item in catalog)
+    assert all(
+        column["description"]
+        for item in catalog
+        for column in item["columns"]
+    )
+
+
+def test_iliev_2010_matches_verified_public_float_dates():
     df = load_data("iliev_2010")
+    keys = [("009937", 2004), ("062748", 2003), ("062748", 2004),
+            ("062748", 2005), ("062748", 2006)]
+    actual = df.set_index(["gvkey", "fyear"]).loc[keys]
+    assert len(df) == 7214
+    assert str(df["fyear"].dtype) == "Int32"
     assert str(df["pfyear"].dtype) == "float64"
-    assert df.loc[
-        (df["gvkey"] == "009937") & (df["fyear"] == 2004), "pfyear"
-    ].tolist() == [2004.5]
+    assert actual["pfyear"].tolist() == [2005.0, 2002.0, 2003.0, 2004.0, 2005.0]
+    assert actual["pfdate"].dt.strftime("%Y-%m-%d").tolist() == [
+        "2005-01-31", "2002-07-31", "2003-07-31", "2004-07-30", "2005-07-29"
+    ]
+    assert (df["pfyear"] % 1 == 0).all()
+    dated = df.dropna(subset=["pfdate"])
+    assert (dated["pfyear"] == dated["pfdate"].dt.year).all()
+    details = data_info("iliev_2010")["metadata"]["documentation"]["details"]
+    assert "Five public-float dates" in details
+    assert "https://github.com/iangow/farr/issues/28" in details
 
 
 def test_ff_ind_wrapper_returns_pandas(monkeypatch):

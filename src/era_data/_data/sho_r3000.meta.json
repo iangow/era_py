@@ -3,5 +3,15 @@
   "original_classes": {
     "russell_ticker": "character",
     "russell_name": "character"
+  },
+  "documentation": {
+    "title": "Russell 3000 stocks at time of SEC Reg SHO sample formation",
+    "description": "A data set containing the tickers and company names for Russell 3000 at time SEC created the pilot sample. Data are created from sample supplied by FHK.",
+    "source": "https://doi.org/10.1111/jofi.12369",
+    "documentation_url": "https://iangow.github.io/farr/reference/sho_r3000.html",
+    "columns": {
+      "russell_ticker": "Ticker",
+      "russell_name": "Company name"
+    }
   }
 }

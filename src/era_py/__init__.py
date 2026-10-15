@@ -9,6 +9,8 @@ __version__ = "0.0.34"
 __all__ = [
     "ols_dropcollinear",
     "available_data",
+    "data_catalog",
+    "data_info",
     "load_data",
     "load_farr_rda",
     "get_ff_daily_factors",
@@ -38,6 +40,8 @@ __all__ = [
 _LAZY_IMPORTS = {
     "ols_dropcollinear": (".models", "ols_dropcollinear"),
     "available_data": (".data", "available_data"),
+    "data_catalog": (".data", "data_catalog"),
+    "data_info": (".data", "data_info"),
     "load_data": (".data", "load_data"),
     "load_farr_rda": (".data", "load_farr_rda"),
     "get_ff_daily_factors": (".data", "get_ff_daily_factors"),
@@ -70,7 +74,14 @@ def __getattr__(name: str):
         raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
     module_name, attr_name = _LAZY_IMPORTS[name]
-    module = import_module(module_name, __name__)
+    try:
+        module = import_module(module_name, __name__)
+    except ModuleNotFoundError as err:
+        if err.name == "ibis":
+            raise ModuleNotFoundError(
+                f"{name} requires the Ibis extra; install 'era-py[ibis]'."
+            ) from err
+        raise
     value = getattr(module, attr_name)
     globals()[name] = value
     return value

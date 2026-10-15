@@ -5,5 +5,17 @@
     "gvkey": "character",
     "min_year": "integer",
     "max_year": "integer"
+  },
+  "documentation": {
+    "title": "AAERs from Bao et al. (2020)",
+    "description": "A data set containing AAER firms-years used in Bao et al. (2020).",
+    "source": "https://doi.org/10.1111/1475-679X.12292",
+    "documentation_url": "https://iangow.github.io/farr/reference/aaer_firm_year.html",
+    "columns": {
+      "p_aaer": "AAER identifier",
+      "min_year": "First affected year",
+      "max_year": "Last affected year",
+      "gvkey": "GVKEY (firm identifier)"
+    }
   }
 }

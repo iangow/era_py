@@ -4,5 +4,16 @@
     "event": "integer",
     "date": "Date",
     "event_desc": "character"
+  },
+  "documentation": {
+    "title": "Event dates from Zhang (2007)",
+    "description": "A data set containing the event dates used in Zhang (2007). Data obtained from Panel of Table of Zhang (2007). If an event spans multiple dates, then a row is included for each date.",
+    "source": "https://doi.org/10.1016/j.jacceco.2007.02.002",
+    "documentation_url": "https://iangow.github.io/farr/reference/zhang_2007_events.html",
+    "columns": {
+      "event": "Identifier for the event",
+      "date": "Date of event",
+      "event_desc": "Description of the event"
+    }
   }
 }

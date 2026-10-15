@@ -5,5 +5,17 @@
     "aaer_date": "Date",
     "aaer_desc": "character",
     "year": "integer"
+  },
+  "documentation": {
+    "title": "AAER dates from SEC",
+    "description": "A data set containing dates and descriptions for AAERs.",
+    "source": null,
+    "documentation_url": "https://iangow.github.io/farr/reference/aaer_dates.html",
+    "columns": {
+      "aaer_num": "AAER number",
+      "aaer_date": "Date",
+      "aaer_desc": "Description",
+      "year": "Year of AAER"
+    }
   }
 }

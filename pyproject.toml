@@ -16,7 +16,6 @@ dependencies = [
   "pyarrow",
   "statsmodels",
   "scipy",
-  "ibis-framework[postgres]",
   "requests",
   "gdown",
   "pyreadr",
@@ -26,6 +25,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+ibis = ["ibis-framework[postgres]"]
 polars = ["polars>=2.0.0"]
 tables = ["great-tables"]
 plots = ["plotnine"]

@@ -4,7 +4,7 @@ import polars as pl
 import pytest
 from polars.testing import assert_frame_equal
 
-from era_pl import available_data, get_idd_periods, load_data
+from era_pl import available_data, data_catalog, data_info, get_idd_periods, load_data
 from era_pl.data import _restore_types
 
 
@@ -19,16 +19,41 @@ def test_load_data_smoke_polars():
     assert df.height > 0
 
 
-def test_iliev_2010_preserves_fractional_prior_years_polars():
+def test_dataset_metadata_api_is_shared_with_pandas_namespace():
+    from era_py import data_catalog as pandas_catalog
+    from era_py import data_info as pandas_info
+
+    assert data_info("comp") == pandas_info("comp")
+    assert data_catalog() == pandas_catalog()
+
+
+def test_iliev_2010_matches_verified_public_float_dates_polars():
     df = load_data("iliev_2010")
+    assert df.height == 7214
+    assert df.schema["fyear"] == pl.Int32
     assert df.schema["pfyear"] == pl.Float64
-    fractional = df.filter(pl.col("pfyear") != pl.col("pfyear").floor())
-    assert sorted(fractional["pfyear"].to_list()) == pytest.approx(
-        [2001.6, 2002.8, 2004.5, 2005.2]
+    assert df.schema["pfdate"] == pl.Date
+    actual = df.filter(
+        ((pl.col("gvkey") == "009937") & (pl.col("fyear") == 2004))
+        | ((pl.col("gvkey") == "062748") & pl.col("fyear").is_between(2003, 2006))
+    ).sort("gvkey", "fyear")
+    assert actual["pfyear"].to_list() == [2005.0, 2002.0, 2003.0, 2004.0, 2005.0]
+    assert actual["pfdate"].to_list() == [
+        dt.date(2005, 1, 31), dt.date(2002, 7, 31), dt.date(2003, 7, 31),
+        dt.date(2004, 7, 30), dt.date(2005, 7, 29),
+    ]
+    assert df.filter(pl.col("pfyear") != pl.col("pfyear").floor()).is_empty()
+    assert df.filter(pl.col("pfdate").is_not_null()).select(
+        (pl.col("pfyear") == pl.col("pfdate").dt.year()).all()
+    ).item()
+    from era_py import load_data as pandas_load_data
+
+    assert_frame_equal(
+        df,
+        pl.from_pandas(pandas_load_data("iliev_2010")).with_columns(
+            pl.col("fdate", "pfdate").cast(pl.Date)
+        ),
     )
-    assert df.filter(pl.col("gvkey") == "009937", pl.col("fyear") == 2004)[
-        "pfyear"
-    ].to_list() == [2004.5]
 
 
 def test_cmsw_2018_logical_columns_polars():

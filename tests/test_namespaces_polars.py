@@ -4,6 +4,49 @@ import pytest
 import era_pl
 
 
+def test_ntile_excludes_nulls_from_bucket_sizes():
+    df = pl.DataFrame({"x": [1.0, 2.0, None, 3.0, 4.0]})
+
+    out = df.select(pl.col("x").era.ntile(2).alias("tile"))
+
+    assert out["tile"].to_list() == [1, 1, None, 2, 2]
+    assert out.schema["tile"] == pl.Int32
+
+
+def test_ntile_excludes_nulls_within_groups():
+    df = pl.DataFrame(
+        {
+            "g": ["a", "a", "a", "b", "b", "b"],
+            "x": [1.0, None, 2.0, 1.0, 2.0, 3.0],
+        }
+    )
+
+    out = df.with_columns(pl.col("x").era.ntile(2).over("g").alias("tile"))
+
+    assert out["tile"].to_list() == [1, None, 2, 1, 1, 2]
+
+
+def test_ntile_puts_larger_buckets_first():
+    df = pl.DataFrame({"x": range(6)})
+
+    out = df.select(pl.col("x").era.ntile(4).alias("tile"))
+
+    assert out["tile"].to_list() == [1, 1, 2, 2, 3, 4]
+
+
+def test_ntile_does_not_skip_buckets_when_n_exceeds_observations():
+    df = pl.DataFrame({"x": [1.0, None, 2.0]})
+
+    out = df.select(pl.col("x").era.ntile(4).alias("tile"))
+
+    assert out["tile"].to_list() == [1, None, 2]
+
+
+def test_ntile_requires_positive_bucket_count():
+    with pytest.raises(ValueError, match="positive integer"):
+        pl.col("x").era.ntile(0)
+
+
 def test_winsorize_matches_r_type_2_on_discontinuities():
     df = pl.DataFrame({"x": [1.0, 2.0, 3.0, 4.0]})
 
