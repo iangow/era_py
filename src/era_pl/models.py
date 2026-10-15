@@ -325,6 +325,14 @@ def rusboost(
     ir: float = 1.0,
     random_state: int = 2021,
 ):
+    """Fit a binary boosting model using at most ``size`` learner attempts.
+
+    A learner that correctly classifies the full training data replaces all
+    earlier learners and receives voting weight 1. Unusable learners stop
+    AdaBoost (``rus=False``); RUSBoost skips them and tries another sample.
+    Raise ValueError if no usable learner is fitted. Single-class data retain
+    the ConstantProbModel fallback.
+    """
     from sklearn.tree import DecisionTreeClassifier
 
     X = _to_numpy_matrix(data[features]).astype(np.float32)
@@ -356,10 +364,21 @@ def rusboost(
         )
         model.fit(X_train, y_train, sample_weight=w_train)
         pred = np.where(model.predict(X) == 1, 1, -1).astype(np.int8)
-        w, alpha_m, _ = w_update(pred, y_signed, w, learn_rate)
-        if alpha_m == 0 and not rus:
+        # Check every row: zero weighted error can also result from underflow.
+        if np.array_equal(pred, y_signed):
+            weak_learners = [model]
+            alpha = [1.0]
             break
+
+        w, alpha_m, _ = w_update(pred, y_signed, w, learn_rate)
+        if alpha_m == 0:
+            if not rus:
+                break
+            continue
         weak_learners.append(model)
         alpha.append(alpha_m)
+
+    if not weak_learners:
+        raise ValueError("No usable weak learner was fitted.")
 
     return BoostModel(weak_learners=weak_learners, alpha=alpha)
