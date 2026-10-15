@@ -195,6 +195,15 @@ def get_event_dates(
     return event_dates
 
 
+def _gross_return(column):
+    # Protect aggregate inputs from LN(0), even if SQL evaluates them before CASE.
+    compound = (1 + column).nullif(0).log().sum().exp()
+    # MIN below -1 bypasses the zero branch and retains the logarithm domain error.
+    return (column.count() == 0).ifelse(
+        ibis.null("float64"), (column.min() == -1).ifelse(0.0, compound)
+    )
+
+
 def get_event_rets(
     data,
     conn,
@@ -269,9 +278,9 @@ def get_event_rets(
         )
         .group_by(["permno", "event_date", "end_event_date"])
         .aggregate(
-            ret_raw=(1 + _.ret).log().sum().exp() - 1,
-            ret_mkt=(1 + _.ret).log().sum().exp() - (1 + _.vwretd).log().sum().exp(),
-            ret_sz=(1 + _.ret).log().sum().exp() - (1 + _.decret).log().sum().exp(),
+            ret_raw=_gross_return(_.ret) - 1,
+            ret_mkt=_gross_return(_.ret) - _gross_return(_.vwretd),
+            ret_sz=_gross_return(_.ret) - _gross_return(_.decret),
         )
         .rename({f"{c}{suffix}": c for c in ["ret_raw", "ret_mkt", "ret_sz"]})
         .execute()
