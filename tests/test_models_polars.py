@@ -179,3 +179,69 @@ def test_ordinary_predictions_match_before_fix(rus, expected_alpha, fractional_p
         fit.predict_proba(X), np.column_stack([1 - probabilities, probabilities]),
         rtol=1e-12, atol=1e-12,
     )
+
+
+@pytest.mark.parametrize(
+    "weights",
+    [
+        -1.0, [[1, 2]], [[1], [2]], [], [1], [1, 2, 3], [-1, 2],
+        [np.nan, 1], [np.inf, 1], [-np.inf, 1], [0, 0],
+        [np.finfo(float).max, np.finfo(float).max],
+    ],
+    ids=[
+        "scalar", "row-matrix", "column-matrix", "empty", "too-short",
+        "too-long", "negative", "nan", "infinite", "negative-infinite",
+        "zero-total", "overflowing-total",
+    ],
+)
+def test_probability_predictions_reject_invalid_weights(weights):
+    learners = [Mock(), Mock()]
+    fit = models.BoostModel(learners, weights)
+
+    with np.errstate(all="raise"):
+        with pytest.raises(ValueError, match="finite, nonnegative weight"):
+            fit.predict_proba(np.zeros((3, 1)))
+    for learner in learners:
+        learner.predict.assert_not_called()
+
+
+def test_probability_predictions_reject_empty_ensemble():
+    fit = models.BoostModel([], [])
+
+    with pytest.raises(ValueError, match="positive finite total weight"):
+        fit.predict_proba(np.zeros((1, 1)))
+
+
+def test_probability_predictions_validate_modified_weights():
+    fit = models.BoostModel([Mock(), Mock()], [1, 2])
+    fit.alpha[:] = [-1, 2]
+
+    with pytest.raises(ValueError, match="finite, nonnegative weight"):
+        fit.predict_proba(np.zeros((1, 1)))
+
+
+@pytest.mark.parametrize("nobs", [1, 4])
+@pytest.mark.parametrize("weights", [[0.4, 0.6, 1.5], [0.4, 0, 1.5]])
+def test_probability_weights_apply_to_learner_columns(nobs, weights):
+    predictions = np.array([[1, 0, 1], [0, 1, 0], [1, 1, 0], [0, 0, 0]])[:nobs]
+    learners = [Mock(predict=Mock(return_value=p)) for p in predictions.T]
+    fit = models.BoostModel(learners, weights)
+    expected = predictions @ weights / np.sum(weights)
+
+    np.testing.assert_allclose(
+        fit.predict_proba(np.zeros((nobs, 1))),
+        np.column_stack([1 - expected, expected]),
+    )
+
+
+@pytest.mark.parametrize("predictions", [[1], [0], [0, 1, 1, 0]])
+def test_single_learner_probabilities(predictions):
+    fit = models.BoostModel(
+        [Mock(predict=Mock(return_value=np.asarray(predictions)))], [0.3]
+    )
+    expected = np.asarray(predictions)
+
+    np.testing.assert_array_equal(
+        fit.predict_proba(np.zeros((len(predictions), 1))),
+        np.column_stack([1 - expected, expected]),
+    )

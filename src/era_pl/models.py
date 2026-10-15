@@ -292,11 +292,22 @@ class BoostModel:
         return (signed_sum > 0).astype(np.int8)
 
     def predict_proba(self, X) -> np.ndarray:
+        with np.errstate(over="ignore", invalid="ignore"):
+            total = self.alpha.sum()
+        if (
+            self.alpha.ndim != 1
+            or self.alpha.size != len(self.weak_learners)
+            or not np.isfinite(self.alpha).all()
+            or (self.alpha < 0).any()
+            or not np.isfinite(total)
+            or total <= 0
+        ):
+            raise ValueError(
+                "Probability predictions require one finite, nonnegative weight "
+                "per weak learner and a positive finite total weight."
+            )
         votes = self._signed_votes(X)
-        if votes.shape[1] == 0 or self.alpha.sum() == 0:
-            probs = np.repeat(0.5, len(_to_numpy_matrix(X)))
-        else:
-            probs = ((votes > 0) * self.alpha).sum(axis=1) / self.alpha.sum()
+        probs = ((votes > 0) * self.alpha).sum(axis=1) / total
         return np.column_stack([1 - probs, probs])
 
 
