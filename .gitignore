@@ -175,6 +175,11 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 # Quarto / Jupyter
+/docs/_site/
+/docs/reference/
+/docs/datasets/
+/docs/objects.json
+/docs/objects.inv
 .ipynb_checkpoints/
 .quarto/
 **/.quarto/

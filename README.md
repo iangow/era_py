@@ -2,6 +2,12 @@
 
 Helpers for the Python port of *Empirical Research in Accounting: Tools and Methods*.
 
+The `era_pl` Polars API is used by `era_pl_book` and its companion materials.
+Install it with `pip install "era-py[polars]"` and import `era_pl`.
+
+[Website](https://iangow.github.io/era_py/) |
+[Changelog](https://iangow.github.io/era_py/news/index.html)
+
 ## Install
 
 ```
@@ -46,3 +52,18 @@ PYTHONPATH=src uv run --with polars python -c "import era_pl; print(era_pl.__ver
 
 This is useful for verifying the `era_pl` import path and other Polars-specific
 behavior without permanently installing `polars` into your project environment.
+
+## Website
+
+The changelog is maintained in `CHANGELOG.md` and included in the website, so
+release notes need to be edited in only one place. The site uses Quarto and
+quartodoc, following the `db2pq` documentation setup. Build and publish with:
+
+```bash
+./scripts/build-docs.sh
+./scripts/publish-docs.sh
+```
+
+See [the documentation build instructions](docs/README.md) for setup details.
+The build reads source docstrings and packaged dataset metadata; it does not
+run external-data examples or require access to research databases.

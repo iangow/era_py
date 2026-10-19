@@ -1,0 +1,160 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+    - news/index.qmd
+    - reference/*.qmd
+    - datasets/*.qmd
+
+metadata-files:
+  - reference/_sidebar.yml
+
+filters:
+  - filters/page-title.lua
+
+website:
+  title: era-py
+  site-url: https://iangow.github.io/era_py/
+  description: Polars data and helpers for empirical research in accounting, supplied through era_pl.
+  navbar:
+    left:
+      - href: index.qmd
+        text: Overview
+      - href: reference/index.qmd
+        text: Reference
+      - href: datasets/index.qmd
+        text: Data
+      - href: news/index.qmd
+        text: Changelog
+    right:
+      - text: PyPI
+        href: https://pypi.org/project/era-py/
+      - icon: github
+        text: GitHub
+        href: https://github.com/iangow/era_py
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+    toc: true
+    code-copy: true
+    anchor-sections: true
+    code-overflow: wrap
+    css: reference/_styles-quartodoc.css
+
+quartodoc:
+  style: pkgdown
+  package: era_pl
+  source_dir: ../src
+  dynamic: true
+  dir: reference
+  title: Function reference
+  sidebar:
+    file: reference/_sidebar.yml
+    collapse-level: 1
+  css: reference/_styles-quartodoc.css
+  options:
+    include_empty: true
+    include_attributes: false
+    include_inherited: false
+    signature_name: full
+  sections:
+    - title: Packaged data
+      desc: The book uses era_pl. Both namespaces share the same datasets and metadata.
+      contents:
+        - available_data
+        - data_info
+        - data_catalog
+        - load_data
+        - load_farr_rda
+    - title: Polars event dates and Parquet
+      desc: >-
+        These helpers work with Polars frames. Functions that read CRSP data
+        require access to those data. get_event_rets() and copy_inline() are
+        not implemented in era_pl; the Ibis event-return API is listed below.
+      contents:
+        - get_trading_dates
+        - get_annc_dates
+        - get_event_dates
+        - load_parquet
+        - cast_decimals
+    - title: Polars external data
+      desc: These functions retrieve data from external services.
+      contents:
+        - get_ff_daily_factors
+        - get_ff_ind
+        - get_size_rets_monthly
+        - get_me_breakpoints
+        - drive_download
+        - ensure_lm_10x_summary_parquet
+    - title: Polars models and research design
+      contents:
+        - ols_dropcollinear
+        - get_got_data
+        - get_test_scores
+        - get_idd_periods
+        - fit_test_score_panel
+        - rusboost
+        - predict_proba_series
+        - name: models.BoostModel
+          members: [predict_proba]
+        - name: models.ConstantProbModel
+          members: [predict_proba]
+    - title: Polars expression and dataframe methods
+      desc: Importing era_pl registers the .era namespace on Polars objects.
+      contents:
+        - namespaces.EraExpr
+        - namespaces.EraDataFrame
+    - title: Polars tables, plots, and text
+      contents:
+        - modelsummary
+        - show_typst
+        - spline_smooth
+        - rdplot
+        - plotnine_star
+        - NumberedLines
+        - ptime
+    - title: SEC indexes
+      desc: SEC requests require an identifying user agent.
+      contents:
+        - sec_resolve_user_agent
+        - sec_parse_company_bytes
+        - sec_get_index
+        - sec_index_available_update
+        - sec_index_targets
+        - sec_index_update
+        - sec_index_update_all
+    - title: Pandas and Ibis API
+      package: era_py
+      desc: >-
+        The era_py namespace supports pandas workflows. Event-study and WRDS
+        helpers require the ibis extra and access to the underlying research
+        data. These functions are distinct from the Polars helpers above.
+      contents:
+        - kind: page
+          path: pandas-ibis
+          summary:
+            name: Pandas and Ibis API
+            desc: Functions in the era_py namespace.
+          contents:
+            - load_data
+            - load_farr_rda
+            - get_ff_daily_factors
+            - get_ff_ind
+            - get_size_rets_monthly
+            - get_me_breakpoints
+            - get_trading_dates
+            - get_annc_dates
+            - get_event_dates
+            - get_event_rets
+            - load_parquet
+            - copy_inline
+            - wrds_connect
+            - wrds_table
+            - ols_dropcollinear
+            - modelsummary
+            - spline_smooth
+            - rdplot

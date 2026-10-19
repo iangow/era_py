@@ -1,0 +1,82 @@
+---
+title: "era_pl: empirical research in accounting with Python"
+---
+
+`era_pl` provides Polars data and functions for the
+[Python/Polars edition of *Empirical Research in Accounting: Tools and Methods*](https://iangow.github.io/era_pl_book/).
+Install the **`era-py`** distribution and import **`era_pl`** in Python.
+This is the API used by the book and its companion materials.
+
+The same distribution also supplies the `era_py` pandas/Ibis API. Both
+namespaces use the same packaged datasets, but their function coverage and
+arguments differ.
+
+See the [changelog](news/index.qmd) for recent additions and fixes, or the
+[Python/Polars book](https://iangow.github.io/era_pl_book/) for worked examples.
+The [function reference](reference/index.qmd) describes the APIs, and the
+[dataset catalog](datasets/index.qmd) documents the included data.
+
+## Installation
+
+Install the package with its Polars extra:
+
+```bash
+pip install "era-py[polars]"
+```
+
+Add the extras required for your workflow:
+
+```bash
+pip install "era-py[polars,tables]"
+pip install "era-py[polars,plots]"
+```
+
+Python 3.10 or later is required. The Polars extra requires Polars 2 or later.
+
+The development version can be installed from GitHub:
+
+```bash
+pip install "era-py[polars] @ git+https://github.com/iangow/era_py.git"
+```
+
+## Packaged data
+
+Load a dataset and inspect its documentation:
+
+```python
+from era_pl import data_info, load_data
+
+camp = load_data("camp_attendance")
+camp_info = data_info("camp_attendance")
+```
+
+`data_info(name)` returns a dataset's description, source, dimensions, schema,
+and variable definitions without loading its observations. Use `data_catalog()`
+to inspect every packaged dataset.
+
+## Polars helpers
+
+Importing `era_pl` also registers the `.era` namespace on Polars expressions
+and dataframes. For example, form quantile groups with:
+
+```python
+import polars as pl
+import era_pl
+
+data = pl.DataFrame({"value": [1, 2, 3, 4, 5, 6]})
+data.with_columns(bucket=pl.col("value").era.ntile(3))
+```
+
+The [reference](reference/index.qmd) groups functions for event dates, data
+retrieval, models, data cleaning, tables, plots, and SEC indexes.
+
+## Pandas and Ibis API
+
+For pandas workflows, install `era-py` and import `era_py`. Its Ibis/Postgres
+event-return and WRDS helpers additionally require `pip install "era-py[ibis]"`.
+These functions have a separate section in the reference.
+
+The `era_pl` event helpers currently construct event dates and windows;
+`era_pl.get_event_rets()` and `era_pl.copy_inline()` are unimplemented.
+Use the documented Ibis API where cumulative event-return calculations are
+needed.
