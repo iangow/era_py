@@ -1,0 +1,26 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "aaer_num": "character",
+    "aaer_date": "Date",
+    "aaer_desc": "character",
+    "year": "integer"
+  },
+  "documentation": {
+    "title": "AAER dates from SEC",
+    "description": "A data set containing dates and descriptions for AAERs.",
+    "source": null,
+    "documentation_url": "https://iangow.github.io/farr/reference/aaer_dates.html",
+    "columns": {
+      "aaer_num": "AAER number",
+      "aaer_date": "Date",
+      "aaer_desc": "Description",
+      "year": "Year of AAER"
+    },
+    "details": "The SEC index was refreshed through October 8, 2026. Exact duplicate rows are removed; distinct entries sharing an AAER number are retained. Source-backed corrections retain November 16, 1999 for AAER-1209 and restore AAER-1470 dated October 23, 2001. Historical entries missing from the current index are preserved, including three intentionally omitted numbers with missing dates. The malformed historical identifier AAER-x2218 is replaced by AAER-2218. Raw snapshots, historical supplements, and the correction table with release links are maintained in `data-raw`; see also the refresh investigation (https://github.com/iangow/farr/issues/27). Index dates have not all been checked against the underlying releases."
+  },
+  "farr_source": {
+    "file": "aaer_dates.RData",
+    "md5": "68ee339855108caa5ee295a32a54745b"
+  }
+}

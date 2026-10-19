@@ -1,0 +1,21 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "ticker": "character",
+    "gvkey": "character",
+    "permno": "integer",
+    "pilot": "logical"
+  },
+  "documentation": {
+    "title": "Treatment indicators for SHO pilot firms",
+    "description": "A data set containing the tickers, GVKEYs, and treatment indicator for the SHO pilot program.",
+    "source": "https://doi.org/10.1111/jofi.12369",
+    "documentation_url": "https://iangow.github.io/farr/reference/fhk_pilot.html",
+    "columns": {
+      "ticker": "Ticker",
+      "gvkey": "GVKEY (firm identifier)",
+      "permno": "PERMNO (CRSP security identifier)",
+      "pilot": "SHO pilot program treatment indicator"
+    }
+  }
+}

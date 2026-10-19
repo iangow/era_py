@@ -1,0 +1,37 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "cusip": "character",
+    "eventdate": "Date",
+    "cik": "integer",
+    "permno": "integer",
+    "gvkey": "character",
+    "date_filed": "Date",
+    "form_types": "character",
+    "next_period_end": "Date",
+    "next_fqtr": "integer",
+    "prev_period_end": "Date",
+    "prev_fqtr": "integer",
+    "recognize": "logical"
+  },
+  "documentation": {
+    "title": "Data on firms suffering natural disasters",
+    "description": "Data on firms suffering natural disasters based on the sample in Michels (2017).",
+    "source": "https://doi.org/10.1111/1475-679X.12128",
+    "documentation_url": "https://iangow.github.io/farr/reference/michels_2017.html",
+    "columns": {
+      "cusip": "CUSIP supplied by Michels (2017)",
+      "eventdate": "Date of relevant natural disaster supplied by Michels (2017)",
+      "cik": "Matched CIK (SEC firm identifier)",
+      "permno": "Matched PERMNO (CRSP security identifier)",
+      "gvkey": "Matched GVKEY (Compustat firm identifier)",
+      "date_filed": "Date of next filing of type 10-Q, 10-K, 10QSB, 10-K405 after event",
+      "form_types": "List of relevant form types filed on date_filed",
+      "next_period_end": "Next fiscal period-end after event date",
+      "next_fqtr": "Fiscal quarter of next period-end after event date",
+      "prev_period_end": "Last fiscal period-end before event date",
+      "prev_fqtr": "Fiscal quarter of last period-end before event date",
+      "recognize": "Indicator for event being recognized (next_period_end before date_filed)"
+    }
+  }
+}

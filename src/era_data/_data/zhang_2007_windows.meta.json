@@ -1,0 +1,19 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "event": "integer",
+    "beg_date": "Date",
+    "end_date": "Date"
+  },
+  "documentation": {
+    "title": "Event windows from Zhang (2007)",
+    "description": "A data set containing the event windows used in Zhang (2007). Data obtained from Panel of Table of Zhang (2007).",
+    "source": "https://doi.org/10.1016/j.jacceco.2007.02.002",
+    "documentation_url": "https://iangow.github.io/farr/reference/zhang_2007_windows.html",
+    "columns": {
+      "event": "Identifier for the event",
+      "beg_date": "First date of event window",
+      "end_date": "Last date of event window"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "id": "integer",
+    "grade": "numeric",
+    "score": "numeric"
+  },
+  "documentation": {
+    "title": "Test scores",
+    "description": "A simulated data set of test scores.",
+    "source": null,
+    "documentation_url": "https://iangow.github.io/farr/reference/test_scores.html",
+    "columns": {
+      "id": "Student identifier",
+      "grade": "School grade at time of test",
+      "score": "Test score"
+    }
+  }
+}

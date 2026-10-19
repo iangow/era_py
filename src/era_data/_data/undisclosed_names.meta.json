@@ -1,0 +1,17 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "cnms": "character",
+    "disclosed": "logical"
+  },
+  "documentation": {
+    "title": "Customer names that represent non-disclosures",
+    "description": "Data to be combined with data in `compsegd.seg_customer` to create an indicator for non-disclosure of customer names.",
+    "source": null,
+    "documentation_url": "https://iangow.github.io/farr/reference/undisclosed_names.html",
+    "columns": {
+      "cnms": "Matches field in `compsegd.seg_customer` (WRDS)",
+      "disclosed": "Indicator that the customer name is disclosed"
+    }
+  }
+}

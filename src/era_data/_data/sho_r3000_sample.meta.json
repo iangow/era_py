@@ -1,0 +1,19 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "ticker": "character",
+    "permno": "integer",
+    "pilot": "logical"
+  },
+  "documentation": {
+    "title": "Russell 3000 sample used by SEC",
+    "description": "A data set containing the tickers, PERMNOs, and treatment assignments for Russell 3000 sample used by SEC.",
+    "source": "https://iangow.github.io/far_book/natural-revisited.html#the-sho-pilot-sample",
+    "documentation_url": "https://iangow.github.io/farr/reference/sho_r3000_sample.html",
+    "columns": {
+      "ticker": "Ticker",
+      "permno": "PERMNO (CRSP security identifier)",
+      "pilot": "Indicator for stock being part of Reg SHO pilot program"
+    }
+  }
+}

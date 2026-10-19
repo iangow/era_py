@@ -1,0 +1,27 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "gvkey": "character",
+    "datadate": "Date",
+    "at": "numeric",
+    "ceq": "numeric",
+    "ib": "numeric",
+    "xi": "numeric",
+    "do": "numeric"
+  },
+  "documentation": {
+    "title": "Australian bank fundamental data",
+    "description": "A data set containing fundamental financial information for Australian banks.",
+    "source": null,
+    "documentation_url": "https://iangow.github.io/farr/reference/aus_bank_funds.html",
+    "columns": {
+      "gvkey": "GVKEY (firm identifier)",
+      "datadate": "Fiscal year-end",
+      "at": "Total assets",
+      "ib": "Income before extraordinary items",
+      "xi": "Extraordinary items",
+      "do": "Income from discontinued operations",
+      "ceq": "Common equity"
+    }
+  }
+}

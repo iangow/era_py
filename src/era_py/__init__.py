@@ -1,0 +1,91 @@
+"""Base pandas/Ibis-oriented API for users installing ``era-py``."""
+
+from __future__ import annotations
+
+from importlib import import_module
+
+__version__ = "0.0.35"
+
+__all__ = [
+    "ols_dropcollinear",
+    "available_data",
+    "data_catalog",
+    "data_info",
+    "load_data",
+    "load_farr_rda",
+    "get_ff_daily_factors",
+    "get_ff_ind",
+    "get_size_rets_monthly",
+    "get_me_breakpoints",
+    "modelsummary",
+    "show_typst",
+    "spline_smooth",
+    "rdplot",
+    "plotnine_star",
+    "__version__",
+    "NumberedLines",
+    "ptime",
+    "drive_download",
+    "ensure_lm_10x_summary_parquet",
+    "get_trading_dates",
+    "get_annc_dates",
+    "copy_inline",
+    "get_event_dates",
+    "get_event_rets",
+    "load_parquet",
+    "wrds_connect", 
+    "wrds_table",
+]
+
+_LAZY_IMPORTS = {
+    "ols_dropcollinear": (".models", "ols_dropcollinear"),
+    "available_data": (".data", "available_data"),
+    "data_catalog": (".data", "data_catalog"),
+    "data_info": (".data", "data_info"),
+    "load_data": (".data", "load_data"),
+    "load_farr_rda": (".data", "load_farr_rda"),
+    "get_ff_daily_factors": (".data", "get_ff_daily_factors"),
+    "get_ff_ind": (".data", "get_ff_ind"),
+    "get_size_rets_monthly": (".data", "get_size_rets_monthly"),
+    "get_me_breakpoints": (".data", "get_me_breakpoints"),
+    "modelsummary": (".tables", "modelsummary"),
+    "show_typst": (".tables", "show_typst"),
+    "spline_smooth": (".plots", "spline_smooth"),
+    "rdplot": (".plots", "rdplot"),
+    "plotnine_star": (".plots", "plotnine_star"),
+    "NumberedLines": (".text", "NumberedLines"),
+    "ptime": (".text", "ptime"),
+    "drive_download": (".downloads", "drive_download"),
+    "ensure_lm_10x_summary_parquet": (".downloads", "ensure_lm_10x_summary_parquet"),
+    "get_trading_dates": (".events", "get_trading_dates"),
+    "get_annc_dates": (".events", "get_annc_dates"),
+    "copy_inline": (".events", "copy_inline"),
+    "get_event_dates": (".events", "get_event_dates"),
+    "get_event_rets": (".events", "get_event_rets"),
+    "load_parquet": (".events", "load_parquet"),
+    "cast_decimals": (".events", "cast_decimals"),
+    "wrds_connect": (".wrds", "wrds_connect"),
+    "wrds_table": (".wrds", "wrds_table"),
+}
+
+
+def __getattr__(name: str):
+    if name not in _LAZY_IMPORTS:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+    module_name, attr_name = _LAZY_IMPORTS[name]
+    try:
+        module = import_module(module_name, __name__)
+    except ModuleNotFoundError as err:
+        if err.name == "ibis":
+            raise ModuleNotFoundError(
+                f"{name} requires the Ibis extra; install 'era-py[ibis]'."
+            ) from err
+        raise
+    value = getattr(module, attr_name)
+    globals()[name] = value
+    return value
+
+
+def __dir__() -> list[str]:
+    return sorted(set(globals()) | set(__all__))

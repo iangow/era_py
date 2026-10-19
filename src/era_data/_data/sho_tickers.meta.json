@@ -1,0 +1,17 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "ticker": "character",
+    "co_name": "character"
+  },
+  "documentation": {
+    "title": "Tickers of pilot firms for Reg SHO",
+    "description": "A data set containing the tickers and company names for pilot firms from Reg SHO pilot. Data are scraped from the SEC's own website.",
+    "source": "https://www.sec.gov/rule-release/34-50104",
+    "documentation_url": "https://iangow.github.io/farr/reference/sho_tickers.html",
+    "columns": {
+      "ticker": "Ticker",
+      "co_name": "Company name"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "factor_levels": {},
+  "original_classes": {
+    "id": "integer",
+    "camp": "logical"
+  },
+  "documentation": {
+    "title": "Camp attendance",
+    "description": "A simulated data set related to camp attendance.",
+    "source": null,
+    "documentation_url": "https://iangow.github.io/farr/reference/camp_attendance.html",
+    "columns": {
+      "id": "Student identifier",
+      "camp": "Indicator for student attendance at camp"
+    }
+  }
+}
