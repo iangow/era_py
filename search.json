@@ -1,0 +1,1683 @@
+[
+  {
+    "objectID": "datasets/zhang_2007_windows.html",
+    "href": "datasets/zhang_2007_windows.html",
+    "title": "Event windows from Zhang (2007)",
+    "section": "",
+    "text": "A data set containing the event windows used in Zhang (2007). Data obtained from Panel of Table of Zhang (2007)."
+  },
+  {
+    "objectID": "datasets/zhang_2007_windows.html#usage",
+    "href": "datasets/zhang_2007_windows.html#usage",
+    "title": "Event windows from Zhang (2007)",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"zhang_2007_windows\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/zhang_2007_windows.html#format",
+    "href": "datasets/zhang_2007_windows.html#format",
+    "title": "Event windows from Zhang (2007)",
+    "section": "Format",
+    "text": "Format\n17 rows and 3 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\nevent\nint32\nIdentifier for the event\n\n\nbeg_date\ndate32[day]\nFirst date of event window\n\n\nend_date\ndate32[day]\nLast date of event window"
+  },
+  {
+    "objectID": "datasets/zhang_2007_windows.html#source",
+    "href": "datasets/zhang_2007_windows.html#source",
+    "title": "Event windows from Zhang (2007)",
+    "section": "Source",
+    "text": "Source\nhttps://doi.org/10.1016/j.jacceco.2007.02.002\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/undisclosed_names.html",
+    "href": "datasets/undisclosed_names.html",
+    "title": "Customer names that represent non-disclosures",
+    "section": "",
+    "text": "Data to be combined with data in compsegd.seg_customer to create an indicator for non-disclosure of customer names."
+  },
+  {
+    "objectID": "datasets/undisclosed_names.html#usage",
+    "href": "datasets/undisclosed_names.html#usage",
+    "title": "Customer names that represent non-disclosures",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"undisclosed_names\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/undisclosed_names.html#format",
+    "href": "datasets/undisclosed_names.html#format",
+    "title": "Customer names that represent non-disclosures",
+    "section": "Format",
+    "text": "Format\n460 rows and 2 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\ncnms\nstring\nMatches field in compsegd.seg_customer (WRDS)\n\n\ndisclosed\nbool\nIndicator that the customer name is disclosed\n\n\n\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/state_hq.html",
+    "href": "datasets/state_hq.html",
+    "title": "Data on firm headquarters based on SEC EDGAR filings",
+    "section": "",
+    "text": "Data on firm headquarters based on SEC EDGAR filings. Dates related to SEC filing dates. Rather than provide dates for all filings, data are aggregated into groups of filings by state and CIK and dates are collapsed into windows over which all filings for a given CIK were associated with a given state. For example, CIK 0000037755 has filings with a CA headquarters from 1994-06-02 until 1996-03-25, then filings with an OH headquarters from 1996-05-30 until 1999-04-05, then filings with a CA headquarters from 1999-06-11 onwards. To ensure continuous coverage over the sample period, it is assumed that any change in state occurs the day after the last observed filing for the previous state."
+  },
+  {
+    "objectID": "datasets/state_hq.html#usage",
+    "href": "datasets/state_hq.html#usage",
+    "title": "Data on firm headquarters based on SEC EDGAR filings",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"state_hq\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/state_hq.html#format",
+    "href": "datasets/state_hq.html#format",
+    "title": "Data on firm headquarters based on SEC EDGAR filings",
+    "section": "Format",
+    "text": "Format\n53,133 rows and 4 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\n\n\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\ncik\nstring\nSEC’s Central Index Key (CIK)\n\n\nba_state\nstring\nTwo-letter abbreviation of state\n\n\nmin_date\ndate32[day]\nDate of first filing with CIK-state combination in a contiguous series of filings\n\n\nmax_date\ndate32[day]\nDate of last filing with CIK-state combination in a contiguous series of filings"
+  },
+  {
+    "objectID": "datasets/state_hq.html#source",
+    "href": "datasets/state_hq.html#source",
+    "title": "Data on firm headquarters based on SEC EDGAR filings",
+    "section": "Source",
+    "text": "Source\nhttps://sraf.nd.edu/sec-edgar-data/10-x-header-data/\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/sho_r3000_sample.html",
+    "href": "datasets/sho_r3000_sample.html",
+    "title": "Russell 3000 sample used by SEC",
+    "section": "",
+    "text": "A data set containing the tickers, PERMNOs, and treatment assignments for Russell 3000 sample used by SEC."
+  },
+  {
+    "objectID": "datasets/sho_r3000_sample.html#usage",
+    "href": "datasets/sho_r3000_sample.html#usage",
+    "title": "Russell 3000 sample used by SEC",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"sho_r3000_sample\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/sho_r3000_sample.html#format",
+    "href": "datasets/sho_r3000_sample.html#format",
+    "title": "Russell 3000 sample used by SEC",
+    "section": "Format",
+    "text": "Format\n2,954 rows and 3 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\n\n\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\nticker\nstring\nTicker\n\n\npermno\nint32\nPERMNO (CRSP security identifier)\n\n\npilot\nbool\nIndicator for stock being part of Reg SHO pilot program"
+  },
+  {
+    "objectID": "datasets/sho_r3000_sample.html#source",
+    "href": "datasets/sho_r3000_sample.html#source",
+    "title": "Russell 3000 sample used by SEC",
+    "section": "Source",
+    "text": "Source\nhttps://iangow.github.io/far_book/natural-revisited.html#the-sho-pilot-sample\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/sho_r3000.html",
+    "href": "datasets/sho_r3000.html",
+    "title": "Russell 3000 stocks at time of SEC Reg SHO sample formation",
+    "section": "",
+    "text": "A data set containing the tickers and company names for Russell 3000 at time SEC created the pilot sample. Data are created from sample supplied by FHK."
+  },
+  {
+    "objectID": "datasets/sho_r3000.html#usage",
+    "href": "datasets/sho_r3000.html#usage",
+    "title": "Russell 3000 stocks at time of SEC Reg SHO sample formation",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"sho_r3000\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/sho_r3000.html#format",
+    "href": "datasets/sho_r3000.html#format",
+    "title": "Russell 3000 stocks at time of SEC Reg SHO sample formation",
+    "section": "Format",
+    "text": "Format\n3,000 rows and 2 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\nrussell_ticker\nstring\nTicker\n\n\nrussell_name\nstring\nCompany name"
+  },
+  {
+    "objectID": "datasets/sho_r3000.html#source",
+    "href": "datasets/sho_r3000.html#source",
+    "title": "Russell 3000 stocks at time of SEC Reg SHO sample formation",
+    "section": "Source",
+    "text": "Source\nhttps://doi.org/10.1111/jofi.12369\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/llz_2018.html",
+    "href": "datasets/llz_2018.html",
+    "title": "GVKEYs used in Li, Lin and Zhang (2018).",
+    "section": "",
+    "text": "GVKEYs used in Li, Lin and Zhang (2018)."
+  },
+  {
+    "objectID": "datasets/llz_2018.html#usage",
+    "href": "datasets/llz_2018.html#usage",
+    "title": "GVKEYs used in Li, Lin and Zhang (2018).",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"llz_2018\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/llz_2018.html#format",
+    "href": "datasets/llz_2018.html#format",
+    "title": "GVKEYs used in Li, Lin and Zhang (2018).",
+    "section": "Format",
+    "text": "Format\n5,830 rows and 1 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\ngvkey\nstring\nGVKEY"
+  },
+  {
+    "objectID": "datasets/llz_2018.html#source",
+    "href": "datasets/llz_2018.html#source",
+    "title": "GVKEYs used in Li, Lin and Zhang (2018).",
+    "section": "Source",
+    "text": "Source\nhttps://doi.org/10.1111/1475-679X.12187\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/iliev_2010.html",
+    "href": "datasets/iliev_2010.html",
+    "title": "Data on public float",
+    "section": "",
+    "text": "Data on public float of listed companies from Iliev (2010)."
+  },
+  {
+    "objectID": "datasets/iliev_2010.html#usage",
+    "href": "datasets/iliev_2010.html#usage",
+    "title": "Data on public float",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"iliev_2010\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/iliev_2010.html#format",
+    "href": "datasets/iliev_2010.html#format",
+    "title": "Data on public float",
+    "section": "Format",
+    "text": "Format\n7,214 rows and 9 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\ngvkey\nstring\nCompustat firm identifier (GVKEY)\n\n\nfyear\nint32\nFiscal year\n\n\nfdate\ndate32[day]\nDate of end of fiscal year\n\n\npfdate\ndate32[day]\nDate for public float value\n\n\npfyear\ndouble\nYear for public float value\n\n\npublicfloat\ndouble\nPublic float in $ million\n\n\nmr\nbool\nIndicator for filing of a management report\n\n\naf\nbool\nIndicator for accelerator filer\n\n\ncik\ndouble\nSEC firm identifier (CIK)"
+  },
+  {
+    "objectID": "datasets/iliev_2010.html#details",
+    "href": "datasets/iliev_2010.html#details",
+    "title": "Data on public float",
+    "section": "Details",
+    "text": "Details\nFive public-float dates have been corrected against the companies’ Form 10-K cover pages: Spectrum Control (CIK 92769), fiscal year 2004, and Whitehall Jewellers (CIK 868984), fiscal years 2003–2006. These corrections replace four fractional values of pfyear and correct four months, with corresponding updates to pfdate. The original source CSV is preserved. The original values, corrected dates, and filing links are recorded in data-raw/iliev_2010_date_corrections.csv in the source repository; see also the investigation and filing evidence (https://github.com/iangow/farr/issues/28). Other source anomalies, including invalid dates represented by missing values, remain in the data."
+  },
+  {
+    "objectID": "datasets/iliev_2010.html#source",
+    "href": "datasets/iliev_2010.html#source",
+    "title": "Data on public float",
+    "section": "Source",
+    "text": "Source\nhttps://doi.org/10.1111/j.1540-6261.2010.01564.x\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/gvkey_ciks.html",
+    "href": "datasets/gvkey_ciks.html",
+    "title": "GVKEY-CIK links",
+    "section": "",
+    "text": "Link table from GVKEYs to CIKs"
+  },
+  {
+    "objectID": "datasets/gvkey_ciks.html#usage",
+    "href": "datasets/gvkey_ciks.html#usage",
+    "title": "GVKEY-CIK links",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"gvkey_ciks\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/gvkey_ciks.html#format",
+    "href": "datasets/gvkey_ciks.html#format",
+    "title": "GVKEY-CIK links",
+    "section": "Format",
+    "text": "Format\n49,089 rows and 5 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\ngvkey\nstring\nGVKEY (Compustat firm identifier)\n\n\niid\nstring\nIssue ID\n\n\ncik\nint32\nCIK (SEC firm identifier)\n\n\nfirst_date\ndate32[day]\nFirst link date\n\n\nlast_date\ndate32[day]\nLast link date\n\n\n\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/fhk_firm_years.html",
+    "href": "datasets/fhk_firm_years.html",
+    "title": "Firm-years for replication of Fang, Huang and Karpoff (2016)",
+    "section": "",
+    "text": "A data set containing the GVKEYs and datadates for firm-years used in Fang, Huang and Karpoff (2016)."
+  },
+  {
+    "objectID": "datasets/fhk_firm_years.html#usage",
+    "href": "datasets/fhk_firm_years.html#usage",
+    "title": "Firm-years for replication of Fang, Huang and Karpoff (2016)",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"fhk_firm_years\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/fhk_firm_years.html#format",
+    "href": "datasets/fhk_firm_years.html#format",
+    "title": "Firm-years for replication of Fang, Huang and Karpoff (2016)",
+    "section": "Format",
+    "text": "Format\n60,272 rows and 2 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\ngvkey\nstring\nGVKEY (firm identifier)\n\n\ndatadate\ndate32[day]\nFiscal year-end"
+  },
+  {
+    "objectID": "datasets/fhk_firm_years.html#source",
+    "href": "datasets/fhk_firm_years.html#source",
+    "title": "Firm-years for replication of Fang, Huang and Karpoff (2016)",
+    "section": "Source",
+    "text": "Source\nhttps://doi.org/10.1111/jofi.12369\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/cmsw_2018.html",
+    "href": "datasets/cmsw_2018.html",
+    "title": "Data for CMSW",
+    "section": "",
+    "text": "Data on whistleblowers and enforcement actions from Call et al. (2018)."
+  },
+  {
+    "objectID": "datasets/cmsw_2018.html#usage",
+    "href": "datasets/cmsw_2018.html#usage",
+    "title": "Data for CMSW",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"cmsw_2018\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/cmsw_2018.html#format",
+    "href": "datasets/cmsw_2018.html#format",
+    "title": "Data for CMSW",
+    "section": "Format",
+    "text": "Format\n1,133 rows and 31 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\n\n\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\nrecid\ndouble\nCMSW record identifier\n\n\nfirmpenalty\ndouble\nThe total firm civil and criminal monetary penalties assessed against the firm, its parent and subsidiaries consisting of disgorgement, prejudgment interest, civil fines, criminal restitution, and criminal fines in millions of dollars\n\n\notherpenalty\ndouble\nThe total firm civil and criminal monetary penalties assessed against the agent firms and/or respondents (e.g., the audit firm, bankers, suppliers) in connection with the financial misrepresentation of the target firm, in millions of dollars\n\n\nemppenalty\ndouble\nThe total civil and criminal penalties assessed against all employees consisting of disgorgement, prejudgment interest, civil fines, criminal restitution, and criminal fines in millions of dollars\n\n\nempprisonmos\ndouble\nTotal incarceration consisting of jail, prison, home detention, and halfway house in months imposed upon employee respondents named in the enforcement action\n\n\nselfdealflag\nbool\nAn indicator variable equal to one if the violation includes self-dealing such as embezzlement and theft by respondents and equal to zero otherwise\n\n\nblckownpct\ndouble\nThe percentage of blockholder ownership, defined as owners with at least five percent of common shares outstanding from the last 10-K or DEF 14A prior to the first public announcement the firm may be (is) subject to a regulatory enforcement action\n\n\ninitabret\ndouble\nThe value-weighted market-adjusted return measured at the close of trading on the initial public announcement date that the firm may be (is) subject to a regulatory enforcement action\n\n\nwbflag\nbool\nAn indicator variable equal to one if a whistleblower is associated with the enforcement action and equal to zero otherwise\n\n\ntousesox\nbool\nPost-SOX action flag\n\n\nlnvioperiod\ndouble\nThe natural logarithm of the total time the violation occurred in months as indicated in the regulatory enforcement proceedings\n\n\nbribeflag\nbool\nAn indicator variable equal to one if the enforcement actions includes charges under the Foreign Corrupt Practices Act for bribery of a foreign official and zero otherwise\n\n\nmobflag\nbool\nAn indicator variable equal to one if violation or any of the respondents were associated with a known organized crime family and zero otherwise\n\n\ndeter\nbool\nAn indicator variable equal to one if the violation includes an offense for either option backdating, insider trading, or an offense related to an offering, IPO, merger, or reverse merger and equal to zero otherwise\n\n\nlnempcleveln\ndouble\nThe natural logarithm of the total number of C-level respondents (e.g. CEO, COO, CFO, CAO, CMO, and CIO) named in the enforcement action\n\n\nlnuscodecnt\ndouble\nThe natural logarithm of the total number of unique code sections and rules violated (charges) associated with the enforcement action\n\n\nviofraudflag\nbool\nn indicator variable equal to one if fraud under 15 USC §§ 77q, 78j(b), or rules promulgated thereunder are included among the charges in the enforcement action\n\n\nmisledflag\nbool\nAn indicator variable equal to one if the violation included violations of 17 CFR 240.13b2-2 that prohibits materially false or misleading statement to an accountant in connection with the preparation of financial statements and zero otherwise\n\n\naudit8flag\nbool\nAn indicator variable equal to one if the misreporting firm used a Big N auditor, and equal to zero otherwise\n\n\nexectermflag\nbool\nAn indicator variable equal to one if the firm terminated an executive respondent as a result of the violations and equal to zero otherwise\n\n\ncoopflag\nbool\nAn indicator variable equal to one if the firm received credit in the assessment of penalties for cooperation as stated in regulatory enforcement documents during the course of the investigation and equal to zero otherwise\n\n\nimpedeflag\nbool\nAn indicator variable equal to one if regulators acknowledged they were deliberately misled and/or charges were included for lying to investigators and equal to zero otherwise\n\n\npctinddir\ndouble\nThe percentage of the firm’s directors that are independent from the last 10-K or DEF 14A prior to the first public announcement the firm may be (is) subject to a regulatory enforcement action\n\n\nrecidivist\nbool\nAn indicator variable equal to one if the firm was previously the subject of a securities regulatory enforcement action and equal to zero otherwise\n\n\nlnmktcap\ndouble\nThe natural logarithm of the market value of equity measured in millions of dollars prior to the first public announcement that the firm may be (is) subject to a regulatory enforcement action\n\n\nmkt2bk\ndouble\nThe sum of market value of equity plus total assets minus total debt divided by total assets with market value determined below and total assets and total debt measured at the last fiscal year end prior to the first public announcement the firm may be (is) subject to a regulatory enforcement action\n\n\nlev\ndouble\nTotal debt divided by total assets measured at the last fiscal year end prior to the first public announcement the firm may be (is) subject to a regulatory enforcement action\n\n\nlndistance\ndouble\nThe natural logarithm of the distance in miles from the location of the firm’s headquarters to the offices of the regulator assigned to the geographic area of the firm’s headquarter location (closer of the SEC Regional Office or DOJ U.S. District Attorney).\n\n\nff12\nint32\nFama-French industry code (12-industry)\n\n\nwbtype\nstring\nWhistleblower type: tipster or nontipster\n\n\nwbsource\nstring\nWhistleblower data source"
+  },
+  {
+    "objectID": "datasets/cmsw_2018.html#source",
+    "href": "datasets/cmsw_2018.html#source",
+    "title": "Data for CMSW",
+    "section": "Source",
+    "text": "Source\nhttps://doi.org/10.1111/1475-679X.12177\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/by_tag_year.html",
+    "href": "datasets/by_tag_year.html",
+    "title": "Tags on StackOverflow",
+    "section": "",
+    "text": "Counts of Stack Overflow questions by tag and year, covering 2008–2018. A question can have multiple tags, so summing tag counts does not give the number of distinct questions. The annual total is repeated for each tag’s row in a year."
+  },
+  {
+    "objectID": "datasets/by_tag_year.html#usage",
+    "href": "datasets/by_tag_year.html#usage",
+    "title": "Tags on StackOverflow",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"by_tag_year\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/by_tag_year.html#format",
+    "href": "datasets/by_tag_year.html#format",
+    "title": "Tags on StackOverflow",
+    "section": "Format",
+    "text": "Format\n40,518 rows and 4 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\n\n\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\nyear\nint32\nYear\n\n\ntag\nstring\nTag\n\n\nnumber\nint32\nNumber of questions with tag during year\n\n\nyear_total\nint32\nTotal number of questions across all tags during year\n\n\n\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/aus_banks.html",
+    "href": "datasets/aus_banks.html",
+    "title": "Australian banks",
+    "section": "",
+    "text": "A data set containing identifying information for 10 Australian banks."
+  },
+  {
+    "objectID": "datasets/aus_banks.html#usage",
+    "href": "datasets/aus_banks.html#usage",
+    "title": "Australian banks",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"aus_banks\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/aus_banks.html#format",
+    "href": "datasets/aus_banks.html#format",
+    "title": "Australian banks",
+    "section": "Format",
+    "text": "Format\n10 rows and 3 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\ngvkey\nstring\nGVKEY (firm identifier)\n\n\nticker\nstring\nStock exchange ticker\n\n\nco_name\nstring\nBank name\n\n\n\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/aus_bank_funds.html",
+    "href": "datasets/aus_bank_funds.html",
+    "title": "Australian bank fundamental data",
+    "section": "",
+    "text": "A data set containing fundamental financial information for Australian banks."
+  },
+  {
+    "objectID": "datasets/aus_bank_funds.html#usage",
+    "href": "datasets/aus_bank_funds.html#usage",
+    "title": "Australian bank fundamental data",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"aus_bank_funds\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/aus_bank_funds.html#format",
+    "href": "datasets/aus_bank_funds.html#format",
+    "title": "Australian bank fundamental data",
+    "section": "Format",
+    "text": "Format\n283 rows and 7 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\ngvkey\nstring\nGVKEY (firm identifier)\n\n\ndatadate\ndate32[day]\nFiscal year-end\n\n\nat\ndouble\nTotal assets\n\n\nceq\ndouble\nCommon equity\n\n\nib\ndouble\nIncome before extraordinary items\n\n\nxi\ndouble\nExtraordinary items\n\n\ndo\ndouble\nIncome from discontinued operations\n\n\n\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/aaer_firm_year.html",
+    "href": "datasets/aaer_firm_year.html",
+    "title": "AAERs from Bao et al. (2020)",
+    "section": "",
+    "text": "A data set containing AAER firms-years used in Bao et al. (2020)."
+  },
+  {
+    "objectID": "datasets/aaer_firm_year.html#usage",
+    "href": "datasets/aaer_firm_year.html#usage",
+    "title": "AAERs from Bao et al. (2020)",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"aaer_firm_year\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/aaer_firm_year.html#format",
+    "href": "datasets/aaer_firm_year.html#format",
+    "title": "AAERs from Bao et al. (2020)",
+    "section": "Format",
+    "text": "Format\n415 rows and 4 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\np_aaer\nstring\nAAER identifier\n\n\ngvkey\nstring\nGVKEY (firm identifier)\n\n\nmin_year\nint32\nFirst affected year\n\n\nmax_year\nint32\nLast affected year"
+  },
+  {
+    "objectID": "datasets/aaer_firm_year.html#source",
+    "href": "datasets/aaer_firm_year.html#source",
+    "title": "AAERs from Bao et al. (2020)",
+    "section": "Source",
+    "text": "Source\nhttps://doi.org/10.1111/1475-679X.12292\nRelated R documentation."
+  },
+  {
+    "objectID": "reference/spline_smooth.html",
+    "href": "reference/spline_smooth.html",
+    "title": "spline_smooth",
+    "section": "",
+    "text": "era_pl.spline_smooth(data, *, x, y, df=6, n=200)",
+    "crumbs": [
+      "Reference",
+      "Polars tables, plots, and text",
+      "spline_smooth"
+    ]
+  },
+  {
+    "objectID": "reference/sec_resolve_user_agent.html",
+    "href": "reference/sec_resolve_user_agent.html",
+    "title": "sec_resolve_user_agent",
+    "section": "",
+    "text": "era_pl.sec_resolve_user_agent(user_agent=None)",
+    "crumbs": [
+      "Reference",
+      "SEC indexes",
+      "sec_resolve_user_agent"
+    ]
+  },
+  {
+    "objectID": "reference/sec_index_update_all.html",
+    "href": "reference/sec_index_update_all.html",
+    "title": "sec_index_update_all",
+    "section": "",
+    "text": "era_pl.sec_index_update_all(\n    data_dir=None,\n    schema='edgar',\n    user_agent=None,\n    report='update',\n)",
+    "crumbs": [
+      "Reference",
+      "SEC indexes",
+      "sec_index_update_all"
+    ]
+  },
+  {
+    "objectID": "reference/sec_index_targets.html",
+    "href": "reference/sec_index_targets.html",
+    "title": "sec_index_targets",
+    "section": "",
+    "text": "era_pl.sec_index_targets()",
+    "crumbs": [
+      "Reference",
+      "SEC indexes",
+      "sec_index_targets"
+    ]
+  },
+  {
+    "objectID": "reference/sec_get_index.html",
+    "href": "reference/sec_get_index.html",
+    "title": "sec_get_index",
+    "section": "",
+    "text": "era_pl.sec_get_index(\n    year,\n    quarter,\n    overwrite=False,\n    data_dir=None,\n    schema='edgar',\n    user_agent=None,\n    last_modified=None,\n)",
+    "crumbs": [
+      "Reference",
+      "SEC indexes",
+      "sec_get_index"
+    ]
+  },
+  {
+    "objectID": "reference/rdplot.html",
+    "href": "reference/rdplot.html",
+    "title": "rdplot",
+    "section": "",
+    "text": "era_pl.rdplot(\n    data,\n    *,\n    y,\n    x,\n    cutoff,\n    y_label,\n    x_label,\n    degree=4,\n    title='RD Plot',\n    bins=None,\n    binselect='esmv',\n    masspoints='adjust',\n    use_rdrobust=True,\n)",
+    "crumbs": [
+      "Reference",
+      "Polars tables, plots, and text",
+      "rdplot"
+    ]
+  },
+  {
+    "objectID": "reference/predict_proba_series.html",
+    "href": "reference/predict_proba_series.html",
+    "title": "predict_proba_series",
+    "section": "",
+    "text": "era_pl.predict_proba_series(model, X, class_index=1, name='score')",
+    "crumbs": [
+      "Reference",
+      "Polars models and research design",
+      "predict_proba_series"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html",
+    "href": "reference/pandas-ibis.html",
+    "title": "Pandas and Ibis API",
+    "section": "",
+    "text": "Functions in the era_py namespace.",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.load_data",
+    "href": "reference/pandas-ibis.html#era_py.load_data",
+    "title": "Pandas and Ibis API",
+    "section": "load_data",
+    "text": "load_data\nera_py.load_data(name, *, restore_categories=True)\nLoad a packaged dataset by name from the shared packaged data directory.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nname\nstr\nDataset name, e.g. “zhang_2007_windows”.\nrequired\n\n\nrestore_categories\nbool\nRestore factor columns as pandas Categorical using sidecar metadata.\nTrue",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.load_farr_rda",
+    "href": "reference/pandas-ibis.html#era_py.load_farr_rda",
+    "title": "Pandas and Ibis API",
+    "section": "load_farr_rda",
+    "text": "load_farr_rda\nera_py.load_farr_rda(name, *, timeout=30.0)\nLoad an .rda dataset named name from the farr GitHub repo and return the object.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nname\nstr\nDataset/object name (and file stem), e.g. “camp_scores”.\nrequired\n\n\ntimeout\nfloat\nRequests timeout in seconds.\n30.0\n\n\n\n\n\nReturns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nThe R object stored in the .rda under key name.",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.get_ff_daily_factors",
+    "href": "reference/pandas-ibis.html#era_py.get_ff_daily_factors",
+    "title": "Pandas and Ibis API",
+    "section": "get_ff_daily_factors",
+    "text": "get_ff_daily_factors\nera_py.get_ff_daily_factors(\n    dataset='F-F_Research_Data_Factors_daily',\n    *,\n    start=None,\n    end=None,\n    timeout=30.0,\n)\nDownload Ken French daily factor data as a pandas DataFrame.",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.get_ff_ind",
+    "href": "reference/pandas-ibis.html#era_py.get_ff_ind",
+    "title": "Pandas and Ibis API",
+    "section": "get_ff_ind",
+    "text": "get_ff_ind\nera_py.get_ff_ind(ind, *, timeout=30.0)\nDownload Fama-French SIC industry definitions as a pandas DataFrame.",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.get_size_rets_monthly",
+    "href": "reference/pandas-ibis.html#era_py.get_size_rets_monthly",
+    "title": "Pandas and Ibis API",
+    "section": "get_size_rets_monthly",
+    "text": "get_size_rets_monthly\nera_py.get_size_rets_monthly(timeout=30.0)\nDownload Ken French monthly size-portfolio returns as a pandas DataFrame.",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.get_me_breakpoints",
+    "href": "reference/pandas-ibis.html#era_py.get_me_breakpoints",
+    "title": "Pandas and Ibis API",
+    "section": "get_me_breakpoints",
+    "text": "get_me_breakpoints\nera_py.get_me_breakpoints(timeout=30.0)\nDownload Ken French market-equity breakpoints as a pandas DataFrame.",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.get_trading_dates",
+    "href": "reference/pandas-ibis.html#era_py.get_trading_dates",
+    "title": "Pandas and Ibis API",
+    "section": "get_trading_dates",
+    "text": "get_trading_dates\nera_py.get_trading_dates(conn)",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.get_annc_dates",
+    "href": "reference/pandas-ibis.html#era_py.get_annc_dates",
+    "title": "Pandas and Ibis API",
+    "section": "get_annc_dates",
+    "text": "get_annc_dates\nera_py.get_annc_dates(db)",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.get_event_dates",
+    "href": "reference/pandas-ibis.html#era_py.get_event_dates",
+    "title": "Pandas and Ibis API",
+    "section": "get_event_dates",
+    "text": "get_event_dates\nera_py.get_event_dates(\n    data,\n    conn,\n    permno='permno',\n    event_date='event_date',\n    win_start=0,\n    win_end=0,\n    end_event_date=None,\n)",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.get_event_rets",
+    "href": "reference/pandas-ibis.html#era_py.get_event_rets",
+    "title": "Pandas and Ibis API",
+    "section": "get_event_rets",
+    "text": "get_event_rets\nera_py.get_event_rets(\n    data,\n    conn,\n    permno='permno',\n    event_date='event_date',\n    win_start=0,\n    win_end=0,\n    end_event_date=None,\n    suffix='',\n    data_dir=None,\n)",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.load_parquet",
+    "href": "reference/pandas-ibis.html#era_py.load_parquet",
+    "title": "Pandas and Ibis API",
+    "section": "load_parquet",
+    "text": "load_parquet\nera_py.load_parquet(con, table, schema, data_dir=None)",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.copy_inline",
+    "href": "reference/pandas-ibis.html#era_py.copy_inline",
+    "title": "Pandas and Ibis API",
+    "section": "copy_inline",
+    "text": "copy_inline\nera_py.copy_inline(df, con)",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.wrds_connect",
+    "href": "reference/pandas-ibis.html#era_py.wrds_connect",
+    "title": "Pandas and Ibis API",
+    "section": "wrds_connect",
+    "text": "wrds_connect\nera_py.wrds_connect(wrds_id=None, use_local=False)",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.wrds_table",
+    "href": "reference/pandas-ibis.html#era_py.wrds_table",
+    "title": "Pandas and Ibis API",
+    "section": "wrds_table",
+    "text": "wrds_table\nera_py.wrds_table(db, table, schema)",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.ols_dropcollinear",
+    "href": "reference/pandas-ibis.html#era_py.ols_dropcollinear",
+    "title": "Pandas and Ibis API",
+    "section": "ols_dropcollinear",
+    "text": "ols_dropcollinear\nera_py.ols_dropcollinear(data, formula, tol=1e-10, **fit_kwargs)\nDrop-in replacement for ols(data, formula, …), but with R-like rank-deficiency handling: - refits using a full-rank subset of columns - returns a normal OLSResults (so fm.model.exog works) - stores dropped terms and ‘full’ (NaN-filled) coef vectors for reporting",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.modelsummary",
+    "href": "reference/pandas-ibis.html#era_py.modelsummary",
+    "title": "Pandas and Ibis API",
+    "section": "modelsummary",
+    "text": "modelsummary\nera_py.modelsummary(\n    models,\n    *,\n    coef_omit=None,\n    stars=True,\n    estimate=None,\n    statistic=True,\n    statistic_fmt='({std_error:.3f})',\n    gof_map=('nobs',),\n    add_rows=None,\n    output='dataframe',\n)",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.spline_smooth",
+    "href": "reference/pandas-ibis.html#era_py.spline_smooth",
+    "title": "Pandas and Ibis API",
+    "section": "spline_smooth",
+    "text": "spline_smooth\nera_py.spline_smooth(data, *, x, y, df=6, n=200)\nFit a cubic regression spline y ~ s(x) and return a prediction grid for plotting.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ndata\nDataFrame\nInput data.\nrequired\n\n\nx\nstr\nColumn names for x and y.\nrequired\n\n\ny\nstr\nColumn names for x and y.\nrequired\n\n\ndf\nint\nDegrees of freedom for the spline basis (patsy cr()).\n6\n\n\nn\nint\nNumber of grid points for the smooth curve.\n200\n\n\n\n\n\nReturns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nDataFrame with columns [x, f\"{y}_smooth\"] suitable for plotnine geom_line().",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/pandas-ibis.html#era_py.rdplot",
+    "href": "reference/pandas-ibis.html#era_py.rdplot",
+    "title": "Pandas and Ibis API",
+    "section": "rdplot",
+    "text": "rdplot\nera_py.rdplot(\n    data,\n    *,\n    y,\n    x,\n    cutoff,\n    y_label,\n    x_label,\n    degree=4,\n    title='RD Plot',\n    bins=None,\n    binselect='esmv',\n    masspoints='adjust',\n    use_rdrobust=True,\n)",
+    "crumbs": [
+      "Reference",
+      "Pandas and Ibis API",
+      "Pandas and Ibis API"
+    ]
+  },
+  {
+    "objectID": "reference/namespaces.EraExpr.html",
+    "href": "reference/namespaces.EraExpr.html",
+    "title": "namespaces.EraExpr",
+    "section": "",
+    "text": "Custom expression helpers used throughout the Polars-facing API.",
+    "crumbs": [
+      "Reference",
+      "Polars expression and dataframe methods",
+      "namespaces.EraExpr"
+    ]
+  },
+  {
+    "objectID": "reference/namespaces.EraExpr.html#methods",
+    "href": "reference/namespaces.EraExpr.html#methods",
+    "title": "namespaces.EraExpr",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\ndiv_if_pos\nDivide by other only when the denominator is strictly positive.\n\n\nntile\nAssign observations to n approximately equal-sized buckets.\n\n\ntruncate\nSet values outside type-2 quantile cutoffs to null.\n\n\nwinsorize\nClip values to type-2 quantile cutoffs, following farr::winsorize().\n\n\n\n\ndiv_if_pos\nera_pl.namespaces.EraExpr.div_if_pos(other)\nDivide by other only when the denominator is strictly positive.\nThe result is null when the denominator is zero, negative, or null. This is convenient for ratio construction in accounting-style pipelines where non-positive denominators are usually treated as invalid.\n\n\nntile\nera_pl.namespaces.EraExpr.ntile(n)\nAssign observations to n approximately equal-sized buckets.\nThis mirrors the common SQL/R ntile idea and is typically used with .over(...) to create within-group deciles, quintiles, and similar ranked portfolios. Null values remain null and are excluded when bucket sizes are calculated.\n\n\ntruncate\nera_pl.namespaces.EraExpr.truncate(prob=0.01, p_low=None, p_high=None)\nSet values outside type-2 quantile cutoffs to null.\nArgument resolution matches :meth:winsorize.\n\n\nwinsorize\nera_pl.namespaces.EraExpr.winsorize(prob=0.01, p_low=None, p_high=None)\nClip values to type-2 quantile cutoffs, following farr::winsorize().\nArgument handling mirrors the R helper:\n\nwinsorize(prob=0.01) is equivalent to winsorize(p_low=0.01, p_high=0.99).\nIf p_low and/or p_high are supplied, those explicit cutoffs are used in preference to the defaults implied by prob.\nIf prob=None, only the explicitly supplied side(s) are applied, so one-sided winsorization is possible.",
+    "crumbs": [
+      "Reference",
+      "Polars expression and dataframe methods",
+      "namespaces.EraExpr"
+    ]
+  },
+  {
+    "objectID": "reference/modelsummary.html",
+    "href": "reference/modelsummary.html",
+    "title": "modelsummary",
+    "section": "",
+    "text": "era_pl.modelsummary(models, *, output='dataframe', **kwargs)\nPolars wrapper around era_py.modelsummary.\nBehavior is delegated to era_py.modelsummary; only difference is that dataframe output is converted from pandas.DataFrame to polars.DataFrame.",
+    "crumbs": [
+      "Reference",
+      "Polars tables, plots, and text",
+      "modelsummary"
+    ]
+  },
+  {
+    "objectID": "reference/models.BoostModel.html#methods",
+    "href": "reference/models.BoostModel.html#methods",
+    "title": "models.BoostModel",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\npredict_proba\n\n\n\n\n\npredict_proba\nera_pl.models.BoostModel.predict_proba(X)",
+    "crumbs": [
+      "Reference",
+      "Polars models and research design",
+      "models.BoostModel"
+    ]
+  },
+  {
+    "objectID": "reference/load_farr_rda.html",
+    "href": "reference/load_farr_rda.html",
+    "title": "load_farr_rda",
+    "section": "",
+    "text": "era_pl.load_farr_rda(name, *, timeout=30.0)\nLoad an object from the upstream farr R package data repository.\nData frames are converted to Polars. Non-data-frame objects are returned in the form produced by pyreadr.",
+    "crumbs": [
+      "Reference",
+      "Packaged data",
+      "load_farr_rda"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#packaged-data",
+    "href": "reference/index.html#packaged-data",
+    "title": "Function reference",
+    "section": "Packaged data",
+    "text": "Packaged data\nThe book uses era_pl. Both namespaces share the same datasets and metadata.\n\n\n\navailable_data\nReturn the names of packaged example datasets.\n\n\ndata_info\nReturn documentation, schema, and stored metadata for one dataset.\n\n\ndata_catalog\nReturn :func:data_info records for all packaged datasets.\n\n\nload_data\nLoad a packaged example dataset as a Polars DataFrame.\n\n\nload_farr_rda\nLoad an object from the upstream farr R package data repository.",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#polars-event-dates-and-parquet",
+    "href": "reference/index.html#polars-event-dates-and-parquet",
+    "title": "Function reference",
+    "section": "Polars event dates and Parquet",
+    "text": "Polars event dates and Parquet\nThese helpers work with Polars frames. Functions that read CRSP data require access to those data. get_event_rets() and copy_inline() are not implemented in era_pl; the Ibis event-return API is listed below.\n\n\n\nget_trading_dates\nCreate a trading-date index from a CRSP daily index table.\n\n\nget_annc_dates\nMap all calendar dates onto the next available trading day.\n\n\nget_event_dates\nExpand event dates into trading-day windows.\n\n\nload_parquet\nScan a parquet table from a WRDS-style local data directory.\n\n\ncast_decimals\nCast all decimal columns in frame to Float64.",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#polars-external-data",
+    "href": "reference/index.html#polars-external-data",
+    "title": "Function reference",
+    "section": "Polars external data",
+    "text": "Polars external data\nThese functions retrieve data from external services.\n\n\n\nget_ff_daily_factors\nDownload Ken French daily factor data as a Polars DataFrame.\n\n\nget_ff_ind\nDownload Fama-French SIC industry definitions for a given scheme.\n\n\nget_size_rets_monthly\nDownload Ken French monthly size-portfolio returns as a LazyFrame.\n\n\nget_me_breakpoints\nDownload Ken French market-equity breakpoints as a LazyFrame.\n\n\ndrive_download\n\n\n\nensure_lm_10x_summary_parquet",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#polars-models-and-research-design",
+    "href": "reference/index.html#polars-models-and-research-design",
+    "title": "Function reference",
+    "section": "Polars models and research design",
+    "text": "Polars models and research design\n\n\n\nols_dropcollinear\n\n\n\nget_got_data\nGenerate panel data with cross-sectional and time-series dependence.\n\n\nget_test_scores\nSimulate a panel of student test scores for DiD-style examples.\n\n\nget_idd_periods\nConstruct adoption/rejection periods for the IDD dates example data.\n\n\nfit_test_score_panel\nFast chapter-specific estimator for the test-score panel model.\n\n\nrusboost\nFit a binary boosting model using at most size learner attempts.\n\n\npredict_proba_series\n\n\n\nmodels.BoostModel\n\n\n\nmodels.ConstantProbModel",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#polars-expression-and-dataframe-methods",
+    "href": "reference/index.html#polars-expression-and-dataframe-methods",
+    "title": "Function reference",
+    "section": "Polars expression and dataframe methods",
+    "text": "Polars expression and dataframe methods\nImporting era_pl registers the .era namespace on Polars objects.\n\n\n\nnamespaces.EraExpr\nCustom expression helpers used throughout the Polars-facing API.\n\n\nnamespaces.EraDataFrame\nCustom DataFrame helpers used throughout the Polars-facing API.",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#polars-tables-plots-and-text",
+    "href": "reference/index.html#polars-tables-plots-and-text",
+    "title": "Function reference",
+    "section": "Polars tables, plots, and text",
+    "text": "Polars tables, plots, and text\n\n\n\nmodelsummary\nPolars wrapper around era_py.modelsummary.\n\n\nshow_typst\n\n\n\nspline_smooth\n\n\n\nrdplot\n\n\n\nplotnine_star\nTemporarily expose public plotnine names in the caller’s global namespace.\n\n\nNumberedLines\nA sequence of text lines that preserves original line numbers.\n\n\nptime\nDisplay wall-clock time for a code block in notebook-friendly markdown.",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#sec-indexes",
+    "href": "reference/index.html#sec-indexes",
+    "title": "Function reference",
+    "section": "SEC indexes",
+    "text": "SEC indexes\nSEC requests require an identifying user agent.\n\n\n\nsec_resolve_user_agent\n\n\n\nsec_parse_company_bytes\n\n\n\nsec_get_index\n\n\n\nsec_index_available_update\n\n\n\nsec_index_targets\n\n\n\nsec_index_update\n\n\n\nsec_index_update_all",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#pandas-and-ibis-api",
+    "href": "reference/index.html#pandas-and-ibis-api",
+    "title": "Function reference",
+    "section": "Pandas and Ibis API",
+    "text": "Pandas and Ibis API\nThe era_py namespace supports pandas workflows. Event-study and WRDS helpers require the ibis extra and access to the underlying research data. These functions are distinct from the Polars helpers above.\n\n\n\nPandas and Ibis API\nFunctions in the era_py namespace.",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/get_test_scores.html",
+    "href": "reference/get_test_scores.html",
+    "title": "get_test_scores",
+    "section": "",
+    "text": "era_pl.get_test_scores(\n    effect_size=15,\n    n_students=1000,\n    n_grades=4,\n    include_unobservables=False,\n    random_assignment=False,\n    seed=None,\n)\nSimulate a panel of student test scores for DiD-style examples.\nThe returned data include grade, treatment, post indicators, and scores. Setting include_unobservables=True also returns the latent talent and grade-effect components used to generate the observed outcomes.",
+    "crumbs": [
+      "Reference",
+      "Polars models and research design",
+      "get_test_scores"
+    ]
+  },
+  {
+    "objectID": "reference/get_me_breakpoints.html",
+    "href": "reference/get_me_breakpoints.html",
+    "title": "get_me_breakpoints",
+    "section": "",
+    "text": "era_pl.get_me_breakpoints(timeout=30.0)\nDownload Ken French market-equity breakpoints as a LazyFrame.\nThe result gives monthly decile cutoffs together with me_min and me_max bounds suitable for portfolio assignment.",
+    "crumbs": [
+      "Reference",
+      "Polars external data",
+      "get_me_breakpoints"
+    ]
+  },
+  {
+    "objectID": "reference/get_got_data.html",
+    "href": "reference/get_got_data.html",
+    "title": "get_got_data",
+    "section": "",
+    "text": "Generate panel data with cross-sectional and time-series dependence.",
+    "crumbs": [
+      "Reference",
+      "Polars models and research design",
+      "get_got_data"
+    ]
+  },
+  {
+    "objectID": "reference/get_got_data.html#parameters",
+    "href": "reference/get_got_data.html#parameters",
+    "title": "get_got_data",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nrng\n\nNumpy random generator.\nrequired\n\n\nN\n\nNumber of firms.\nrequired\n\n\nT\n\nNumber of time periods.\nrequired\n\n\nXvol\n\nCross-sectional dependence in X.\nrequired\n\n\nEvol\n\nCross-sectional dependence in errors.\nrequired\n\n\nrho_X\n\nTime-series dependence in X.\nrequired\n\n\nrho_E\n\nTime-series dependence in errors.\nrequired",
+    "crumbs": [
+      "Reference",
+      "Polars models and research design",
+      "get_got_data"
+    ]
+  },
+  {
+    "objectID": "reference/get_ff_daily_factors.html",
+    "href": "reference/get_ff_daily_factors.html",
+    "title": "get_ff_daily_factors",
+    "section": "",
+    "text": "era_pl.get_ff_daily_factors(\n    dataset='F-F_Research_Data_Factors_daily',\n    *,\n    start=None,\n    end=None,\n    timeout=30.0,\n)\nDownload Ken French daily factor data as a Polars DataFrame.",
+    "crumbs": [
+      "Reference",
+      "Polars external data",
+      "get_ff_daily_factors"
+    ]
+  },
+  {
+    "objectID": "reference/get_annc_dates.html",
+    "href": "reference/get_annc_dates.html",
+    "title": "get_annc_dates",
+    "section": "",
+    "text": "era_pl.get_annc_dates(trading_dates=None)\nMap all calendar dates onto the next available trading day.",
+    "crumbs": [
+      "Reference",
+      "Polars event dates and Parquet",
+      "get_annc_dates"
+    ]
+  },
+  {
+    "objectID": "reference/ensure_lm_10x_summary_parquet.html",
+    "href": "reference/ensure_lm_10x_summary_parquet.html",
+    "title": "ensure_lm_10x_summary_parquet",
+    "section": "",
+    "text": "era_pl.ensure_lm_10x_summary_parquet(\n    data_dir=None,\n    raw_data_dir=None,\n    overwrite=False,\n)",
+    "crumbs": [
+      "Reference",
+      "Polars external data",
+      "ensure_lm_10x_summary_parquet"
+    ]
+  },
+  {
+    "objectID": "reference/data_info.html",
+    "href": "reference/data_info.html",
+    "title": "data_info",
+    "section": "",
+    "text": "era_pl.data_info(name)\nReturn documentation, schema, and stored metadata for one dataset.",
+    "crumbs": [
+      "Reference",
+      "Packaged data",
+      "data_info"
+    ]
+  },
+  {
+    "objectID": "reference/cast_decimals.html",
+    "href": "reference/cast_decimals.html",
+    "title": "cast_decimals",
+    "section": "",
+    "text": "era_pl.cast_decimals(frame)\nCast all decimal columns in frame to Float64.",
+    "crumbs": [
+      "Reference",
+      "Polars event dates and Parquet",
+      "cast_decimals"
+    ]
+  },
+  {
+    "objectID": "reference/NumberedLines.html",
+    "href": "reference/NumberedLines.html",
+    "title": "NumberedLines",
+    "section": "",
+    "text": "A sequence of text lines that preserves original line numbers.\nNumberedLines behaves like a read-only sequence of strings, but carries an explicit index attribute that records the original (global) line numbers for each line. This is useful when working with text extracted from external sources (e.g., PDFs, logs, or scraped documents) where line numbers are meaningful for debugging, citation, or reproducibility.\nThe object supports slicing and filtering while preserving original line numbers. Slicing returns a new NumberedLines object whose index reflects the corresponding subset of the original indices. The index can be reset explicitly using reset_index().",
+    "crumbs": [
+      "Reference",
+      "Polars tables, plots, and text",
+      "NumberedLines"
+    ]
+  },
+  {
+    "objectID": "reference/NumberedLines.html#parameters",
+    "href": "reference/NumberedLines.html#parameters",
+    "title": "NumberedLines",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nlines\nstr or Iterable[str]\nEither a single string containing newline-separated text, or an iterable of strings. If a string is provided, it is split into lines using str.splitlines(). If an iterable of strings is provided (e.g., page-level text from a PDF), each element is split into lines and flattened.\nrequired\n\n\nindex\nIterable[int]\nExplicit line numbers to associate with lines. If not provided, line numbers are assigned sequentially starting from zero.\nNone",
+    "crumbs": [
+      "Reference",
+      "Polars tables, plots, and text",
+      "NumberedLines"
+    ]
+  },
+  {
+    "objectID": "reference/NumberedLines.html#attributes",
+    "href": "reference/NumberedLines.html#attributes",
+    "title": "NumberedLines",
+    "section": "Attributes",
+    "text": "Attributes\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nlines\nlist[str]\nThe underlying text lines.\n\n\nindex\nlist[int]\nThe original line numbers corresponding to each line.",
+    "crumbs": [
+      "Reference",
+      "Polars tables, plots, and text",
+      "NumberedLines"
+    ]
+  },
+  {
+    "objectID": "reference/NumberedLines.html#notes",
+    "href": "reference/NumberedLines.html#notes",
+    "title": "NumberedLines",
+    "section": "Notes",
+    "text": "Notes\n\nNumberedLines is immutable: slicing and filtering return new objects rather than modifying the original.\nThe class does not perform any I/O. Display and printing are left to the caller.\nThe object can be passed directly to pd.Series() or other APIs that accept a sequence of strings.",
+    "crumbs": [
+      "Reference",
+      "Polars tables, plots, and text",
+      "NumberedLines"
+    ]
+  },
+  {
+    "objectID": "reference/NumberedLines.html#examples",
+    "href": "reference/NumberedLines.html#examples",
+    "title": "NumberedLines",
+    "section": "Examples",
+    "text": "Examples\nCreate from a single string:\n&gt;&gt;&gt; nl = NumberedLines(\"a\\nb\\nc\")\n&gt;&gt;&gt; nl.index\n[0, 1, 2]\nSlice while preserving original line numbers:\n&gt;&gt;&gt; nl[1:3].index\n[1, 2]\nReset indices after slicing:\n&gt;&gt;&gt; nl[1:3].reset_index().index\n[0, 1]",
+    "crumbs": [
+      "Reference",
+      "Polars tables, plots, and text",
+      "NumberedLines"
+    ]
+  },
+  {
+    "objectID": "reference/NumberedLines.html#methods",
+    "href": "reference/NumberedLines.html#methods",
+    "title": "NumberedLines",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\nfilter\nReturn only lines matching regex (preserving original indices).\n\n\nfilter_out\n\n\n\nformat\nReturn a list of strings with line numbers prefixed.\n\n\nreset_index\nReturn a new NumberedLines with index reset to 0..n-1.\n\n\nto_list\nExplicit escape hatch: get the underlying list.\n\n\n\n\nfilter\nera_pl.NumberedLines.filter(regex)\nReturn only lines matching regex (preserving original indices).\n\n\nfilter_out\nera_pl.NumberedLines.filter_out(regex)\n\n\nformat\nera_pl.NumberedLines.format(pad=None)\nReturn a list of strings with line numbers prefixed.\n\n\nreset_index\nera_pl.NumberedLines.reset_index()\nReturn a new NumberedLines with index reset to 0..n-1.\n\n\nto_list\nera_pl.NumberedLines.to_list()\nExplicit escape hatch: get the underlying list.",
+    "crumbs": [
+      "Reference",
+      "Polars tables, plots, and text",
+      "NumberedLines"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "era_pl: empirical research in accounting with Python",
+    "section": "",
+    "text": "era_pl provides Polars data and functions for the Python/Polars edition of Empirical Research in Accounting: Tools and Methods. Install the era-py distribution and import era_pl in Python. This is the API used by the book and its companion materials.\nThe same distribution also supplies the era_py pandas/Ibis API. Both namespaces use the same packaged datasets, but their function coverage and arguments differ.\nSee the changelog for recent additions and fixes, or the Python/Polars book for worked examples. The function reference describes the APIs, and the dataset catalog documents the included data."
+  },
+  {
+    "objectID": "index.html#installation",
+    "href": "index.html#installation",
+    "title": "era_pl: empirical research in accounting with Python",
+    "section": "Installation",
+    "text": "Installation\nInstall the package with its Polars extra:\npip install \"era-py[polars]\"\nAdd the extras required for your workflow:\npip install \"era-py[polars,tables]\"\npip install \"era-py[polars,plots]\"\nPython 3.10 or later is required. The Polars extra requires Polars 2 or later.\nThe development version can be installed from GitHub:\npip install \"era-py[polars] @ git+https://github.com/iangow/era_py.git\""
+  },
+  {
+    "objectID": "index.html#packaged-data",
+    "href": "index.html#packaged-data",
+    "title": "era_pl: empirical research in accounting with Python",
+    "section": "Packaged data",
+    "text": "Packaged data\nLoad a dataset and inspect its documentation:\nfrom era_pl import data_info, load_data\n\ncamp = load_data(\"camp_attendance\")\ncamp_info = data_info(\"camp_attendance\")\ndata_info(name) returns a dataset’s description, source, dimensions, schema, and variable definitions without loading its observations. Use data_catalog() to inspect every packaged dataset."
+  },
+  {
+    "objectID": "index.html#polars-helpers",
+    "href": "index.html#polars-helpers",
+    "title": "era_pl: empirical research in accounting with Python",
+    "section": "Polars helpers",
+    "text": "Polars helpers\nImporting era_pl also registers the .era namespace on Polars expressions and dataframes. For example, form quantile groups with:\nimport polars as pl\nimport era_pl\n\ndata = pl.DataFrame({\"value\": [1, 2, 3, 4, 5, 6]})\ndata.with_columns(bucket=pl.col(\"value\").era.ntile(3))\nThe reference groups functions for event dates, data retrieval, models, data cleaning, tables, plots, and SEC indexes."
+  },
+  {
+    "objectID": "index.html#pandas-and-ibis-api",
+    "href": "index.html#pandas-and-ibis-api",
+    "title": "era_pl: empirical research in accounting with Python",
+    "section": "Pandas and Ibis API",
+    "text": "Pandas and Ibis API\nFor pandas workflows, install era-py and import era_py. Its Ibis/Postgres event-return and WRDS helpers additionally require pip install \"era-py[ibis]\". These functions have a separate section in the reference.\nThe era_pl event helpers currently construct event dates and windows; era_pl.get_event_rets() and era_pl.copy_inline() are unimplemented. Use the documented Ibis API where cumulative event-return calculations are needed."
+  },
+  {
+    "objectID": "news/index.html",
+    "href": "news/index.html",
+    "title": "Changelog",
+    "section": "",
+    "text": "Release notes cover version 0.0.32 onward. Dates are the dates of publication on PyPI. For earlier changes, see the commit history."
+  },
+  {
+    "objectID": "news/index.html#version-0.0.35-2026-10-15",
+    "href": "news/index.html#version-0.0.35-2026-10-15",
+    "title": "Changelog",
+    "section": "Version 0.0.35 (2026-10-15)",
+    "text": "Version 0.0.35 (2026-10-15)\n\nData and metadata\n\nAdded data_info(name) and data_catalog() to both era_py and era_pl. These provide dataset descriptions, sources, dimensions, schemas, and variable definitions for all 27 packaged datasets without loading their observations.\nRefreshed aaer_dates from the canonical farr data, retaining all 3,386 reconciled rows, historical entries, and source-backed corrections.\nSynchronized five public-float date corrections in iliev_2010 with farr, including four fractional years. All 7,214 observations are retained.\n\n\n\nFunctions and dependencies\n\nMade Ibis an optional dependency. Install era-py[ibis] for the Ibis/Postgres event-study and WRDS helpers; the base API no longer requires Ibis.\nCorrected era_pl’s ntile() expression to preserve nulls, exclude them from bucket counts, and assign larger buckets first, matching R/SQL behavior.\nUpdated Polars AdaBoost and RUSBoost to retain a perfect learner with weight 1, handle unusable learners, and report an error when none can be fitted.\nAdded validation of boosting probability weights: weights must be finite, nonnegative, and have a positive finite total. Predictions continue to use normalized weighted vote shares.\nFixed daily and monthly Ibis cumulative event returns for complete losses (ret = -1) in stocks and market or size benchmarks. Missing-value handling is unchanged; returns below -1 remain errors.\n\n\n\nValidation\n\nAdded regression tests for the data, metadata, optional dependencies, Polars helpers, boosting, and Ibis event returns. CI now installs the Ibis and DuckDB dependencies needed for the event-return tests."
+  },
+  {
+    "objectID": "news/index.html#version-0.0.34-2026-10-12",
+    "href": "news/index.html#version-0.0.34-2026-10-12",
+    "title": "Changelog",
+    "section": "Version 0.0.34 (2026-10-12)",
+    "text": "Version 0.0.34 (2026-10-12)\n\nAligned camp_attendance, iliev_2010, and test_scores with the teaching data in the R package farr.\nUpdated dataset metadata and tests for both the pandas and Polars loaders."
+  },
+  {
+    "objectID": "news/index.html#version-0.0.33-2026-10-07",
+    "href": "news/index.html#version-0.0.33-2026-10-07",
+    "title": "Changelog",
+    "section": "Version 0.0.33 (2026-10-07)",
+    "text": "Version 0.0.33 (2026-10-07)\n\nAdded support for Polars 2 and required polars&gt;=2.0.0 in the Polars extra.\nUpdated date-expression handling in the Polars data helpers and added compatibility tests for data loading and expression methods."
+  },
+  {
+    "objectID": "news/index.html#version-0.0.32-2026-10-04",
+    "href": "news/index.html#version-0.0.32-2026-10-04",
+    "title": "Changelog",
+    "section": "Version 0.0.32 (2026-10-04)",
+    "text": "Version 0.0.32 (2026-10-04)\n\nAdded explicit parsing of string dates when restoring packaged Polars data and constructing event dates.\nNormalized date inputs used to filter Fama-French daily factors."
+  },
+  {
+    "objectID": "reference/available_data.html",
+    "href": "reference/available_data.html",
+    "title": "available_data",
+    "section": "",
+    "text": "era_pl.available_data()\nReturn the names of packaged example datasets.",
+    "crumbs": [
+      "Reference",
+      "Packaged data",
+      "available_data"
+    ]
+  },
+  {
+    "objectID": "reference/data_catalog.html",
+    "href": "reference/data_catalog.html",
+    "title": "data_catalog",
+    "section": "",
+    "text": "era_pl.data_catalog()\nReturn :func:data_info records for all packaged datasets.",
+    "crumbs": [
+      "Reference",
+      "Packaged data",
+      "data_catalog"
+    ]
+  },
+  {
+    "objectID": "reference/drive_download.html",
+    "href": "reference/drive_download.html",
+    "title": "drive_download",
+    "section": "",
+    "text": "era_pl.drive_download(file_id, destination)",
+    "crumbs": [
+      "Reference",
+      "Polars external data",
+      "drive_download"
+    ]
+  },
+  {
+    "objectID": "reference/fit_test_score_panel.html",
+    "href": "reference/fit_test_score_panel.html",
+    "title": "fit_test_score_panel",
+    "section": "",
+    "text": "era_pl.fit_test_score_panel(data, vcov='iid')\nFast chapter-specific estimator for the test-score panel model.\nThis helper reproduces the estimate and inference returned by pyfixest.feols(\"score ~ I(treat * post) | grade + id\", ...) for the vcov choices used in the panel-data chapter.",
+    "crumbs": [
+      "Reference",
+      "Polars models and research design",
+      "fit_test_score_panel"
+    ]
+  },
+  {
+    "objectID": "reference/get_event_dates.html",
+    "href": "reference/get_event_dates.html",
+    "title": "get_event_dates",
+    "section": "",
+    "text": "era_pl.get_event_dates(\n    data,\n    trading_dates=None,\n    permno='permno',\n    event_date='event_date',\n    win_start=0,\n    win_end=0,\n    end_event_date=None,\n    data_dir=None,\n)\nExpand event dates into trading-day windows.\nEvents are matched to trading days using get_annc_dates() and then shifted by win_start and win_end to produce event-window bounds. If trading_dates is omitted, CRSP dsi data are loaded from the local parquet store.",
+    "crumbs": [
+      "Reference",
+      "Polars event dates and Parquet",
+      "get_event_dates"
+    ]
+  },
+  {
+    "objectID": "reference/get_ff_ind.html",
+    "href": "reference/get_ff_ind.html",
+    "title": "get_ff_ind",
+    "section": "",
+    "text": "era_pl.get_ff_ind(ind, *, timeout=30.0)\nDownload Fama-French SIC industry definitions for a given scheme.\nind is typically 12, 17, 30, 38, 48, or 49. The returned table contains the industry identifier, descriptions, and SIC ranges.",
+    "crumbs": [
+      "Reference",
+      "Polars external data",
+      "get_ff_ind"
+    ]
+  },
+  {
+    "objectID": "reference/get_idd_periods.html",
+    "href": "reference/get_idd_periods.html",
+    "title": "get_idd_periods",
+    "section": "",
+    "text": "era_pl.get_idd_periods(min_date, max_date, all_states=None)\nConstruct adoption/rejection periods for the IDD dates example data.",
+    "crumbs": [
+      "Reference",
+      "Polars models and research design",
+      "get_idd_periods"
+    ]
+  },
+  {
+    "objectID": "reference/get_size_rets_monthly.html",
+    "href": "reference/get_size_rets_monthly.html",
+    "title": "get_size_rets_monthly",
+    "section": "",
+    "text": "era_pl.get_size_rets_monthly(timeout=30.0)\nDownload Ken French monthly size-portfolio returns as a LazyFrame.\nThe result contains equal-weighted and value-weighted returns by month and decile.",
+    "crumbs": [
+      "Reference",
+      "Polars external data",
+      "get_size_rets_monthly"
+    ]
+  },
+  {
+    "objectID": "reference/get_trading_dates.html",
+    "href": "reference/get_trading_dates.html",
+    "title": "get_trading_dates",
+    "section": "",
+    "text": "era_pl.get_trading_dates(dsi=None)\nCreate a trading-date index from a CRSP daily index table.\nThe result assigns a 1-based trading-day number td to each distinct date and is typically used when constructing event windows.",
+    "crumbs": [
+      "Reference",
+      "Polars event dates and Parquet",
+      "get_trading_dates"
+    ]
+  },
+  {
+    "objectID": "reference/load_data.html",
+    "href": "reference/load_data.html",
+    "title": "load_data",
+    "section": "",
+    "text": "era_pl.load_data(name, *, restore_categories=True)\nLoad a packaged example dataset as a Polars DataFrame.\nWhen metadata are available, the loader restores common R-originated types such as categoricals, integers, dates, and datetimes.",
+    "crumbs": [
+      "Reference",
+      "Packaged data",
+      "load_data"
+    ]
+  },
+  {
+    "objectID": "reference/load_parquet.html",
+    "href": "reference/load_parquet.html",
+    "title": "load_parquet",
+    "section": "",
+    "text": "era_pl.load_parquet(\n    table,\n    schema,\n    data_dir=None,\n    missing_ok=False,\n    convert_decimals=True,\n)\nScan a parquet table from a WRDS-style local data directory.\nschema supplies the subdirectory name and table supplies the file stem. If convert_decimals is True, Decimal columns are cast to Float64 for easier downstream use.",
+    "crumbs": [
+      "Reference",
+      "Polars event dates and Parquet",
+      "load_parquet"
+    ]
+  },
+  {
+    "objectID": "reference/models.ConstantProbModel.html#methods",
+    "href": "reference/models.ConstantProbModel.html#methods",
+    "title": "models.ConstantProbModel",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\npredict_proba\n\n\n\n\n\npredict_proba\nera_pl.models.ConstantProbModel.predict_proba(X)",
+    "crumbs": [
+      "Reference",
+      "Polars models and research design",
+      "models.ConstantProbModel"
+    ]
+  },
+  {
+    "objectID": "reference/namespaces.EraDataFrame.html",
+    "href": "reference/namespaces.EraDataFrame.html",
+    "title": "namespaces.EraDataFrame",
+    "section": "",
+    "text": "Custom DataFrame helpers used throughout the Polars-facing API.",
+    "crumbs": [
+      "Reference",
+      "Polars expression and dataframe methods",
+      "namespaces.EraDataFrame"
+    ]
+  },
+  {
+    "objectID": "reference/namespaces.EraDataFrame.html#methods",
+    "href": "reference/namespaces.EraDataFrame.html#methods",
+    "title": "namespaces.EraDataFrame",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\nmap_by\nApply fun to each group and preserve the grouping keys.\n\n\n\n\nmap_by\nera_pl.namespaces.EraDataFrame.map_by(by, fun)\nApply fun to each group and preserve the grouping keys.\nfun must accept a Polars DataFrame for one group and return a one-row Polars DataFrame. The grouping columns listed in by are reattached automatically to the returned result.",
+    "crumbs": [
+      "Reference",
+      "Polars expression and dataframe methods",
+      "namespaces.EraDataFrame"
+    ]
+  },
+  {
+    "objectID": "reference/ols_dropcollinear.html",
+    "href": "reference/ols_dropcollinear.html",
+    "title": "ols_dropcollinear",
+    "section": "",
+    "text": "era_pl.ols_dropcollinear(data, formula, tol=1e-10, **fit_kwargs)",
+    "crumbs": [
+      "Reference",
+      "Polars models and research design",
+      "ols_dropcollinear"
+    ]
+  },
+  {
+    "objectID": "reference/plotnine_star.html",
+    "href": "reference/plotnine_star.html",
+    "title": "plotnine_star",
+    "section": "",
+    "text": "era_pl.plotnine_star(module=None)\nTemporarily expose public plotnine names in the caller’s global namespace.\nIntended for module scope or notebook-cell use, not for use inside functions.",
+    "crumbs": [
+      "Reference",
+      "Polars tables, plots, and text",
+      "plotnine_star"
+    ]
+  },
+  {
+    "objectID": "reference/ptime.html",
+    "href": "reference/ptime.html",
+    "title": "ptime",
+    "section": "",
+    "text": "era_pl.ptime()\nDisplay wall-clock time for a code block in notebook-friendly markdown.",
+    "crumbs": [
+      "Reference",
+      "Polars tables, plots, and text",
+      "ptime"
+    ]
+  },
+  {
+    "objectID": "reference/rusboost.html",
+    "href": "reference/rusboost.html",
+    "title": "rusboost",
+    "section": "",
+    "text": "era_pl.rusboost(\n    data,\n    features,\n    target,\n    *,\n    size=30,\n    rus=True,\n    learn_rate=1.0,\n    maxdepth=None,\n    minbucket=None,\n    ir=1.0,\n    random_state=2021,\n)\nFit a binary boosting model using at most size learner attempts.\nA learner that correctly classifies the full training data replaces all earlier learners and receives voting weight 1. Unusable learners stop AdaBoost (rus=False); RUSBoost skips them and tries another sample. Raise ValueError if no usable learner is fitted. Single-class data retain the ConstantProbModel fallback.",
+    "crumbs": [
+      "Reference",
+      "Polars models and research design",
+      "rusboost"
+    ]
+  },
+  {
+    "objectID": "reference/sec_index_available_update.html",
+    "href": "reference/sec_index_available_update.html",
+    "title": "sec_index_available_update",
+    "section": "",
+    "text": "era_pl.sec_index_available_update(year, quarter, user_agent=None)",
+    "crumbs": [
+      "Reference",
+      "SEC indexes",
+      "sec_index_available_update"
+    ]
+  },
+  {
+    "objectID": "reference/sec_index_update.html",
+    "href": "reference/sec_index_update.html",
+    "title": "sec_index_update",
+    "section": "",
+    "text": "era_pl.sec_index_update(\n    year,\n    quarter,\n    data_dir=None,\n    schema='edgar',\n    user_agent=None,\n    last_modified=None,\n    report='all',\n)",
+    "crumbs": [
+      "Reference",
+      "SEC indexes",
+      "sec_index_update"
+    ]
+  },
+  {
+    "objectID": "reference/sec_parse_company_bytes.html",
+    "href": "reference/sec_parse_company_bytes.html",
+    "title": "sec_parse_company_bytes",
+    "section": "",
+    "text": "era_pl.sec_parse_company_bytes(content)",
+    "crumbs": [
+      "Reference",
+      "SEC indexes",
+      "sec_parse_company_bytes"
+    ]
+  },
+  {
+    "objectID": "reference/show_typst.html",
+    "href": "reference/show_typst.html",
+    "title": "show_typst",
+    "section": "",
+    "text": "era_pl.show_typst(x)",
+    "crumbs": [
+      "Reference",
+      "Polars tables, plots, and text",
+      "show_typst"
+    ]
+  },
+  {
+    "objectID": "datasets/aaer_dates.html",
+    "href": "datasets/aaer_dates.html",
+    "title": "AAER dates from SEC",
+    "section": "",
+    "text": "A data set containing dates and descriptions for AAERs."
+  },
+  {
+    "objectID": "datasets/aaer_dates.html#usage",
+    "href": "datasets/aaer_dates.html#usage",
+    "title": "AAER dates from SEC",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"aaer_dates\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/aaer_dates.html#format",
+    "href": "datasets/aaer_dates.html#format",
+    "title": "AAER dates from SEC",
+    "section": "Format",
+    "text": "Format\n3,386 rows and 4 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\naaer_num\nstring\nAAER number\n\n\naaer_date\ndate32[day]\nDate\n\n\naaer_desc\nstring\nDescription\n\n\nyear\nint32\nYear of AAER"
+  },
+  {
+    "objectID": "datasets/aaer_dates.html#details",
+    "href": "datasets/aaer_dates.html#details",
+    "title": "AAER dates from SEC",
+    "section": "Details",
+    "text": "Details\nThe SEC index was refreshed through October 8, 2026. Exact duplicate rows are removed; distinct entries sharing an AAER number are retained. Source-backed corrections retain November 16, 1999 for AAER-1209 and restore AAER-1470 dated October 23, 2001. Historical entries missing from the current index are preserved, including three intentionally omitted numbers with missing dates. The malformed historical identifier AAER-x2218 is replaced by AAER-2218. Raw snapshots, historical supplements, and the correction table with release links are maintained in data-raw; see also the refresh investigation (https://github.com/iangow/farr/issues/27). Index dates have not all been checked against the underlying releases.\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/apple_events.html",
+    "href": "datasets/apple_events.html",
+    "title": "Dates for Apple Events",
+    "section": "",
+    "text": "A data set containing the dates of Apple media events since 2005."
+  },
+  {
+    "objectID": "datasets/apple_events.html#usage",
+    "href": "datasets/apple_events.html#usage",
+    "title": "Dates for Apple Events",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"apple_events\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/apple_events.html#format",
+    "href": "datasets/apple_events.html#format",
+    "title": "Dates for Apple Events",
+    "section": "Format",
+    "text": "Format\n47 rows and 3 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\nevent\nstring\nDescription of event\n\n\nevent_date\ndate32[day]\nFirst date of event\n\n\nend_event_date\ndate32[day]\nLast date of event"
+  },
+  {
+    "objectID": "datasets/apple_events.html#source",
+    "href": "datasets/apple_events.html#source",
+    "title": "Dates for Apple Events",
+    "section": "Source",
+    "text": "Source\nhttps://en.wikipedia.org/wiki/List_of_Apple_Inc._media_events\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/aus_bank_rets.html",
+    "href": "datasets/aus_bank_rets.html",
+    "title": "Australian bank stock market data",
+    "section": "",
+    "text": "A data set containing fundamental financial information for Australian banks."
+  },
+  {
+    "objectID": "datasets/aus_bank_rets.html#usage",
+    "href": "datasets/aus_bank_rets.html#usage",
+    "title": "Australian bank stock market data",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"aus_bank_rets\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/aus_bank_rets.html#format",
+    "href": "datasets/aus_bank_rets.html#format",
+    "title": "Australian bank stock market data",
+    "section": "Format",
+    "text": "Format\n3,047 rows and 4 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\ngvkey\nstring\nGVKEY (firm identifier)\n\n\ndatadate\ndate32[day]\nLast trading date of month\n\n\nret\ndouble\nStock return for month\n\n\nmkt_cap\ndouble\nMarket capitalization on datadate\n\n\n\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/bloomfield_2021.html",
+    "href": "datasets/bloomfield_2021.html",
+    "title": "Firm-years in RDD analysis of Bloomfield (2021)",
+    "section": "",
+    "text": "Firm-years in RDD analysis of Bloomfield (2021)."
+  },
+  {
+    "objectID": "datasets/bloomfield_2021.html#usage",
+    "href": "datasets/bloomfield_2021.html#usage",
+    "title": "Firm-years in RDD analysis of Bloomfield (2021)",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"bloomfield_2021\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/bloomfield_2021.html#format",
+    "href": "datasets/bloomfield_2021.html#format",
+    "title": "Firm-years in RDD analysis of Bloomfield (2021)",
+    "section": "Format",
+    "text": "Format\n1,855 rows and 2 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\nfyear\nint32\nFiscal year\n\n\npermco\nint32\nCRSP firm identifier (PERMCO)"
+  },
+  {
+    "objectID": "datasets/bloomfield_2021.html#source",
+    "href": "datasets/bloomfield_2021.html#source",
+    "title": "Firm-years in RDD analysis of Bloomfield (2021)",
+    "section": "Source",
+    "text": "Source\nhttps://doi.org/10.1111/1475-679X.12346\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/camp_attendance.html",
+    "href": "datasets/camp_attendance.html",
+    "title": "Camp attendance",
+    "section": "",
+    "text": "A simulated data set related to camp attendance."
+  },
+  {
+    "objectID": "datasets/camp_attendance.html#usage",
+    "href": "datasets/camp_attendance.html#usage",
+    "title": "Camp attendance",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"camp_attendance\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/camp_attendance.html#format",
+    "href": "datasets/camp_attendance.html#format",
+    "title": "Camp attendance",
+    "section": "Format",
+    "text": "Format\n1,000 rows and 2 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\nid\nint32\nStudent identifier\n\n\ncamp\nbool\nIndicator for student attendance at camp\n\n\n\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/comp.html",
+    "href": "datasets/comp.html",
+    "title": "Data on accruals and auditor choice",
+    "section": "",
+    "text": "A data set containing data about accruals for 2,000 firms."
+  },
+  {
+    "objectID": "datasets/comp.html#usage",
+    "href": "datasets/comp.html#usage",
+    "title": "Data on accruals and auditor choice",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"comp\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/comp.html#format",
+    "href": "datasets/comp.html#format",
+    "title": "Data on accruals and auditor choice",
+    "section": "Format",
+    "text": "Format\n16,237 rows and 14 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\n\n\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\ngvkey\nstring\nGVKEY (firm identifier)\n\n\ndatadate\ndate32[day]\nFiscal year-end\n\n\nfyear\nint32\nFiscal year\n\n\nbig_n\nbool\nIndicator for Big Four auditor\n\n\nta\ndouble\nTotal accruals (scaled by assets)\n\n\nroa\ndouble\nReturn on assets\n\n\ncfo\ndouble\nCash flow from operating activities (scaled by assets)\n\n\nsize\ndouble\nSize\n\n\nlev\ndouble\nLeverage\n\n\nmtb\ndouble\nMarket-to-book ratio\n\n\ninv_at\ndouble\n1/Total assets\n\n\nd_sale\ndouble\nChange in revenue\n\n\nd_ar\ndouble\nChange in accounts receivable\n\n\nppe\ndouble\nProperty, plant & equipment (scaled by assets)\n\n\n\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/fhk_pilot.html",
+    "href": "datasets/fhk_pilot.html",
+    "title": "Treatment indicators for SHO pilot firms",
+    "section": "",
+    "text": "A data set containing the tickers, GVKEYs, and treatment indicator for the SHO pilot program."
+  },
+  {
+    "objectID": "datasets/fhk_pilot.html#usage",
+    "href": "datasets/fhk_pilot.html#usage",
+    "title": "Treatment indicators for SHO pilot firms",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"fhk_pilot\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/fhk_pilot.html#format",
+    "href": "datasets/fhk_pilot.html#format",
+    "title": "Treatment indicators for SHO pilot firms",
+    "section": "Format",
+    "text": "Format\n3,030 rows and 4 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\nticker\nstring\nTicker\n\n\ngvkey\nstring\nGVKEY (firm identifier)\n\n\npermno\nint32\nPERMNO (CRSP security identifier)\n\n\npilot\nbool\nSHO pilot program treatment indicator"
+  },
+  {
+    "objectID": "datasets/fhk_pilot.html#source",
+    "href": "datasets/fhk_pilot.html#source",
+    "title": "Treatment indicators for SHO pilot firms",
+    "section": "Source",
+    "text": "Source\nhttps://doi.org/10.1111/jofi.12369\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/idd_dates.html",
+    "href": "datasets/idd_dates.html",
+    "title": "Dates for Inevitable Disclosure Doctrine (IDD)",
+    "section": "",
+    "text": "Dates of precedent-setting legal cases adopting or reject the Inevitable Disclosure Doctrine (IDD) by state."
+  },
+  {
+    "objectID": "datasets/idd_dates.html#usage",
+    "href": "datasets/idd_dates.html#usage",
+    "title": "Dates for Inevitable Disclosure Doctrine (IDD)",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"idd_dates\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/idd_dates.html#format",
+    "href": "datasets/idd_dates.html#format",
+    "title": "Dates for Inevitable Disclosure Doctrine (IDD)",
+    "section": "Format",
+    "text": "Format\n24 rows and 3 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\nstate\nstring\nTwo-letter state abbreviation\n\n\nidd_date\ndate32[day]\nDate of precedent-setting legal case\n\n\nidd_type\nstring\nEither “Adopt” or “Reject”"
+  },
+  {
+    "objectID": "datasets/idd_dates.html#source",
+    "href": "datasets/idd_dates.html#source",
+    "title": "Dates for Inevitable Disclosure Doctrine (IDD)",
+    "section": "Source",
+    "text": "Source\nhttps://doi.org/10.1016/j.jfineco.2018.02.008\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/index.html",
+    "href": "datasets/index.html",
+    "title": "Packaged datasets",
+    "section": "",
+    "text": "Both era_py and era_pl load the same packaged data. Use load_data(name) to load a dataset and data_info(name) to inspect its documentation without loading the observations.\n\n\n\nDataset\nDescription\nRows\nColumns\n\n\n\n\naaer_dates\nAAER dates from SEC\n3,386\n4\n\n\naaer_firm_year\nAAERs from Bao et al. (2020)\n415\n4\n\n\napple_events\nDates for Apple Events\n47\n3\n\n\naus_bank_funds\nAustralian bank fundamental data\n283\n7\n\n\naus_bank_rets\nAustralian bank stock market data\n3,047\n4\n\n\naus_banks\nAustralian banks\n10\n3\n\n\nbloomfield_2021\nFirm-years in RDD analysis of Bloomfield (2021)\n1,855\n2\n\n\nby_tag_year\nTags on StackOverflow\n40,518\n4\n\n\ncamp_attendance\nCamp attendance\n1,000\n2\n\n\ncmsw_2018\nData for CMSW\n1,133\n31\n\n\ncomp\nData on accruals and auditor choice\n16,237\n14\n\n\nfhk_firm_years\nFirm-years for replication of Fang, Huang and Karpoff (2016)\n60,272\n2\n\n\nfhk_pilot\nTreatment indicators for SHO pilot firms\n3,030\n4\n\n\ngvkey_ciks\nGVKEY-CIK links\n49,089\n5\n\n\nidd_dates\nDates for Inevitable Disclosure Doctrine (IDD)\n24\n3\n\n\niliev_2010\nData on public float\n7,214\n9\n\n\nllz_2018\nGVKEYs used in Li, Lin and Zhang (2018).\n5,830\n1\n\n\nmichels_2017\nData on firms suffering natural disasters\n423\n12\n\n\nsho_r3000\nRussell 3000 stocks at time of SEC Reg SHO sample formation\n3,000\n2\n\n\nsho_r3000_gvkeys\nRussell 3000 sample used by SEC with GVKEYs\n2,951\n4\n\n\nsho_r3000_sample\nRussell 3000 sample used by SEC\n2,954\n3\n\n\nsho_tickers\nTickers of pilot firms for Reg SHO\n986\n2\n\n\nstate_hq\nData on firm headquarters based on SEC EDGAR filings\n53,133\n4\n\n\ntest_scores\nTest scores\n4,000\n3\n\n\nundisclosed_names\nCustomer names that represent non-disclosures\n460\n2\n\n\nzhang_2007_events\nEvent dates from Zhang (2007)\n30\n3\n\n\nzhang_2007_windows\nEvent windows from Zhang (2007)\n17\n3"
+  },
+  {
+    "objectID": "datasets/michels_2017.html",
+    "href": "datasets/michels_2017.html",
+    "title": "Data on firms suffering natural disasters",
+    "section": "",
+    "text": "Data on firms suffering natural disasters based on the sample in Michels (2017)."
+  },
+  {
+    "objectID": "datasets/michels_2017.html#usage",
+    "href": "datasets/michels_2017.html#usage",
+    "title": "Data on firms suffering natural disasters",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"michels_2017\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/michels_2017.html#format",
+    "href": "datasets/michels_2017.html#format",
+    "title": "Data on firms suffering natural disasters",
+    "section": "Format",
+    "text": "Format\n423 rows and 12 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\n\n\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\ncusip\nstring\nCUSIP supplied by Michels (2017)\n\n\neventdate\ndate32[day]\nDate of relevant natural disaster supplied by Michels (2017)\n\n\ncik\nint32\nMatched CIK (SEC firm identifier)\n\n\npermno\nint32\nMatched PERMNO (CRSP security identifier)\n\n\ngvkey\nstring\nMatched GVKEY (Compustat firm identifier)\n\n\ndate_filed\ndate32[day]\nDate of next filing of type 10-Q, 10-K, 10QSB, 10-K405 after event\n\n\nform_types\nstring\nList of relevant form types filed on date_filed\n\n\nnext_period_end\ndate32[day]\nNext fiscal period-end after event date\n\n\nnext_fqtr\nint32\nFiscal quarter of next period-end after event date\n\n\nprev_period_end\ndate32[day]\nLast fiscal period-end before event date\n\n\nprev_fqtr\nint32\nFiscal quarter of last period-end before event date\n\n\nrecognize\nbool\nIndicator for event being recognized (next_period_end before date_filed)"
+  },
+  {
+    "objectID": "datasets/michels_2017.html#source",
+    "href": "datasets/michels_2017.html#source",
+    "title": "Data on firms suffering natural disasters",
+    "section": "Source",
+    "text": "Source\nhttps://doi.org/10.1111/1475-679X.12128\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/sho_r3000_gvkeys.html",
+    "href": "datasets/sho_r3000_gvkeys.html",
+    "title": "Russell 3000 sample used by SEC with GVKEYs",
+    "section": "",
+    "text": "A data set containing the tickers, PERMNOs, GVKEYs, and treatment assignments for Russell 3000 sample used by SEC."
+  },
+  {
+    "objectID": "datasets/sho_r3000_gvkeys.html#usage",
+    "href": "datasets/sho_r3000_gvkeys.html#usage",
+    "title": "Russell 3000 sample used by SEC with GVKEYs",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"sho_r3000_gvkeys\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/sho_r3000_gvkeys.html#format",
+    "href": "datasets/sho_r3000_gvkeys.html#format",
+    "title": "Russell 3000 sample used by SEC with GVKEYs",
+    "section": "Format",
+    "text": "Format\n2,951 rows and 4 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\n\n\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\nticker\nstring\nTicker\n\n\npermno\nint32\nPERMNO (CRSP security identifier)\n\n\ngvkey\nstring\nGVKEY (Compustat firm identifier)\n\n\npilot\nbool\nIndicator for stock being part of Reg SHO pilot program"
+  },
+  {
+    "objectID": "datasets/sho_r3000_gvkeys.html#source",
+    "href": "datasets/sho_r3000_gvkeys.html#source",
+    "title": "Russell 3000 sample used by SEC with GVKEYs",
+    "section": "Source",
+    "text": "Source\nhttps://iangow.github.io/far_book/natural-revisited.html#the-sho-pilot-sample\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/sho_tickers.html",
+    "href": "datasets/sho_tickers.html",
+    "title": "Tickers of pilot firms for Reg SHO",
+    "section": "",
+    "text": "A data set containing the tickers and company names for pilot firms from Reg SHO pilot. Data are scraped from the SEC’s own website."
+  },
+  {
+    "objectID": "datasets/sho_tickers.html#usage",
+    "href": "datasets/sho_tickers.html#usage",
+    "title": "Tickers of pilot firms for Reg SHO",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"sho_tickers\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/sho_tickers.html#format",
+    "href": "datasets/sho_tickers.html#format",
+    "title": "Tickers of pilot firms for Reg SHO",
+    "section": "Format",
+    "text": "Format\n986 rows and 2 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\nticker\nstring\nTicker\n\n\nco_name\nstring\nCompany name"
+  },
+  {
+    "objectID": "datasets/sho_tickers.html#source",
+    "href": "datasets/sho_tickers.html#source",
+    "title": "Tickers of pilot firms for Reg SHO",
+    "section": "Source",
+    "text": "Source\nhttps://www.sec.gov/rule-release/34-50104\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/test_scores.html",
+    "href": "datasets/test_scores.html",
+    "title": "Test scores",
+    "section": "",
+    "text": "A simulated data set of test scores."
+  },
+  {
+    "objectID": "datasets/test_scores.html#usage",
+    "href": "datasets/test_scores.html#usage",
+    "title": "Test scores",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"test_scores\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/test_scores.html#format",
+    "href": "datasets/test_scores.html#format",
+    "title": "Test scores",
+    "section": "Format",
+    "text": "Format\n4,000 rows and 3 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\nid\nint32\nStudent identifier\n\n\ngrade\ndouble\nSchool grade at time of test\n\n\nscore\ndouble\nTest score\n\n\n\nRelated R documentation."
+  },
+  {
+    "objectID": "datasets/zhang_2007_events.html",
+    "href": "datasets/zhang_2007_events.html",
+    "title": "Event dates from Zhang (2007)",
+    "section": "",
+    "text": "A data set containing the event dates used in Zhang (2007). Data obtained from Panel of Table of Zhang (2007). If an event spans multiple dates, then a row is included for each date."
+  },
+  {
+    "objectID": "datasets/zhang_2007_events.html#usage",
+    "href": "datasets/zhang_2007_events.html#usage",
+    "title": "Event dates from Zhang (2007)",
+    "section": "Usage",
+    "text": "Usage\nfrom era_pl import load_data\n\ndata = load_data(\"zhang_2007_events\")\nUse from era_py import load_data for a pandas dataframe."
+  },
+  {
+    "objectID": "datasets/zhang_2007_events.html#format",
+    "href": "datasets/zhang_2007_events.html#format",
+    "title": "Event dates from Zhang (2007)",
+    "section": "Format",
+    "text": "Format\n30 rows and 3 columns. Column types below describe the stored Parquet data; loaders also restore categories and date types using the packaged metadata.\n\n\n\nColumn\nStored type\nDescription\n\n\n\n\nevent\nint32\nIdentifier for the event\n\n\ndate\ndate32[day]\nDate of event\n\n\nevent_desc\nstring\nDescription of the event"
+  },
+  {
+    "objectID": "datasets/zhang_2007_events.html#source",
+    "href": "datasets/zhang_2007_events.html#source",
+    "title": "Event dates from Zhang (2007)",
+    "section": "Source",
+    "text": "Source\nhttps://doi.org/10.1016/j.jacceco.2007.02.002\nRelated R documentation."
+  }
+]
